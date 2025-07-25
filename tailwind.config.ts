@@ -62,18 +62,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'phindex-teal': 'hsl(var(--phindex-teal))',
+				'phindex-dark': 'hsl(var(--phindex-dark))',
+				'phindex-light': 'hsl(var(--phindex-light))'
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-card': 'var(--gradient-card)',
 				'gradient-accent': 'var(--gradient-accent)'
-			},
-			colors: {
-				...this.theme.colors,
-				'phindex-teal': 'hsl(var(--phindex-teal))',
-				'phindex-dark': 'hsl(var(--phindex-dark))',
-				'phindex-light': 'hsl(var(--phindex-light))'
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
