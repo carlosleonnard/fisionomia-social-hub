@@ -69,6 +69,12 @@ export default {
 				'gradient-card': 'var(--gradient-card)',
 				'gradient-accent': 'var(--gradient-accent)'
 			},
+			colors: {
+				...this.theme.colors,
+				'phindex-teal': 'hsl(var(--phindex-teal))',
+				'phindex-dark': 'hsl(var(--phindex-dark))',
+				'phindex-light': 'hsl(var(--phindex-light))'
+			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
 				'card': 'var(--shadow-card)',

@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Share2, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Heart, MessageCircle, Share2, Vote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { VotingSection } from "./VotingSection";
+
+interface Vote {
+  classification: string;
+  count: number;
+  percentage: number;
+}
 
 interface ProfileCardProps {
   id: string;
@@ -14,9 +21,11 @@ interface ProfileCardProps {
   phenotypes: string[];
   likes: number;
   comments: number;
+  votes: Vote[];
+  hasUserVoted: boolean;
   onLike: (id: string) => void;
   onComment: (id: string) => void;
-  onClassify: (id: string, classification: string) => void;
+  onVote: (id: string, classification: string) => void;
 }
 
 export const ProfileCard = ({ 
@@ -28,118 +37,100 @@ export const ProfileCard = ({
   phenotypes, 
   likes, 
   comments,
+  votes,
+  hasUserVoted,
   onLike,
   onComment,
-  onClassify 
+  onVote 
 }: ProfileCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [showClassifications, setShowClassifications] = useState(false);
+  const [showVoting, setShowVoting] = useState(false);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
     onLike(id);
   };
 
-  const classifications = [
-    "Mediterrâneo", "Nórdico", "Atlântida", "Alpino",
-    "Dinárico", "Báltico", "Armenóide", "Iranid"
-  ];
+  const topVote = votes.length > 0 ? votes.reduce((prev, current) => 
+    prev.percentage > current.percentage ? prev : current
+  ) : null;
 
   return (
-    <Card className="bg-gradient-card border-border/50 hover:shadow-card transition-all duration-300 overflow-hidden group">
+    <Card className="bg-card border-border/50 hover:shadow-card transition-all duration-300 overflow-hidden group">
       <div className="relative">
         <img 
           src={imageUrl} 
           alt={name}
-          className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         
-        <div className="absolute bottom-4 left-4 text-white">
-          <h3 className="text-xl font-bold">{name}, {age}</h3>
-          <p className="text-sm opacity-90">{location}</p>
-        </div>
-
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-4 right-4 bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm"
-          onClick={() => setShowClassifications(!showClassifications)}
+          className="absolute top-2 right-2 bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm"
+          onClick={() => setShowVoting(!showVoting)}
         >
-          <Share2 className="h-4 w-4" />
+          <Vote className="h-3 w-3" />
         </Button>
       </div>
 
-      <div className="p-4 space-y-4">
-        {/* Fenótipos atuais */}
-        <div className="flex flex-wrap gap-2">
-          {phenotypes.map((phenotype, index) => (
-            <Badge key={index} variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-              {phenotype}
+      <div className="p-3 space-y-3">
+        {/* Nome e informações básicas */}
+        <div className="text-center">
+          <h3 className="font-semibold text-phindex-dark text-sm">Profile {id}</h3>
+          <p className="text-xs text-muted-foreground">{name}, {age}</p>
+          {topVote && (
+            <Badge variant="secondary" className="text-xs mt-1 bg-phindex-teal/10 text-phindex-teal">
+              {topVote.classification} {topVote.percentage}%
             </Badge>
-          ))}
+          )}
         </div>
 
-        {/* Classificações disponíveis */}
-        {showClassifications && (
+        {/* Seção de votação */}
+        {showVoting && (
           <div className="animate-slide-up">
-            <h4 className="text-sm font-medium text-muted-foreground mb-2">Classificar como:</h4>
-            <div className="grid grid-cols-2 gap-2">
-              {classifications.map((classification) => (
-                <Button
-                  key={classification}
-                  variant="outline"
-                  size="sm"
-                  className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
-                  onClick={() => onClassify(id, classification)}
-                >
-                  {classification}
-                </Button>
-              ))}
-            </div>
+            <VotingSection
+              profileId={id}
+              votes={votes}
+              onVote={onVote}
+              hasUserVoted={hasUserVoted}
+            />
           </div>
         )}
 
         {/* Ações */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between pt-2 border-t">
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
-              className={`gap-2 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
+              className={`gap-1 text-xs h-7 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
               onClick={handleLike}
             >
-              <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+              <Heart className={`h-3 w-3 ${isLiked ? 'fill-current' : ''}`} />
               {likes + (isLiked ? 1 : 0)}
             </Button>
 
             <Button
               variant="ghost"
               size="sm"
-              className="gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="gap-1 text-xs h-7 text-muted-foreground hover:text-foreground transition-colors"
               onClick={() => onComment(id)}
             >
-              <MessageCircle className="h-4 w-4" />
+              <MessageCircle className="h-3 w-3" />
               {comments}
             </Button>
           </div>
 
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-green-500 border-green-500/20 hover:bg-green-500/10"
-            >
-              <ThumbsUp className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500 border-red-500/20 hover:bg-red-500/10"
-            >
-              <ThumbsDown className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs h-7 text-phindex-teal hover:bg-phindex-teal/10"
+            onClick={() => setShowVoting(!showVoting)}
+          >
+            Votar
+          </Button>
         </div>
       </div>
     </Card>

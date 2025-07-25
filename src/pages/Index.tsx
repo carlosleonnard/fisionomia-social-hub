@@ -10,6 +10,12 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-diversity.jpg";
 
+interface Vote {
+  classification: string;
+  count: number;
+  percentage: number;
+}
+
 interface Profile {
   id: string;
   name: string;
@@ -19,6 +25,8 @@ interface Profile {
   phenotypes: string[];
   likes: number;
   comments: any[];
+  votes: Vote[];
+  hasUserVoted: boolean;
   description?: string;
 }
 
@@ -33,6 +41,11 @@ const Index = () => {
       imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=400&h=400&fit=crop&crop=face",
       phenotypes: ["Mediterrâneo", "Dinárico"],
       likes: 47,
+      votes: [
+        { classification: "Mediterrâneo", count: 15, percentage: 65 },
+        { classification: "Dinárico", count: 8, percentage: 35 }
+      ],
+      hasUserVoted: false,
       comments: [
         {
           id: "c1",
@@ -52,6 +65,11 @@ const Index = () => {
       imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
       phenotypes: ["Atlântida", "Nórdico"],
       likes: 32,
+      votes: [
+        { classification: "Atlântida", count: 12, percentage: 75 },
+        { classification: "Nórdico", count: 4, percentage: 25 }
+      ],
+      hasUserVoted: false,
       comments: []
     },
     {
@@ -62,6 +80,10 @@ const Index = () => {
       imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face",
       phenotypes: ["Alpino"],
       likes: 28,
+      votes: [
+        { classification: "Alpino", count: 10, percentage: 100 }
+      ],
+      hasUserVoted: false,
       comments: []
     }
   ]);
@@ -80,7 +102,9 @@ const Index = () => {
       ...newProfileData,
       phenotypes: [],
       likes: 0,
-      comments: []
+      comments: [],
+      votes: [],
+      hasUserVoted: false
     };
     
     setProfiles(prev => [newProfile, ...prev]);
@@ -165,129 +189,105 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src={heroImage} 
-            alt="Diversidade fenotípica" 
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background" />
-        </div>
-        
-        <div className="relative container px-4 text-center">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-              Descubra e Classifique
-              <span className="bg-gradient-primary bg-clip-text text-transparent block">
-                Fenótipos Únicos
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Uma plataforma social para explorar e classificar a diversidade fenotípica humana.
-              Conecte-se, aprenda e compartilhe conhecimento sobre características físicas.
-            </p>
-            
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <AddProfileModal onAddProfile={handleAddProfile} />
-              <Button variant="outline" size="lg" className="gap-2">
-                <TrendingUp className="h-4 w-4" />
-                Ver Tendências
-              </Button>
+      <div className="container px-4">
+        <div className="flex gap-8 pt-8">
+          {/* Sidebar com categorias */}
+          <div className="w-72 hidden lg:block">
+            <Card className="bg-card border-border/50 p-6 sticky top-24">
+              <div className="space-y-6">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Filtrar por fenótipo</label>
+                  <select className="w-full mt-2 p-3 border border-border rounded-lg bg-muted/30 focus:border-primary/50">
+                    <option>Select a phenotype</option>
+                    <option>Mediterrâneo</option>
+                    <option>Nórdico</option>
+                    <option>Atlântida</option>
+                    <option>Alpino</option>
+                    <option>Dinárico</option>
+                    <option>Báltico</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
+                  <div className="space-y-3">
+                    {[
+                      { letter: "A", name: "Pop Culture" },
+                      { letter: "B", name: "Music and Entertainment" },
+                      { letter: "Γ", name: "Arts" },
+                      { letter: "Δ", name: "Philosophy" },
+                      { letter: "E", name: "Sciences" },
+                      { letter: "Z", name: "Sports" },
+                      { letter: "H", name: "Business" },
+                      { letter: "Θ", name: "Internet" }
+                    ].map((category) => (
+                      <button
+                        key={category.letter}
+                        className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <span className="text-phindex-teal font-bold text-lg">{category.letter}</span>
+                        <span className="text-sm">{category.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <AddProfileModal onAddProfile={handleAddProfile} />
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Conteúdo principal */}
+          <div className="flex-1">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-phindex-dark mb-2">MOST VIEWED PROFILES</h2>
+              <p className="text-muted-foreground">Descubra e vote nos fenótipos mais populares</p>
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Grid de perfis */}
+              <div className="flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                  {profiles.map((profile) => (
+                    <ProfileCard
+                      key={profile.id}
+                      id={profile.id}
+                      name={profile.name}
+                      age={profile.age}
+                      location={profile.location}
+                      imageUrl={profile.imageUrl}
+                      phenotypes={profile.phenotypes}
+                      likes={profile.likes}
+                      comments={profile.comments.length}
+                      votes={profile.votes}
+                      hasUserVoted={profile.hasUserVoted}
+                      onLike={handleLike}
+                      onComment={handleComment}
+                      onVote={handleClassify}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Sidebar com comentários */}
+              {selectedProfile && selectedProfileData && (
+                <div className="lg:w-96">
+                  <div className="sticky top-24">
+                    <CommentsSection
+                      profileId={selectedProfile}
+                      comments={selectedProfileData.comments}
+                      onAddComment={handleAddComment}
+                      onLikeComment={handleLikeComment}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-12 border-b border-border/50">
-        <div className="container px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-card border-border/50 p-6 text-center">
-              <div className="space-y-2">
-                <div className="h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold">1,247</h3>
-                <p className="text-muted-foreground">Perfis Ativos</p>
-              </div>
-            </Card>
-            
-            <Card className="bg-gradient-card border-border/50 p-6 text-center">
-              <div className="space-y-2">
-                <div className="h-12 w-12 bg-gradient-accent rounded-full flex items-center justify-center mx-auto">
-                  <Sparkles className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold">5,892</h3>
-                <p className="text-muted-foreground">Classificações</p>
-              </div>
-            </Card>
-            
-            <Card className="bg-gradient-card border-border/50 p-6 text-center">
-              <div className="space-y-2">
-                <div className="h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto">
-                  <TrendingUp className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold">98%</h3>
-                <p className="text-muted-foreground">Precisão</p>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Feed Section */}
-      <section className="py-12">
-        <div className="container px-4">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Feed principal */}
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold">Feed de Classificações</h2>
-                <div className="flex gap-2">
-                  <Badge variant="secondary">Recentes</Badge>
-                  <Badge variant="outline">Populares</Badge>
-                  <Badge variant="outline">Tendências</Badge>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {profiles.map((profile) => (
-                  <ProfileCard
-                    key={profile.id}
-                    id={profile.id}
-                    name={profile.name}
-                    age={profile.age}
-                    location={profile.location}
-                    imageUrl={profile.imageUrl}
-                    phenotypes={profile.phenotypes}
-                    likes={profile.likes}
-                    comments={profile.comments.length}
-                    onLike={handleLike}
-                    onComment={handleComment}
-                    onClassify={handleClassify}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Sidebar com comentários */}
-            {selectedProfile && selectedProfileData && (
-              <div className="lg:w-96">
-                <div className="sticky top-24">
-                  <CommentsSection
-                    profileId={selectedProfile}
-                    comments={selectedProfileData.comments}
-                    onAddComment={handleAddComment}
-                    onLikeComment={handleLikeComment}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };
