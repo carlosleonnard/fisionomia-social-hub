@@ -69,7 +69,10 @@ export const ProfileCard = ({
           variant="ghost"
           size="icon"
           className="absolute top-2 right-2 bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm"
-          onClick={() => setShowVoting(!showVoting)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowVoting(!showVoting);
+          }}
         >
           <Vote className="h-3 w-3" />
         </Button>
@@ -106,7 +109,10 @@ export const ProfileCard = ({
               variant="ghost"
               size="sm"
               className={`gap-1 text-xs h-7 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
-              onClick={handleLike}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLike();
+              }}
             >
               <Heart className={`h-3 w-3 ${isLiked ? 'fill-current' : ''}`} />
               {likes + (isLiked ? 1 : 0)}
@@ -116,7 +122,10 @@ export const ProfileCard = ({
               variant="ghost"
               size="sm"
               className="gap-1 text-xs h-7 text-muted-foreground hover:text-foreground transition-colors"
-              onClick={() => onComment(id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onComment(id);
+              }}
             >
               <MessageCircle className="h-3 w-3" />
               {comments}
@@ -127,7 +136,10 @@ export const ProfileCard = ({
             variant="ghost"
             size="sm"
             className="text-xs h-7 text-phindex-teal hover:bg-phindex-teal/10"
-            onClick={() => setShowVoting(!showVoting)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowVoting(!showVoting);
+            }}
           >
             Votar
           </Button>

@@ -1,6 +1,7 @@
-import { Search, Menu, User, Bell, Database } from "lucide-react";
+import { Search, User, Bell, Plus, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import phindexLogo from "@/assets/phindex-logo.png";
 
 export const Header = () => {
   return (
@@ -8,9 +9,11 @@ export const Header = () => {
       <div className="container px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
-              <Database className="text-white h-5 w-5" />
-            </div>
+            <img 
+              src={phindexLogo} 
+              alt="Phindex Logo" 
+              className="w-12 h-12 object-contain"
+            />
             <div>
               <h1 className="text-2xl font-bold text-phindex-teal">PHINDEX</h1>
               <p className="text-xs text-muted-foreground -mt-1">Phenotype Database</p>
@@ -34,12 +37,20 @@ export const Header = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Button variant="default" className="bg-phindex-teal hover:bg-phindex-teal/90">
+            <Plus className="mr-2 h-4 w-4" />
+            Adicionar Perfil
+          </Button>
+          <Button variant="outline" size="icon">
+            <Filter className="h-4 w-4" />
+          </Button>
           <Button variant="ghost" size="icon" className="hover:bg-muted/50">
             <Bell className="h-5 w-5" />
           </Button>
           <Button variant="default" className="bg-phindex-dark hover:bg-phindex-teal transition-all duration-300 rounded-full px-6">
-            LOGIN
+            <User className="mr-2 h-4 w-4" />
+            Login Google
           </Button>
         </div>
       </div>

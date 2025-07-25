@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Sparkles, TrendingUp, Users } from "lucide-react";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { ProfileCard } from "@/components/ProfileCard";
 import { AddProfileModal } from "@/components/AddProfileModal";
 import { CommentsSection } from "@/components/CommentsSection";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-diversity.jpg";
 
 interface Vote {
@@ -31,6 +33,7 @@ interface Profile {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [profiles, setProfiles] = useState<Profile[]>([
     {
@@ -82,6 +85,54 @@ const Index = () => {
       likes: 28,
       votes: [
         { classification: "Alpino", count: 10, percentage: 100 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "4",
+      name: "Amara",
+      age: 26,
+      location: "Lagos, Nigéria",
+      imageUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Africano Subsaariano"],
+      likes: 73,
+      votes: [
+        { classification: "Africano Subsaariano", count: 67, percentage: 78.8 },
+        { classification: "Nigeriano", count: 12, percentage: 14.1 },
+        { classification: "Banto", count: 6, percentage: 7.1 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "5",
+      name: "Rajesh",
+      age: 31,
+      location: "Mumbai, Índia",
+      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Dravídico"],
+      likes: 29,
+      votes: [
+        { classification: "Dravídico", count: 34, percentage: 56.7 },
+        { classification: "Indo-Ariano", count: 18, percentage: 30.0 },
+        { classification: "Indiano", count: 8, percentage: 13.3 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "6",
+      name: "Isabella",
+      age: 25,
+      location: "Barcelona, Espanha",
+      imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Ibérico"],
+      likes: 51,
+      votes: [
+        { classification: "Ibérico", count: 41, percentage: 60.3 },
+        { classification: "Mediterrâneo", count: 19, percentage: 27.9 },
+        { classification: "Catalão", count: 8, percentage: 11.8 }
       ],
       hasUserVoted: false,
       comments: []
@@ -251,22 +302,31 @@ const Index = () => {
               <div className="flex-1">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                   {profiles.map((profile) => (
-                    <ProfileCard
+                    <div 
                       key={profile.id}
-                      id={profile.id}
-                      name={profile.name}
-                      age={profile.age}
-                      location={profile.location}
-                      imageUrl={profile.imageUrl}
-                      phenotypes={profile.phenotypes}
-                      likes={profile.likes}
-                      comments={profile.comments.length}
-                      votes={profile.votes}
-                      hasUserVoted={profile.hasUserVoted}
-                      onLike={handleLike}
-                      onComment={handleComment}
-                      onVote={handleClassify}
-                    />
+                      className="cursor-pointer transition-transform hover:scale-105"
+                      onClick={() => navigate(`/profile/${profile.id}`)}
+                    >
+                      <ProfileCard
+                        id={profile.id}
+                        name={profile.name}
+                        age={profile.age}
+                        location={profile.location}
+                        imageUrl={profile.imageUrl}
+                        phenotypes={profile.phenotypes}
+                        likes={profile.likes}
+                        comments={profile.comments.length}
+                        votes={profile.votes}
+                        hasUserVoted={profile.hasUserVoted}
+                        onLike={(id) => {
+                          handleLike(id);
+                        }}
+                        onComment={(id) => {
+                          handleComment(id);
+                        }}
+                        onVote={handleClassify}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -288,6 +348,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };
