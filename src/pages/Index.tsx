@@ -247,16 +247,22 @@ const Index = () => {
             <Card className="bg-card border-border/50 p-6 sticky top-24">
               <div className="space-y-6">
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Filtrar por fenótipo</label>
-                  <select className="w-full mt-2 p-3 border border-border rounded-lg bg-muted/30 focus:border-primary/50">
-                    <option>Select a phenotype</option>
-                    <option>Mediterrâneo</option>
-                    <option>Nórdico</option>
-                    <option>Atlântida</option>
-                    <option>Alpino</option>
-                    <option>Dinárico</option>
-                    <option>Báltico</option>
-                  </select>
+                  <h3 className="text-lg font-semibold mb-4 text-phindex-dark">REGION</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      "África", "Ásia", "Europa", "América do Norte",
+                      "América do Sul", "Oceania"
+                    ].map((region) => (
+                      <Button
+                        key={region}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs py-2 px-3 h-auto"
+                      >
+                        {region}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
                 
                 <div>
@@ -270,7 +276,7 @@ const Index = () => {
                       { letter: "E", name: "Sciences" },
                       { letter: "Z", name: "Sports" },
                       { letter: "H", name: "Business" },
-                      { letter: "Θ", name: "Internet" }
+                      { letter: "Θ", name: "Politics" }
                     ].map((category) => (
                       <button
                         key={category.letter}
@@ -283,9 +289,6 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="pt-4">
-                  <AddProfileModal onAddProfile={handleAddProfile} />
-                </div>
               </div>
             </Card>
           </div>

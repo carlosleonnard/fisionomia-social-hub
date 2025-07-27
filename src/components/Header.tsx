@@ -1,4 +1,4 @@
-import { Search, User, Bell, Plus, Filter } from "lucide-react";
+import { Search, User, Bell, Plus, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import phindexLogo from "@/assets/phindex-logo.png";
@@ -43,7 +43,7 @@ export const Header = () => {
             Adicionar Perfil
           </Button>
           <Button variant="outline" size="icon">
-            <Filter className="h-4 w-4" />
+            <HelpCircle className="h-4 w-4" />
           </Button>
           <Button variant="ghost" size="icon" className="hover:bg-muted/50">
             <Bell className="h-5 w-5" />
