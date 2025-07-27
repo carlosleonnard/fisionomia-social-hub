@@ -3,10 +3,12 @@ import { ArrowLeft, Users, MessageSquare, Heart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CommentsSection } from "@/components/CommentsSection";
 import { VotingSection } from "@/components/VotingSection";
+import { VoteModal } from "@/components/VoteModal";
 import { useState } from "react";
 
 interface Vote {
@@ -68,6 +70,8 @@ export default function ProfileDetail() {
   const navigate = useNavigate();
   const [showComments, setShowComments] = useState(false);
   const [showVoting, setShowVoting] = useState(false);
+  const [showVoteModal, setShowVoteModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Para Supabase integration
 
   const profile = mockProfiles.find(p => p.id === id);
 
@@ -127,26 +131,26 @@ export default function ProfileDetail() {
                   </div>
                 </div>
                 
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
-                  <div className="space-y-3">
-                    {[
-                      { letter: "A", name: "Pop Culture" },
-                      { letter: "B", name: "Music and Entertainment" },
-                      { letter: "Γ", name: "Arts" },
-                      { letter: "Δ", name: "Philosophy" },
-                      { letter: "E", name: "Sciences" },
-                      { letter: "Z", name: "Sports" },
-                      { letter: "H", name: "Business" },
-                      { letter: "Θ", name: "Politics" }
-                    ].map((category) => (
-                      <button
-                        key={category.letter}
-                        className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
-                      >
-                        <span className="text-phindex-teal font-bold text-lg">{category.letter}</span>
-                        <span className="text-sm">{category.name}</span>
-                      </button>
+                 <div>
+                   <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
+                   <div className="space-y-3">
+                     {[
+                       { icon: "🎭", name: "Pop Culture" },
+                       { icon: "🎵", name: "Music and Entertainment" },
+                       { icon: "🎨", name: "Arts" },
+                       { icon: "🤔", name: "Philosophy" },
+                       { icon: "🧪", name: "Sciences" },
+                       { icon: "⚽", name: "Sports" },
+                       { icon: "💼", name: "Business" },
+                       { icon: "🏛️", name: "Politics" }
+                     ].map((category) => (
+                       <button
+                         key={category.name}
+                         className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                       >
+                         <span className="text-lg">{category.icon}</span>
+                         <span className="text-sm">{category.name}</span>
+                       </button>
                     ))}
                   </div>
                 </div>
@@ -188,101 +192,109 @@ export default function ProfileDetail() {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Button 
-                        onClick={() => setShowVoting(!showVoting)}
-                        className="w-full"
-                        variant="default"
-                      >
-                        <Users className="mr-2 h-4 w-4" />
-                        Classificar
-                      </Button>
-                      <Button 
-                        onClick={() => setShowComments(!showComments)}
-                        className="w-full"
-                        variant="outline"
-                      >
-                        <MessageSquare className="mr-2 h-4 w-4" />
-                        Comentários
-                      </Button>
-                    </div>
+                     <div className="space-y-2">
+                       {isLoggedIn ? (
+                         <Button 
+                           onClick={() => setShowVoteModal(true)}
+                           className="w-full"
+                           variant="default"
+                         >
+                           <Users className="mr-2 h-4 w-4" />
+                           Vote
+                         </Button>
+                       ) : (
+                         <Button 
+                           disabled
+                           className="w-full"
+                           variant="outline"
+                         >
+                           <Users className="mr-2 h-4 w-4" />
+                           Login para Votar
+                         </Button>
+                       )}
+                       <Button 
+                         onClick={() => setShowComments(!showComments)}
+                         className="w-full"
+                         variant="outline"
+                       >
+                         <MessageSquare className="mr-2 h-4 w-4" />
+                         Comentários
+                       </Button>
+                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Phenotypic Classification */}
-              <Card className="bg-gradient-card border-phindex-teal/20">
-                <CardHeader>
-                  <CardTitle className="text-phindex-teal">Classificação Fenotípica</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {profile.votes.map((vote, index) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <Badge variant="secondary" className="text-sm">
-                          {vote.classification}
-                        </Badge>
-                        <div className="flex items-center gap-2">
-                          <div className="w-24 bg-muted rounded-full h-2">
-                            <div 
-                              className="bg-phindex-teal h-2 rounded-full transition-all duration-300"
-                              style={{ width: `${vote.percentage}%` }}
-                            />
-                          </div>
-                          <span className="text-sm font-medium">{vote.percentage}%</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+               {/* Phenotypic Classification */}
+               <Card className="bg-gradient-card border-phindex-teal/20">
+                 <CardHeader>
+                   <CardTitle className="text-phindex-teal">Classificação Fenotípica</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                   <div className="space-y-3">
+                     {profile.votes.map((vote, index) => (
+                       <div key={index} className="space-y-2">
+                         <div className="flex items-center justify-between">
+                           <Badge variant="secondary" className="text-sm">
+                             {vote.classification}
+                           </Badge>
+                           <span className="text-sm font-medium">{vote.percentage}%</span>
+                         </div>
+                         <Progress value={vote.percentage} className="h-2" />
+                       </div>
+                     ))}
+                   </div>
+                 </CardContent>
+               </Card>
 
-              {/* Physical Characteristics */}
-              <Card className="bg-gradient-card border-phindex-teal/20">
-                <CardHeader>
-                  <CardTitle className="text-phindex-teal">Características Físicas</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Fenótipo</h4>
-                      <p className="text-foreground">{profile.phenotype}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Cor do Cabelo</h4>
-                      <p className="text-foreground">{profile.hairColor}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Textura do Cabelo</h4>
-                      <p className="text-foreground">{profile.hairTexture}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Pele</h4>
-                      <p className="text-foreground">{profile.skin}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Região</h4>
-                      <p className="text-foreground">{profile.region}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Índice Nasal</h4>
-                      <p className="text-foreground">{profile.nasalIndex}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Altura</h4>
-                      <p className="text-foreground">{profile.height}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Índice Cefálico</h4>
-                      <p className="text-foreground">{profile.cephalicIndex}</p>
-                    </div>
-                    <div className="md:col-span-2">
-                      <h4 className="font-semibold text-sm text-muted-foreground mb-1">Dobras Oculares</h4>
-                      <p className="text-foreground">{profile.eyeFolds}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+               {/* Physical Characteristics */}
+               <Card className="bg-gradient-card border-phindex-teal/20">
+                 <CardHeader>
+                   <CardTitle className="text-phindex-teal">Características Físicas</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                   <div className="space-y-4">
+                     <div className="grid grid-cols-1 gap-3">
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Fenótipo</h4>
+                         <p className="text-foreground">{profile.phenotype}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Cor do Cabelo</h4>
+                         <p className="text-foreground">{profile.hairColor}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Textura do Cabelo</h4>
+                         <p className="text-foreground">{profile.hairTexture}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Pele</h4>
+                         <p className="text-foreground">{profile.skin}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Região</h4>
+                         <p className="text-foreground">{profile.region}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Índice Nasal</h4>
+                         <p className="text-foreground">{profile.nasalIndex}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Altura</h4>
+                         <p className="text-foreground">{profile.height}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Índice Cefálico</h4>
+                         <p className="text-foreground">{profile.cephalicIndex}</p>
+                       </div>
+                       <div className="p-3 bg-muted/30 rounded-lg">
+                         <h4 className="font-semibold text-sm text-muted-foreground mb-1">Dobras Oculares</h4>
+                         <p className="text-foreground">{profile.eyeFolds}</p>
+                       </div>
+                     </div>
+                   </div>
+                 </CardContent>
+               </Card>
             </div>
           </div>
         </div>
@@ -302,9 +314,9 @@ export default function ProfileDetail() {
           </div>
         )}
 
-        {/* Comments Section */}
-        {showComments && (
-          <div className="mt-8">
+        {/* Comments Section - Fixed at bottom */}
+        <div className="mt-8">
+          <div className="max-w-4xl mx-auto">
             <CommentsSection 
               profileId={profile.id}
               comments={[]}
@@ -312,8 +324,18 @@ export default function ProfileDetail() {
               onLikeComment={(commentId) => console.log('Liked comment:', commentId)}
             />
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Vote Modal */}
+      <VoteModal
+        isOpen={showVoteModal}
+        onClose={() => setShowVoteModal(false)}
+        onSubmit={(votes) => {
+          console.log('Submitted votes:', votes);
+          // Aqui você processará os votos quando integrar com Supabase
+        }}
+      />
 
       <Footer />
     </div>

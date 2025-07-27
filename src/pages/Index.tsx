@@ -265,26 +265,26 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
-                  <div className="space-y-3">
-                    {[
-                      { letter: "A", name: "Pop Culture" },
-                      { letter: "B", name: "Music and Entertainment" },
-                      { letter: "Γ", name: "Arts" },
-                      { letter: "Δ", name: "Philosophy" },
-                      { letter: "E", name: "Sciences" },
-                      { letter: "Z", name: "Sports" },
-                      { letter: "H", name: "Business" },
-                      { letter: "Θ", name: "Politics" }
-                    ].map((category) => (
-                      <button
-                        key={category.letter}
-                        className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
-                      >
-                        <span className="text-phindex-teal font-bold text-lg">{category.letter}</span>
-                        <span className="text-sm">{category.name}</span>
-                      </button>
+                 <div>
+                   <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
+                   <div className="space-y-3">
+                     {[
+                       { icon: "🎭", name: "Pop Culture" },
+                       { icon: "🎵", name: "Music and Entertainment" },
+                       { icon: "🎨", name: "Arts" },
+                       { icon: "🤔", name: "Philosophy" },
+                       { icon: "🧪", name: "Sciences" },
+                       { icon: "⚽", name: "Sports" },
+                       { icon: "💼", name: "Business" },
+                       { icon: "🏛️", name: "Politics" }
+                     ].map((category) => (
+                       <button
+                         key={category.name}
+                         className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                       >
+                         <span className="text-lg">{category.icon}</span>
+                         <span className="text-sm">{category.name}</span>
+                       </button>
                     ))}
                   </div>
                 </div>

@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Share2, Vote } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { VotingSection } from "./VotingSection";
 
 interface Vote {
   classification: string;
@@ -44,7 +42,6 @@ export const ProfileCard = ({
   onVote 
 }: ProfileCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [showVoting, setShowVoting] = useState(false);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -64,18 +61,6 @@ export const ProfileCard = ({
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-        
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-2 right-2 bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowVoting(!showVoting);
-          }}
-        >
-          <Vote className="h-3 w-3" />
-        </Button>
       </div>
 
       <div className="p-3 space-y-3">
@@ -90,58 +75,32 @@ export const ProfileCard = ({
           )}
         </div>
 
-        {/* Seção de votação */}
-        {showVoting && (
-          <div className="animate-slide-up">
-            <VotingSection
-              profileId={id}
-              votes={votes}
-              onVote={onVote}
-              hasUserVoted={hasUserVoted}
-            />
-          </div>
-        )}
-
         {/* Ações */}
-        <div className="flex items-center justify-between pt-2 border-t">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`gap-1 text-xs h-7 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleLike();
-              }}
-            >
-              <Heart className={`h-3 w-3 ${isLiked ? 'fill-current' : ''}`} />
-              {likes + (isLiked ? 1 : 0)}
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-1 text-xs h-7 text-muted-foreground hover:text-foreground transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                onComment(id);
-              }}
-            >
-              <MessageCircle className="h-3 w-3" />
-              {comments}
-            </Button>
-          </div>
+        <div className="flex items-center justify-center gap-4 pt-2 border-t">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`gap-1 text-xs h-7 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike();
+            }}
+          >
+            <Heart className={`h-3 w-3 ${isLiked ? 'fill-current' : ''}`} />
+            {likes + (isLiked ? 1 : 0)}
+          </Button>
 
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs h-7 text-phindex-teal hover:bg-phindex-teal/10"
+            className="gap-1 text-xs h-7 text-muted-foreground hover:text-foreground transition-colors"
             onClick={(e) => {
               e.stopPropagation();
-              setShowVoting(!showVoting);
+              onComment(id);
             }}
           >
-            Votar
+            <MessageCircle className="h-3 w-3" />
+            {comments}
           </Button>
         </div>
       </div>
