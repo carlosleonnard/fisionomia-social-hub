@@ -256,8 +256,19 @@ const Index = () => {
   });
 
   const handleRegionClick = (region: string) => {
-    setSelectedRegion(region);
-    setSelectedPhenotype(null); // Reset phenotype when changing region
+    // Converter nome da região para URL slug
+    const regionSlug = region.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace('á', 'a')
+      .replace('é', 'e')
+      .replace('í', 'i')
+      .replace('ó', 'o')
+      .replace('ú', 'u')
+      .replace('ã', 'a')
+      .replace('õ', 'o')
+      .replace('ç', 'c');
+    
+    navigate(`/region/${regionSlug}`);
   };
 
   const handlePhenotypeClick = (phenotype: string) => {
