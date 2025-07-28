@@ -282,7 +282,7 @@ const Index = () => {
                          key={category.name}
                          className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
                        >
-                         <span className="text-lg">{category.icon}</span>
+                         <span className="text-lg" style={{ color: 'hsl(var(--category-primary))' }}>{category.icon}</span>
                          <span className="text-sm">{category.name}</span>
                        </button>
                     ))}

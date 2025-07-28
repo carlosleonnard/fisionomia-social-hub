@@ -42,6 +42,10 @@
     --phindex-dark: 190 25% 25%;
     --phindex-light: 190 15% 95%;
     
+    /* Category icon colors */
+    --category-primary: 178 100% 24%; /* #007a75 */
+    --category-secondary: 186 100% 7%; /* #001f23 */
+    
     /* Gradientes personalizados */
     --gradient-primary: linear-gradient(135deg, hsl(var(--phindex-teal)), hsl(var(--primary-glow)));
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
@@ -100,6 +104,10 @@
     --phindex-teal: 190 55% 45%;
     --phindex-dark: 190 25% 8%;
     --phindex-light: 190 15% 15%;
+    
+    /* Category icon colors - dark mode */
+    --category-primary: 178 100% 35%; /* Lighter version for dark mode */
+    --category-secondary: 178 100% 24%; /* #007a75 for dark mode */
     
     --gradient-primary: linear-gradient(135deg, hsl(var(--phindex-teal)), hsl(var(--primary-glow)));
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
