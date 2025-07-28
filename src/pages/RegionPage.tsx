@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileCard } from "@/components/ProfileCard";
 import { CommentsSection } from "@/components/CommentsSection";
 import { Button } from "@/components/ui/button";
@@ -47,11 +48,11 @@ const RegionPage = () => {
   };
 
   const regionNames: Record<string, string> = {
-    "africa": "África",
-    "asia": "Ásia", 
-    "europa": "Europa",
-    "america-do-norte": "América do Norte",
-    "america-do-sul": "América do Sul",
+    "africa": "Africa",
+    "asia": "Asia", 
+    "europe": "Europe",
+    "north-america": "North America",
+    "south-america": "South America",
     "oceania": "Oceania"
   };
 
@@ -132,8 +133,8 @@ const RegionPage = () => {
 
   const handleLike = (profileId: string) => {
     toast({
-      title: "Like adicionado!",
-      description: "Perfil curtido com sucesso.",
+      title: "Like added!",
+      description: "Profile liked successfully.",
     });
   };
 
@@ -143,8 +144,8 @@ const RegionPage = () => {
 
   const handleClassify = (profileId: string, classification: string) => {
     toast({
-      title: "Classificação adicionada!",
-      description: `Perfil classificado como ${classification}.`,
+      title: "Classification added!",
+      description: `Profile classified as ${classification}.`,
     });
   };
 
@@ -156,10 +157,10 @@ const RegionPage = () => {
         <Header />
         <div className="container px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-phindex-dark mb-4">Região não encontrada</h1>
+            <h1 className="text-2xl font-bold text-phindex-dark mb-4">Region not found</h1>
             <Button onClick={() => navigate("/")}>
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar ao início
+              Back to home
             </Button>
           </div>
         </div>
@@ -173,96 +174,104 @@ const RegionPage = () => {
       <Header />
       
       <div className="container px-4 py-8">
-        <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/")}
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar
-          </Button>
-          
-          <h1 className="text-3xl font-bold text-phindex-dark mb-2">{regionDisplayName}</h1>
-          <p className="text-muted-foreground">Explore os fenótipos de {regionDisplayName}</p>
-        </div>
+        <div className="flex gap-8 pt-8">
+          {/* Sidebar */}
+          <AppSidebar />
 
-        {/* Barra de filtros horizontal */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={!selectedPhenotype ? "default" : "outline"}
-              size="sm"
-              className="rounded-full"
-              onClick={() => setSelectedPhenotype(null)}
-            >
-              Todos
-            </Button>
-            {phenotypes.map((phenotype) => (
-              <Button
-                key={phenotype}
-                variant={selectedPhenotype === phenotype ? "default" : "outline"}
-                size="sm"
-                className="rounded-full"
-                onClick={() => setSelectedPhenotype(phenotype)}
-              >
-                {phenotype}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Grid de perfis */}
+          {/* Main Content */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-              {filteredProfiles.map((profile) => (
-                <div 
-                  key={profile.id}
-                  className="cursor-pointer transition-transform hover:scale-105"
-                  onClick={() => navigate(`/profile/${profile.id}`)}
-                >
-                  <ProfileCard
-                    id={profile.id}
-                    name={profile.name}
-                    age={profile.age}
-                    location={profile.location}
-                    imageUrl={profile.imageUrl}
-                    phenotypes={profile.phenotypes}
-                    likes={profile.likes}
-                    comments={profile.comments.length}
-                    votes={profile.votes}
-                    hasUserVoted={profile.hasUserVoted}
-                    onLike={handleLike}
-                    onComment={handleComment}
-                    onVote={handleClassify}
-                  />
-                </div>
-              ))}
+            <div className="mb-8">
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate("/")}
+                className="mb-4"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+              
+              <h1 className="text-3xl font-bold text-phindex-dark mb-2">{regionDisplayName}</h1>
+              <p className="text-muted-foreground">Explore the phenotypes of {regionDisplayName}</p>
             </div>
-            
-            {filteredProfiles.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground text-lg">
-                  Nenhum perfil encontrado para {selectedPhenotype ? selectedPhenotype : regionDisplayName}
-                </p>
-              </div>
-            )}
-          </div>
 
-          {/* Sidebar com comentários */}
-          {selectedProfile && selectedProfileData && (
-            <div className="lg:w-96">
-              <div className="sticky top-24">
-                <CommentsSection
-                  profileId={selectedProfile}
-                  comments={selectedProfileData.comments}
-                  onAddComment={() => {}}
-                  onLikeComment={() => {}}
-                />
+            {/* Filter bar */}
+            <div className="mb-8">
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant={!selectedPhenotype ? "default" : "outline"}
+                  size="sm"
+                  className="rounded-full"
+                  onClick={() => setSelectedPhenotype(null)}
+                >
+                  All
+                </Button>
+                {phenotypes.map((phenotype) => (
+                  <Button
+                    key={phenotype}
+                    variant={selectedPhenotype === phenotype ? "default" : "outline"}
+                    size="sm"
+                    className="rounded-full"
+                    onClick={() => setSelectedPhenotype(phenotype)}
+                  >
+                    {phenotype}
+                  </Button>
+                ))}
               </div>
             </div>
-          )}
+
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Grid de perfis */}
+              <div className="flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                  {filteredProfiles.map((profile) => (
+                    <div 
+                      key={profile.id}
+                      className="cursor-pointer transition-transform hover:scale-105"
+                      onClick={() => navigate(`/profile/${profile.id}`)}
+                    >
+                      <ProfileCard
+                        id={profile.id}
+                        name={profile.name}
+                        age={profile.age}
+                        location={profile.location}
+                        imageUrl={profile.imageUrl}
+                        phenotypes={profile.phenotypes}
+                        likes={profile.likes}
+                        comments={profile.comments.length}
+                        votes={profile.votes}
+                        hasUserVoted={profile.hasUserVoted}
+                        onLike={handleLike}
+                        onComment={handleComment}
+                        onVote={handleClassify}
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                {filteredProfiles.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground text-lg">
+                      No profiles found for {selectedPhenotype ? selectedPhenotype : regionDisplayName}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Sidebar com comentários */}
+              {selectedProfile && selectedProfileData && (
+                <div className="lg:w-96">
+                  <div className="sticky top-24">
+                    <CommentsSection
+                      profileId={selectedProfile}
+                      comments={selectedProfileData.comments}
+                      onAddComment={() => {}}
+                      onLikeComment={() => {}}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       

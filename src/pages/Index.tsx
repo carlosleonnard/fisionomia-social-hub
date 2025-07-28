@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sparkles, TrendingUp, Users, X } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileCard } from "@/components/ProfileCard";
 import { AddProfileModal } from "@/components/AddProfileModal";
 import { CommentsSection } from "@/components/CommentsSection";
@@ -145,12 +146,12 @@ const Index = () => {
 
   // Mapeamento de regiões e seus fenótipos
   const regionPhenotypes: Record<string, string[]> = {
-    "África": ["Negrillo", "Hottentot", "South African", "Sudanese", "Tropical", "Nilotic"],
-    "Ásia": ["Dravídico", "Indo-Ariano", "Mongolóide", "Malaio", "Sino-Tibetano"],
-    "Europa": ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Ibérico", "Catalão"],
-    "América do Norte": ["Ameríndio", "Anglo-Saxão", "Hispânico"],
-    "América do Sul": ["Atlântida", "Ameríndio", "Mestiço"],
-    "Oceania": ["Australóide", "Melanésio", "Polinésio"]
+    "Africa": ["Negrillo", "Hottentot", "South African", "Sudanese", "Tropical", "Nilotic"],
+    "Asia": ["Dravidian", "Indo-Aryan", "Mongoloid", "Malay", "Sino-Tibetan"],
+    "Europe": ["Mediterranean", "Nordic", "Alpine", "Dinaric", "Iberian", "Catalan"],
+    "North America": ["Amerindian", "Anglo-Saxon", "Hispanic"],
+    "South America": ["Atlantid", "Amerindian", "Mestizo"],
+    "Oceania": ["Australoid", "Melanesian", "Polynesian"]
   };
 
   const handleAddProfile = (newProfileData: {
@@ -172,8 +173,8 @@ const Index = () => {
     
     setProfiles(prev => [newProfile, ...prev]);
     toast({
-      title: "Perfil adicionado!",
-      description: `${newProfileData.name} foi adicionado com sucesso.`,
+      title: "Profile added!",
+      description: `${newProfileData.name} was added successfully.`,
     });
   };
 
@@ -206,8 +207,8 @@ const Index = () => {
     );
     
     toast({
-      title: "Classificação adicionada!",
-      description: `Perfil classificado como ${classification}.`,
+      title: "Classification added!",
+      description: `Profile classified as ${classification}.`,
     });
   };
 
@@ -215,11 +216,11 @@ const Index = () => {
     const newComment = {
       id: Date.now().toString(),
       user: { 
-        name: "Você", 
+        name: "You", 
         avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" 
       },
       content,
-      timestamp: "agora",
+      timestamp: "now",
       likes: 0,
       isLiked: false
     };
@@ -288,63 +289,14 @@ const Index = () => {
       
       <div className="container px-4">
         <div className="flex gap-8 pt-8">
-          {/* Sidebar com categorias */}
-          <div className="w-72 hidden lg:block">
-            <Card className="bg-card border-border/50 p-6 sticky top-24">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 text-phindex-dark">REGION</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      "África", "Ásia", "Europa", "América do Norte",
-                      "América do Sul", "Oceania"
-                    ].map((region) => (
-                      <Button
-                        key={region}
-                        variant={selectedRegion === region ? "default" : "outline"}
-                        size="sm"
-                        className="text-xs py-2 px-3 h-auto"
-                        onClick={() => handleRegionClick(region)}
-                      >
-                        {region}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                
-                 <div>
-                   <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
-                   <div className="space-y-3">
-                     {[
-                       { icon: "🎭", name: "Pop Culture" },
-                       { icon: "🎵", name: "Music and Entertainment" },
-                       { icon: "🎨", name: "Arts" },
-                       { icon: "🤔", name: "Philosophy" },
-                       { icon: "🧪", name: "Sciences" },
-                       { icon: "⚽", name: "Sports" },
-                       { icon: "💼", name: "Business" },
-                       { icon: "🏛️", name: "Politics" }
-                     ].map((category) => (
-                       <button
-                         key={category.name}
-                         className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
-                       >
-                         <span className="text-lg" style={{ color: 'hsl(var(--category-primary))' }}>{category.icon}</span>
-                         <span className="text-sm">{category.name}</span>
-                       </button>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            </Card>
-          </div>
+          {/* Sidebar */}
+          <AppSidebar />
 
           {/* Conteúdo principal */}
           <div className="flex-1">
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-phindex-dark mb-2">MOST VIEWED PROFILES</h2>
-              <p className="text-muted-foreground">Descubra e vote nos fenótipos mais populares</p>
+              <p className="text-muted-foreground">Discover and vote on the most popular phenotypes</p>
             </div>
 
             {/* Barra de filtros horizontal (estilo Spotify) */}
@@ -368,7 +320,7 @@ const Index = () => {
                     className="rounded-full"
                     onClick={() => setSelectedPhenotype(null)}
                   >
-                    Tudo
+                    All
                   </Button>
                   {regionPhenotypes[selectedRegion]?.map((phenotype) => (
                     <Button
