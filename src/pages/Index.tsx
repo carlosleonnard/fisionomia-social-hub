@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sparkles, TrendingUp, Users } from "lucide-react";
+import { Sparkles, TrendingUp, Users, X } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProfileCard } from "@/components/ProfileCard";
@@ -140,6 +140,18 @@ const Index = () => {
   ]);
 
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedPhenotype, setSelectedPhenotype] = useState<string | null>(null);
+
+  // Mapeamento de regiões e seus fenótipos
+  const regionPhenotypes: Record<string, string[]> = {
+    "África": ["Negrillo", "Hottentot", "South African", "Sudanese", "Tropical", "Nilotic"],
+    "Ásia": ["Dravídico", "Indo-Ariano", "Mongolóide", "Malaio", "Sino-Tibetano"],
+    "Europa": ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Ibérico", "Catalão"],
+    "América do Norte": ["Ameríndio", "Anglo-Saxão", "Hispânico"],
+    "América do Sul": ["Atlântida", "Ameríndio", "Mestiço"],
+    "Oceania": ["Australóide", "Melanésio", "Polinésio"]
+  };
 
   const handleAddProfile = (newProfileData: {
     name: string;
@@ -234,6 +246,29 @@ const Index = () => {
     );
   };
 
+  // Função para filtrar perfis baseado na região/fenótipo selecionado
+  const filteredProfiles = profiles.filter(profile => {
+    if (!selectedPhenotype) return true;
+    return profile.phenotypes.some(phenotype => 
+      phenotype.toLowerCase().includes(selectedPhenotype.toLowerCase()) ||
+      selectedPhenotype.toLowerCase().includes(phenotype.toLowerCase())
+    );
+  });
+
+  const handleRegionClick = (region: string) => {
+    setSelectedRegion(region);
+    setSelectedPhenotype(null); // Reset phenotype when changing region
+  };
+
+  const handlePhenotypeClick = (phenotype: string) => {
+    setSelectedPhenotype(phenotype);
+  };
+
+  const clearFilters = () => {
+    setSelectedRegion(null);
+    setSelectedPhenotype(null);
+  };
+
   const selectedProfileData = profiles.find(p => p.id === selectedProfile);
 
   return (
@@ -255,9 +290,10 @@ const Index = () => {
                     ].map((region) => (
                       <Button
                         key={region}
-                        variant="outline"
+                        variant={selectedRegion === region ? "default" : "outline"}
                         size="sm"
                         className="text-xs py-2 px-3 h-auto"
+                        onClick={() => handleRegionClick(region)}
                       >
                         {region}
                       </Button>
@@ -300,11 +336,49 @@ const Index = () => {
               <p className="text-muted-foreground">Descubra e vote nos fenótipos mais populares</p>
             </div>
 
+            {/* Barra de filtros horizontal (estilo Spotify) */}
+            {selectedRegion && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <h3 className="text-lg font-semibold text-phindex-dark">{selectedRegion}</h3>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="h-6 w-6 p-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={!selectedPhenotype ? "default" : "outline"}
+                    size="sm"
+                    className="rounded-full"
+                    onClick={() => setSelectedPhenotype(null)}
+                  >
+                    Tudo
+                  </Button>
+                  {regionPhenotypes[selectedRegion]?.map((phenotype) => (
+                    <Button
+                      key={phenotype}
+                      variant={selectedPhenotype === phenotype ? "default" : "outline"}
+                      size="sm"
+                      className="rounded-full"
+                      onClick={() => handlePhenotypeClick(phenotype)}
+                    >
+                      {phenotype}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Grid de perfis */}
               <div className="flex-1">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                  {profiles.map((profile) => (
+                  {filteredProfiles.map((profile) => (
                     <div 
                       key={profile.id}
                       className="cursor-pointer transition-transform hover:scale-105"
