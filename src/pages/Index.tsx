@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Sparkles, TrendingUp, Users, X } from "lucide-react";
+import { useState, useRef } from "react";
+import { Sparkles, TrendingUp, Users, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -36,6 +36,8 @@ interface Profile {
 const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showNavButtons, setShowNavButtons] = useState(false);
   
   // Celebrity profiles (most famous/accessed)
   const [celebrityProfiles] = useState<Profile[]>([
@@ -376,6 +378,29 @@ const Index = () => {
     setSelectedPhenotype(null);
   };
 
+  // Navigation functions for celebrity carousel
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+    }
+  };
+
+  // Mock data for regional profiles (6 rows)
+  const regionalProfiles = {
+    "Africa": profiles.filter(p => p.phenotypes.some(ph => ["Sub-Saharan African", "Nigerian", "Bantu"].includes(ph))),
+    "Asia": profiles.filter(p => p.phenotypes.some(ph => ["Dravidian", "Indo-Aryan", "Indian"].includes(ph))),
+    "Europe": profiles.filter(p => p.phenotypes.some(ph => ["Mediterranean", "Alpine", "Iberian", "Catalan"].includes(ph))),
+    "North America": profiles.slice(0, 2),
+    "South America": profiles.filter(p => p.phenotypes.some(ph => ["Atlantid"].includes(ph))),
+    "Oceania": profiles.slice(0, 1)
+  };
+
   const selectedProfileData = profiles.find(p => p.id === selectedProfile);
 
   return (
@@ -389,7 +414,7 @@ const Index = () => {
 
           {/* Main Content */}
           <div className="flex-1">
-            {/* Popular Celebrities Section */}
+            {/* Popular Celebrities Section with Navigation Arrows */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
@@ -398,36 +423,70 @@ const Index = () => {
                 </Button>
               </div>
               
-              <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
-                {celebrityProfiles.map((profile) => (
-                  <div 
-                    key={profile.id}
-                    className="flex-shrink-0 cursor-pointer group"
-                    onClick={() => navigate(`/profile/${profile.id}`)}
-                  >
-                    <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
-                      <div className="relative mb-4">
-                        <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
-                          <img 
-                            src={profile.imageUrl} 
-                            alt={profile.name}
-                            className="w-full h-full rounded-full object-cover"
-                          />
+              <div 
+                className="relative group"
+                onMouseEnter={() => setShowNavButtons(true)}
+                onMouseLeave={() => setShowNavButtons(false)}
+              >
+                {/* Left Arrow */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
+                    showNavButtons ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onClick={scrollLeft}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+
+                {/* Right Arrow */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
+                    showNavButtons ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onClick={scrollRight}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+
+                {/* Scrollable Container */}
+                <div 
+                  ref={scrollContainerRef}
+                  className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+                >
+                  {celebrityProfiles.map((profile) => (
+                    <div 
+                      key={profile.id}
+                      className="flex-shrink-0 cursor-pointer group/item"
+                      onClick={() => navigate(`/profile/${profile.id}`)}
+                    >
+                      <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
+                        <div className="relative mb-4">
+                          <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
+                            <img 
+                              src={profile.imageUrl} 
+                              alt={profile.name}
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          </div>
+                          <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
+                            {profile.likes}
+                          </div>
                         </div>
-                        <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
-                          {profile.likes}
-                        </div>
+                        <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
+                        <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0]}</p>
                       </div>
-                      <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
-                      <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0]}</p>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Regular User Profiles Section */}
-            <div className="mb-8">
+            {/* Recent Profiles Section - 6 Regional Rows */}
+            <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
                 <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
@@ -435,53 +494,89 @@ const Index = () => {
                 </Button>
               </div>
 
-              <div className="flex flex-col lg:flex-row gap-8">
-                {/* Grid de perfis */}
-                <div className="flex-1">
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                    {profiles.map((profile) => (
-                      <div 
-                        key={profile.id}
-                        className="cursor-pointer transition-transform hover:scale-105"
-                        onClick={() => navigate(`/profile/${profile.id}`)}
-                      >
-                        <ProfileCard
-                          id={profile.id}
-                          name={profile.name}
-                          age={profile.age}
-                          location={profile.location}
-                          imageUrl={profile.imageUrl}
-                          phenotypes={profile.phenotypes}
-                          likes={profile.likes}
-                          comments={profile.comments.length}
-                          votes={profile.votes}
-                          hasUserVoted={profile.hasUserVoted}
-                          onLike={(id) => {
-                            handleLike(id);
-                          }}
-                          onComment={(id) => {
-                            handleComment(id);
-                          }}
-                          onVote={handleClassify}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Sidebar com comentários */}
-                {selectedProfile && selectedProfileData && (
-                  <div className="lg:w-96">
-                    <div className="sticky top-24">
-                      <CommentsSection
-                        profileId={selectedProfile}
-                        comments={selectedProfileData.comments}
-                        onAddComment={handleAddComment}
-                        onLikeComment={handleLikeComment}
-                      />
+              {/* Regional Profile Rows */}
+              <div className="space-y-8">
+                {Object.entries(regionalProfiles).map(([region, regionProfiles]) => (
+                  <div key={region} className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-foreground">{region}</h3>
+                      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                        Show all
+                      </Button>
+                    </div>
+                    
+                    <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                      {regionProfiles.slice(0, 6).map((profile) => (
+                        <div 
+                          key={profile.id}
+                          className="flex-shrink-0 cursor-pointer group hover:scale-105 transition-transform"
+                          onClick={() => navigate(`/profile/${profile.id}`)}
+                        >
+                          <Card className="w-32 h-40 overflow-hidden bg-card hover:bg-accent/50 transition-colors">
+                            <div className="relative h-24 overflow-hidden">
+                              <img 
+                                src={profile.imageUrl} 
+                                alt={profile.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="p-2">
+                              <h4 className="font-medium text-sm text-foreground truncate">{profile.name}</h4>
+                              <p className="text-xs text-muted-foreground truncate">{profile.phenotypes[0] || 'Unknown'}</p>
+                              <div className="flex items-center mt-1 text-xs text-muted-foreground">
+                                <span>{profile.likes} likes</span>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                )}
+                ))}
+              </div>
+            </div>
+
+            {/* Top 10 Most Accessed User Profiles */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                  Show all
+                </Button>
+              </div>
+
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {profiles.slice(0, 10).map((profile) => (
+                  <div 
+                    key={profile.id}
+                    className="flex-shrink-0 cursor-pointer group"
+                    onClick={() => navigate(`/profile/${profile.id}`)}
+                  >
+                    <Card className="w-40 h-56 overflow-hidden bg-card hover:bg-accent/50 transition-colors">
+                      <div className="relative h-32 overflow-hidden">
+                        <img 
+                          src={profile.imageUrl} 
+                          alt={profile.name}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
+                          {profile.likes}
+                        </div>
+                      </div>
+                      <div className="p-3">
+                        <h3 className="font-semibold text-foreground mb-1">{profile.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">{profile.age} years</p>
+                        <div className="flex flex-wrap gap-1">
+                          {profile.phenotypes.slice(0, 2).map((phenotype, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {phenotype}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
