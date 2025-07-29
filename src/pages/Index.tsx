@@ -36,25 +36,120 @@ interface Profile {
 const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Celebrity profiles (most famous/accessed)
+  const [celebrityProfiles] = useState<Profile[]>([
+    {
+      id: "c1",
+      name: "Angelina Jolie",
+      age: 48,
+      location: "Los Angeles, USA",
+      imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Mediterranean", "Alpine"],
+      likes: 2847,
+      votes: [
+        { classification: "Mediterranean", count: 1847, percentage: 65 },
+        { classification: "Alpine", count: 1000, percentage: 35 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "c2", 
+      name: "Brad Pitt",
+      age: 60,
+      location: "Oklahoma, USA",
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Nordic", "Anglo-Saxon"],
+      likes: 3521,
+      votes: [
+        { classification: "Nordic", count: 2113, percentage: 60 },
+        { classification: "Anglo-Saxon", count: 1408, percentage: 40 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "c3",
+      name: "Priyanka Chopra",
+      age: 41,
+      location: "Mumbai, India", 
+      imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Indo-Aryan", "Dravidian"],
+      likes: 1876,
+      votes: [
+        { classification: "Indo-Aryan", count: 1126, percentage: 60 },
+        { classification: "Dravidian", count: 750, percentage: 40 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "c4",
+      name: "Michael B. Jordan",
+      age: 37,
+      location: "California, USA",
+      imageUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Sub-Saharan African"],
+      likes: 4203,
+      votes: [
+        { classification: "Sub-Saharan African", count: 3782, percentage: 90 },
+        { classification: "Nilotic", count: 421, percentage: 10 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "c5",
+      name: "Gal Gadot",
+      age: 38,
+      location: "Tel Aviv, Israel",
+      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Mediterranean", "Levantine"],
+      likes: 2945,
+      votes: [
+        { classification: "Mediterranean", count: 1767, percentage: 60 },
+        { classification: "Levantine", count: 1178, percentage: 40 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    },
+    {
+      id: "c6",
+      name: "Antonio Banderas",
+      age: 63,
+      location: "Malaga, Spain",
+      imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+      phenotypes: ["Iberian", "Mediterranean"],
+      likes: 1654,
+      votes: [
+        { classification: "Iberian", count: 994, percentage: 60 },
+        { classification: "Mediterranean", count: 660, percentage: 40 }
+      ],
+      hasUserVoted: false,
+      comments: []
+    }
+  ]);
+  // Regular user profiles
   const [profiles, setProfiles] = useState<Profile[]>([
     {
       id: "1",
       name: "Sofia",
       age: 24,
-      location: "São Paulo, SP",
+      location: "São Paulo, Brazil",
       imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Mediterrâneo", "Dinárico"],
+      phenotypes: ["Mediterranean", "Dinaric"],
       likes: 47,
       votes: [
-        { classification: "Mediterrâneo", count: 15, percentage: 65 },
-        { classification: "Dinárico", count: 8, percentage: 35 }
+        { classification: "Mediterranean", count: 15, percentage: 65 },
+        { classification: "Dinaric", count: 8, percentage: 35 }
       ],
       hasUserVoted: false,
       comments: [
         {
           id: "c1",
           user: { name: "Carlos", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" },
-          content: "Definitivamente traços mediterrâneos!",
+          content: "Definitely Mediterranean features!",
           timestamp: "2h",
           likes: 5,
           isLiked: false
@@ -65,13 +160,13 @@ const Index = () => {
       id: "2", 
       name: "Gabriel",
       age: 28,
-      location: "Rio de Janeiro, RJ",
+      location: "Rio de Janeiro, Brazil",
       imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Atlântida", "Nórdico"],
+      phenotypes: ["Atlantid", "Nordic"],
       likes: 32,
       votes: [
-        { classification: "Atlântida", count: 12, percentage: 75 },
-        { classification: "Nórdico", count: 4, percentage: 25 }
+        { classification: "Atlantid", count: 12, percentage: 75 },
+        { classification: "Nordic", count: 4, percentage: 25 }
       ],
       hasUserVoted: false,
       comments: []
@@ -80,12 +175,12 @@ const Index = () => {
       id: "3",
       name: "Ana",
       age: 22,
-      location: "Belo Horizonte, MG", 
+      location: "Belo Horizonte, Brazil", 
       imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Alpino"],
+      phenotypes: ["Alpine"],
       likes: 28,
       votes: [
-        { classification: "Alpino", count: 10, percentage: 100 }
+        { classification: "Alpine", count: 10, percentage: 100 }
       ],
       hasUserVoted: false,
       comments: []
@@ -94,14 +189,14 @@ const Index = () => {
       id: "4",
       name: "Amara",
       age: 26,
-      location: "Lagos, Nigéria",
+      location: "Lagos, Nigeria",
       imageUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Africano Subsaariano"],
+      phenotypes: ["Sub-Saharan African"],
       likes: 73,
       votes: [
-        { classification: "Africano Subsaariano", count: 67, percentage: 78.8 },
-        { classification: "Nigeriano", count: 12, percentage: 14.1 },
-        { classification: "Banto", count: 6, percentage: 7.1 }
+        { classification: "Sub-Saharan African", count: 67, percentage: 78.8 },
+        { classification: "Nigerian", count: 12, percentage: 14.1 },
+        { classification: "Bantu", count: 6, percentage: 7.1 }
       ],
       hasUserVoted: false,
       comments: []
@@ -110,14 +205,14 @@ const Index = () => {
       id: "5",
       name: "Rajesh",
       age: 31,
-      location: "Mumbai, Índia",
+      location: "Mumbai, India",
       imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Dravídico"],
+      phenotypes: ["Dravidian"],
       likes: 29,
       votes: [
-        { classification: "Dravídico", count: 34, percentage: 56.7 },
-        { classification: "Indo-Ariano", count: 18, percentage: 30.0 },
-        { classification: "Indiano", count: 8, percentage: 13.3 }
+        { classification: "Dravidian", count: 34, percentage: 56.7 },
+        { classification: "Indo-Aryan", count: 18, percentage: 30.0 },
+        { classification: "Indian", count: 8, percentage: 13.3 }
       ],
       hasUserVoted: false,
       comments: []
@@ -126,14 +221,14 @@ const Index = () => {
       id: "6",
       name: "Isabella",
       age: 25,
-      location: "Barcelona, Espanha",
+      location: "Barcelona, Spain",
       imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Ibérico"],
+      phenotypes: ["Iberian"],
       likes: 51,
       votes: [
-        { classification: "Ibérico", count: 41, percentage: 60.3 },
-        { classification: "Mediterrâneo", count: 19, percentage: 27.9 },
-        { classification: "Catalão", count: 8, percentage: 11.8 }
+        { classification: "Iberian", count: 41, percentage: 60.3 },
+        { classification: "Mediterranean", count: 19, percentage: 27.9 },
+        { classification: "Catalan", count: 8, percentage: 11.8 }
       ],
       hasUserVoted: false,
       comments: []
@@ -292,98 +387,102 @@ const Index = () => {
           {/* Sidebar */}
           <AppSidebar />
 
-          {/* Conteúdo principal */}
+          {/* Main Content */}
           <div className="flex-1">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-phindex-dark mb-2">MOST VIEWED PROFILES</h2>
-              <p className="text-muted-foreground">Discover and vote on the most popular phenotypes</p>
+            {/* Popular Celebrities Section */}
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                  Show all
+                </Button>
+              </div>
+              
+              <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
+                {celebrityProfiles.map((profile) => (
+                  <div 
+                    key={profile.id}
+                    className="flex-shrink-0 cursor-pointer group"
+                    onClick={() => navigate(`/profile/${profile.id}`)}
+                  >
+                    <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
+                      <div className="relative mb-4">
+                        <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
+                          <img 
+                            src={profile.imageUrl} 
+                            alt={profile.name}
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        </div>
+                        <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
+                          {profile.likes}
+                        </div>
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
+                      <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Barra de filtros horizontal (estilo Spotify) */}
-            {selectedRegion && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="text-lg font-semibold text-phindex-dark">{selectedRegion}</h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="h-6 w-6 p-0"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    variant={!selectedPhenotype ? "default" : "outline"}
-                    size="sm"
-                    className="rounded-full"
-                    onClick={() => setSelectedPhenotype(null)}
-                  >
-                    All
-                  </Button>
-                  {regionPhenotypes[selectedRegion]?.map((phenotype) => (
-                    <Button
-                      key={phenotype}
-                      variant={selectedPhenotype === phenotype ? "default" : "outline"}
-                      size="sm"
-                      className="rounded-full"
-                      onClick={() => handlePhenotypeClick(phenotype)}
-                    >
-                      {phenotype}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="flex flex-col lg:flex-row gap-8">
-              {/* Grid de perfis */}
-              <div className="flex-1">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                  {filteredProfiles.map((profile) => (
-                    <div 
-                      key={profile.id}
-                      className="cursor-pointer transition-transform hover:scale-105"
-                      onClick={() => navigate(`/profile/${profile.id}`)}
-                    >
-                      <ProfileCard
-                        id={profile.id}
-                        name={profile.name}
-                        age={profile.age}
-                        location={profile.location}
-                        imageUrl={profile.imageUrl}
-                        phenotypes={profile.phenotypes}
-                        likes={profile.likes}
-                        comments={profile.comments.length}
-                        votes={profile.votes}
-                        hasUserVoted={profile.hasUserVoted}
-                        onLike={(id) => {
-                          handleLike(id);
-                        }}
-                        onComment={(id) => {
-                          handleComment(id);
-                        }}
-                        onVote={handleClassify}
-                      />
-                    </div>
-                  ))}
-                </div>
+            {/* Regular User Profiles Section */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                  Show all
+                </Button>
               </div>
 
-              {/* Sidebar com comentários */}
-              {selectedProfile && selectedProfileData && (
-                <div className="lg:w-96">
-                  <div className="sticky top-24">
-                    <CommentsSection
-                      profileId={selectedProfile}
-                      comments={selectedProfileData.comments}
-                      onAddComment={handleAddComment}
-                      onLikeComment={handleLikeComment}
-                    />
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* Grid de perfis */}
+                <div className="flex-1">
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    {profiles.map((profile) => (
+                      <div 
+                        key={profile.id}
+                        className="cursor-pointer transition-transform hover:scale-105"
+                        onClick={() => navigate(`/profile/${profile.id}`)}
+                      >
+                        <ProfileCard
+                          id={profile.id}
+                          name={profile.name}
+                          age={profile.age}
+                          location={profile.location}
+                          imageUrl={profile.imageUrl}
+                          phenotypes={profile.phenotypes}
+                          likes={profile.likes}
+                          comments={profile.comments.length}
+                          votes={profile.votes}
+                          hasUserVoted={profile.hasUserVoted}
+                          onLike={(id) => {
+                            handleLike(id);
+                          }}
+                          onComment={(id) => {
+                            handleComment(id);
+                          }}
+                          onVote={handleClassify}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
-              )}
+
+                {/* Sidebar com comentários */}
+                {selectedProfile && selectedProfileData && (
+                  <div className="lg:w-96">
+                    <div className="sticky top-24">
+                      <CommentsSection
+                        profileId={selectedProfile}
+                        comments={selectedProfileData.comments}
+                        onAddComment={handleAddComment}
+                        onLikeComment={handleLikeComment}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
