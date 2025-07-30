@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Sparkles, TrendingUp, Users, X, ChevronLeft, ChevronRight, Vote } from "lucide-react";
+import { useState } from "react";
+import { Vote } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -9,6 +9,7 @@ import { CommentsSection } from "@/components/CommentsSection";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-diversity.jpg";
@@ -36,11 +37,6 @@ interface Profile {
 const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const topUserScrollRef = useRef<HTMLDivElement>(null);
-  const [showCelebNavButtons, setShowCelebNavButtons] = useState(false);
-  const [showTopUserNavButtons, setShowTopUserNavButtons] = useState(false);
-  const [regionalNavButtons, setRegionalNavButtons] = useState<Record<string, boolean>>({});
   
   // Celebrity profiles (most famous/accessed)
   const [celebrityProfiles] = useState<Profile[]>([
@@ -381,46 +377,6 @@ const Index = () => {
     setSelectedPhenotype(null);
   };
 
-  // Navigation functions for celebrity carousel
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 320, behavior: 'smooth' });
-    }
-  };
-
-  // Navigation functions for top user profiles
-  const scrollTopUserLeft = () => {
-    if (topUserScrollRef.current) {
-      topUserScrollRef.current.scrollBy({ left: -320, behavior: 'smooth' });
-    }
-  };
-
-  const scrollTopUserRight = () => {
-    if (topUserScrollRef.current) {
-      topUserScrollRef.current.scrollBy({ left: 320, behavior: 'smooth' });
-    }
-  };
-
-  // Navigation functions for regional profiles
-  const scrollRegionalLeft = (region: string) => {
-    const container = document.getElementById(`regional-${region}`);
-    if (container) {
-      container.scrollBy({ left: -320, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRegionalRight = (region: string) => {
-    const container = document.getElementById(`regional-${region}`);
-    if (container) {
-      container.scrollBy({ left: 320, behavior: 'smooth' });
-    }
-  };
 
   // Mock data for regional profiles (6 rows)
   const regionalProfiles = {
@@ -445,73 +401,46 @@ const Index = () => {
 
           {/* Main Content */}
           <div className="flex-1">
-            {/* Popular Celebrities Section with Navigation Arrows */}
+            {/* Popular Celebrities Section */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
               </div>
               
-              <div 
-                className="relative group"
-                onMouseEnter={() => setShowCelebNavButtons(true)}
-                onMouseLeave={() => setShowCelebNavButtons(false)}
-              >
-                {/* Left Arrow */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
-                    showCelebNavButtons ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onClick={scrollLeft}
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-
-                {/* Right Arrow */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
-                    showCelebNavButtons ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onClick={scrollRight}
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-
-                {/* Scrollable Container */}
-                <div 
-                  ref={scrollContainerRef}
-                  className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
-                >
-                  {celebrityProfiles.slice(0, 10).map((profile, index) => (index < 5 || showCelebNavButtons) && (
-                    <div 
-                      key={profile.id}
-                      className="flex-shrink-0 cursor-pointer group/item"
-                      onClick={() => navigate(`/profile/${profile.id}`)}
-                    >
-                      <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
-                        <div className="relative mb-4">
-                          <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
-                            <img 
-                              src={profile.imageUrl} 
-                              alt={profile.name}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          </div>
-                          <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                            <Vote className="h-3 w-3" />
-                            {profile.votes.reduce((total, vote) => total + vote.count, 0)}
+              <Carousel className="w-full">
+                <div className="relative group">
+                  <CarouselContent className="ml-0">
+                    {celebrityProfiles.map((profile, index) => (
+                      <CarouselItem key={profile.id} className="pl-6 basis-1/5">
+                        <div 
+                          className="flex-shrink-0 cursor-pointer group/item"
+                          onClick={() => navigate(`/profile/${profile.id}`)}
+                        >
+                          <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
+                            <div className="relative mb-4">
+                              <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
+                                <img 
+                                  src={profile.imageUrl} 
+                                  alt={profile.name}
+                                  className="w-full h-full rounded-full object-cover"
+                                />
+                              </div>
+                              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                                <Vote className="h-3 w-3" />
+                                {profile.votes.reduce((total, vote) => total + vote.count, 0)}
+                              </div>
+                            </div>
+                            <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
+                            <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0]}</p>
                           </div>
                         </div>
-                        <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
-                        <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0]}</p>
-                      </div>
-                    </div>
-                  ))}
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
+                  <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
                 </div>
-              </div>
+              </Carousel>
             </div>
 
             {/* Top User Profiles Section */}
@@ -520,66 +449,40 @@ const Index = () => {
                 <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
               </div>
 
-              <div 
-                className="relative group"
-                onMouseEnter={() => setShowTopUserNavButtons(true)}
-                onMouseLeave={() => setShowTopUserNavButtons(false)}
-              >
-                {/* Left Arrow */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
-                    showTopUserNavButtons ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onClick={scrollTopUserLeft}
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-
-                {/* Right Arrow */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
-                    showTopUserNavButtons ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onClick={scrollTopUserRight}
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-
-                <div 
-                  ref={topUserScrollRef}
-                  className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
-                >
-                  {profiles.slice(0, 10).map((profile, index) => (index < 5 || showTopUserNavButtons) && (
-                    <div 
-                      key={profile.id}
-                      className="flex-shrink-0 cursor-pointer group/item"
-                      onClick={() => navigate(`/profile/${profile.id}`)}
-                    >
-                      <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
-                        <div className="relative mb-4">
-                          <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
-                            <img 
-                              src={profile.imageUrl} 
-                              alt={profile.name}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          </div>
-                          <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                            <Vote className="h-3 w-3" />
-                            {profile.votes.reduce((total, vote) => total + vote.count, 0)}
+              <Carousel className="w-full">
+                <div className="relative group">
+                  <CarouselContent className="ml-0">
+                    {profiles.slice(0, 10).map((profile, index) => (
+                      <CarouselItem key={profile.id} className="pl-6 basis-1/5">
+                        <div 
+                          className="flex-shrink-0 cursor-pointer group/item"
+                          onClick={() => navigate(`/profile/${profile.id}`)}
+                        >
+                          <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
+                            <div className="relative mb-4">
+                              <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
+                                <img 
+                                  src={profile.imageUrl} 
+                                  alt={profile.name}
+                                  className="w-full h-full rounded-full object-cover"
+                                />
+                              </div>
+                              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                                <Vote className="h-3 w-3" />
+                                {profile.votes.reduce((total, vote) => total + vote.count, 0)}
+                              </div>
+                            </div>
+                            <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
+                            <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
                           </div>
                         </div>
-                        <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
-                        <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
-                      </div>
-                    </div>
-                  ))}
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
+                  <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
                 </div>
-              </div>
+              </Carousel>
             </div>
 
             {/* Recent Profiles Section - 6 Regional Rows */}
@@ -596,69 +499,43 @@ const Index = () => {
                       <h3 className="text-xl font-semibold text-foreground">{region}</h3>
                     </div>
                     
-                    <div 
-                      className="relative group"
-                      onMouseEnter={() => setRegionalNavButtons(prev => ({ ...prev, [region]: true }))}
-                      onMouseLeave={() => setRegionalNavButtons(prev => ({ ...prev, [region]: false }))}
-                    >
-                      {/* Left Arrow */}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
-                          regionalNavButtons[region] ? 'opacity-100' : 'opacity-0'
-                        }`}
-                        onClick={() => scrollRegionalLeft(region)}
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </Button>
-
-                      {/* Right Arrow */}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm shadow-lg transition-opacity duration-200 ${
-                          regionalNavButtons[region] ? 'opacity-100' : 'opacity-0'
-                        }`}
-                        onClick={() => scrollRegionalRight(region)}
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-
-                      <div 
-                        id={`regional-${region}`}
-                        className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide scroll-smooth"
-                      >
-                        {Array.from({ length: 10 }, (_, i) => regionProfiles[i % regionProfiles.length] || profiles[i % profiles.length]).map((profile, index) => (index < 5 || regionalNavButtons[region]) && (
-                          <div 
-                            key={`${profile.id}-${index}`}
-                            className="flex-shrink-0 cursor-pointer group hover:scale-105 transition-transform"
-                            onClick={() => navigate(`/profile/${profile.id}`)}
-                          >
-                            <Card className="w-40 h-48 overflow-hidden bg-card hover:bg-accent/50 transition-colors">
-                              <div className="relative h-28 overflow-hidden">
-                                <img 
-                                  src={profile.imageUrl} 
-                                  alt={profile.name}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                              <div className="p-3">
-                                <h4 className="font-medium text-sm text-foreground truncate">{profile.name}</h4>
-                                <p className="text-xs text-muted-foreground truncate">{profile.phenotypes[0] || 'Unknown'}</p>
-                                <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                                  <span>{profile.likes} likes</span>
-                                  <div className="flex items-center gap-1">
-                                    <Vote className="h-3 w-3" />
-                                    <span>{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
+                    <Carousel className="w-full">
+                      <div className="relative group">
+                        <CarouselContent className="ml-0">
+                          {Array.from({ length: 10 }, (_, i) => regionProfiles[i % regionProfiles.length] || profiles[i % profiles.length]).map((profile, index) => (
+                            <CarouselItem key={`${profile.id}-${index}`} className="pl-4 basis-1/5">
+                              <div 
+                                className="cursor-pointer group hover:scale-105 transition-transform"
+                                onClick={() => navigate(`/profile/${profile.id}`)}
+                              >
+                                <Card className="w-40 h-48 overflow-hidden bg-card hover:bg-accent/50 transition-colors">
+                                  <div className="relative h-28 overflow-hidden">
+                                    <img 
+                                      src={profile.imageUrl} 
+                                      alt={profile.name}
+                                      className="w-full h-full object-cover"
+                                    />
                                   </div>
-                                </div>
+                                  <div className="p-3">
+                                    <h4 className="font-medium text-sm text-foreground truncate">{profile.name}</h4>
+                                    <p className="text-xs text-muted-foreground truncate">{profile.phenotypes[0] || 'Unknown'}</p>
+                                    <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                                      <span>{profile.likes} likes</span>
+                                      <div className="flex items-center gap-1">
+                                        <Vote className="h-3 w-3" />
+                                        <span>{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </Card>
                               </div>
-                            </Card>
-                          </div>
-                        ))}
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
+                        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
                       </div>
-                    </div>
+                    </Carousel>
                   </div>
                 ))}
               </div>
