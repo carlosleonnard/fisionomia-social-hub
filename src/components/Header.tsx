@@ -40,7 +40,7 @@ export const Header = () => {
         <div className="flex items-center gap-3">
           <Button variant="default" className="bg-phindex-teal hover:bg-phindex-teal/90">
             <Plus className="mr-2 h-4 w-4" />
-            Adicionar Perfil
+            Classify Now!
           </Button>
           <Button variant="outline" size="icon">
             <HelpCircle className="h-4 w-4" />
