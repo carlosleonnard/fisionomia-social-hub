@@ -418,9 +418,6 @@ const Index = () => {
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-                  Show all
-                </Button>
               </div>
               
               <div 
@@ -485,13 +482,44 @@ const Index = () => {
               </div>
             </div>
 
+            {/* Top User Profiles Section */}
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
+              </div>
+
+              <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
+                {profiles.slice(0, 10).map((profile) => (
+                  <div 
+                    key={profile.id}
+                    className="flex-shrink-0 cursor-pointer group/item"
+                    onClick={() => navigate(`/profile/${profile.id}`)}
+                  >
+                    <div className="flex flex-col items-center p-4 rounded-lg hover:bg-accent/50 transition-colors">
+                      <div className="relative mb-4">
+                        <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1">
+                          <img 
+                            src={profile.imageUrl} 
+                            alt={profile.name}
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        </div>
+                        <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
+                          {profile.likes}
+                        </div>
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
+                      <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Recent Profiles Section - 6 Regional Rows */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-                  Show all
-                </Button>
               </div>
 
               {/* Regional Profile Rows */}
@@ -500,15 +528,12 @@ const Index = () => {
                   <div key={region} className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-semibold text-foreground">{region}</h3>
-                      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                        Show all
-                      </Button>
                     </div>
                     
                     <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                      {regionProfiles.slice(0, 6).map((profile) => (
+                      {Array.from({ length: 10 }, (_, i) => regionProfiles[i % regionProfiles.length] || profiles[i % profiles.length]).map((profile, index) => (
                         <div 
-                          key={profile.id}
+                          key={`${profile.id}-${index}`}
                           className="flex-shrink-0 cursor-pointer group hover:scale-105 transition-transform"
                           onClick={() => navigate(`/profile/${profile.id}`)}
                         >
@@ -531,50 +556,6 @@ const Index = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Top 10 Most Accessed User Profiles */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-                  Show all
-                </Button>
-              </div>
-
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                {profiles.slice(0, 10).map((profile) => (
-                  <div 
-                    key={profile.id}
-                    className="flex-shrink-0 cursor-pointer group"
-                    onClick={() => navigate(`/profile/${profile.id}`)}
-                  >
-                    <Card className="w-40 h-56 overflow-hidden bg-card hover:bg-accent/50 transition-colors">
-                      <div className="relative h-32 overflow-hidden">
-                        <img 
-                          src={profile.imageUrl} 
-                          alt={profile.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
-                          {profile.likes}
-                        </div>
-                      </div>
-                      <div className="p-3">
-                        <h3 className="font-semibold text-foreground mb-1">{profile.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{profile.age} years</p>
-                        <div className="flex flex-wrap gap-1">
-                          {profile.phenotypes.slice(0, 2).map((phenotype, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {phenotype}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </Card>
                   </div>
                 ))}
               </div>
