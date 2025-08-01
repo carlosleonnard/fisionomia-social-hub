@@ -38,8 +38,8 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="default" className="bg-phindex-teal hover:bg-phindex-teal/90">
-            <Plus className="mr-2 h-4 w-4" />
+          <Button variant="default" size="sm" className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9">
+            <Plus className="mr-1 h-4 w-4" />
             Classify Now!
           </Button>
           <Button variant="outline" size="icon">

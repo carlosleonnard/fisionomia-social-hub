@@ -37,12 +37,12 @@ export const AppSidebar = () => {
   };
 
   return (
-    <div className="w-72 hidden lg:block">
+    <div className="w-80 hidden lg:block">
       <Card className="bg-card border-border/50 p-6 sticky top-24">
-        <div className="space-y-6">
+        <div className="space-y-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-phindex-dark">REGION</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <h3 className="text-xl font-semibold mb-6 text-phindex-dark">REGION</h3>
+            <div className="grid grid-cols-2 gap-3">
               {[
                 "Africa", "Asia", "Europe", "North America",
                 "South America", "Oceania"
@@ -51,18 +51,24 @@ export const AppSidebar = () => {
                   key={region}
                   variant={isRegionActive(region) ? "default" : "outline"}
                   size="sm"
-                  className="text-xs py-2 px-3 h-auto"
+                  className="text-sm py-3 px-4 h-auto whitespace-nowrap overflow-hidden text-ellipsis"
                   onClick={() => handleRegionClick(region)}
+                  title={region}
                 >
-                  {region}
+                  <span className="hidden xl:inline">{region}</span>
+                  <span className="xl:hidden">
+                    {region === "North America" ? "N.A" : 
+                     region === "South America" ? "S.A" : 
+                     region}
+                  </span>
                 </Button>
               ))}
             </div>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-phindex-dark">CATEGORIES</h3>
-            <div className="space-y-3">
+            <h3 className="text-xl font-semibold mb-6 text-phindex-dark">CATEGORIES</h3>
+            <div className="space-y-4">
               {[
                 { icon: "🎭", name: "Pop Culture" },
                 { icon: "🎵", name: "Music and Entertainment" },
@@ -75,10 +81,10 @@ export const AppSidebar = () => {
               ].map((category) => (
                 <button
                   key={category.name}
-                  className="flex items-center gap-3 w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                  className="flex items-center gap-4 w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors"
                 >
-                  <span className="text-lg" style={{ color: 'hsl(var(--category-primary))' }}>{category.icon}</span>
-                  <span className="text-sm">{category.name}</span>
+                  <span className="text-xl" style={{ color: 'hsl(var(--category-primary))' }}>{category.icon}</span>
+                  <span className="text-base">{category.name}</span>
                 </button>
               ))}
             </div>
