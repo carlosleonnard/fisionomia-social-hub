@@ -509,7 +509,7 @@ const Index = () => {
                             >
                               <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
-                                  <div className="w-30 h-30 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                  <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
                                     <img 
                                       src={profile.imageUrl} 
                                       alt={profile.name}
@@ -553,7 +553,7 @@ const Index = () => {
                           >
                             <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                               <div className="relative mb-1">
-                                <div className="w-30 h-30 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
                                     <img 
                                       src={profile.imageUrl} 
                                       alt={profile.name}
@@ -597,7 +597,7 @@ const Index = () => {
                             >
                               <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
-                                  <div className="w-30 h-30 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                  <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
                                   <img 
                                     src={profile.imageUrl} 
                                     alt={profile.name}
