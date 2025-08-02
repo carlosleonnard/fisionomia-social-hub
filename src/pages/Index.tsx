@@ -410,33 +410,33 @@ const Index = () => {
                     <Carousel className="w-full" opts={{ align: "start", loop: false }}>
                       <div className="relative group">
                         <CarouselContent className="ml-0">
-                           {celebrityProfiles.map((profile, index) => (
-                       <CarouselItem key={profile.id} className="pl-2 basis-1/6">
-                         <div className="flex-shrink-0 group/item">
-                           <div 
-                             className="cursor-pointer"
-                             onClick={() => navigate(`/profile/${profile.id}`)}
-                           >
-                             <div className="flex flex-col items-center p-2 rounded-lg hover:bg-accent/50 transition-colors">
-                               <div className="relative mb-3">
-                                 <div className="w-28 h-28 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
-                                   <img 
-                                     src={profile.imageUrl} 
-                                     alt={profile.name}
-                                     className="w-full h-full rounded-full object-cover"
-                                   />
-                                 </div>
-                              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                                <Vote className="h-3 w-3" />
-                                {profile.votes.reduce((total, vote) => total + vote.count, 0)}
-                              </div>
+                       {celebrityProfiles.map((profile, index) => (
+                        <CarouselItem key={profile.id} className="pl-1 basis-1/8">
+                          <div className="flex-shrink-0 group/item">
+                            <div 
+                              className="cursor-pointer"
+                              onClick={() => navigate(`/profile/${profile.id}`)}
+                            >
+                              <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                                <div className="relative mb-1">
+                                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                    <img 
+                                      src={profile.imageUrl} 
+                                      alt={profile.name}
+                                      className="w-full h-full rounded-full object-cover"
+                                    />
+                                  </div>
+                               <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                 <Vote className="h-2.5 w-2.5" />
+                                 <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
                                </div>
-                               <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
-                               <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0]}</p>
-                             </div>
-                           </div>
-                         </div>
-                      </CarouselItem>
+                                </div>
+                                <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
+                                <p className="text-xs text-muted-foreground text-center">{profile.phenotypes[0]}</p>
+                              </div>
+                            </div>
+                          </div>
+                       </CarouselItem>
                     ))}
                   </CarouselContent>
                   <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
@@ -455,32 +455,32 @@ const Index = () => {
                   <div className="relative group">
                     <CarouselContent className="ml-0">
                        {profiles.slice(0, 10).map((profile, index) => (
-                       <CarouselItem key={profile.id} className="pl-2 basis-1/6">
-                         <div className="flex-shrink-0 group/item">
-                           <div 
-                             className="cursor-pointer"
-                             onClick={() => navigate(`/profile/${profile.id}`)}
-                           >
-                             <div className="flex flex-col items-center p-2 rounded-lg hover:bg-accent/50 transition-colors">
-                               <div className="relative mb-3">
-                                 <div className="w-28 h-28 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
-                                   <img 
-                                     src={profile.imageUrl} 
-                                     alt={profile.name}
-                                     className="w-full h-full rounded-full object-cover"
-                                   />
-                                 </div>
-                              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                                <Vote className="h-3 w-3" />
-                                {profile.votes.reduce((total, vote) => total + vote.count, 0)}
-                              </div>
+                        <CarouselItem key={profile.id} className="pl-1 basis-1/8">
+                          <div className="flex-shrink-0 group/item">
+                            <div 
+                              className="cursor-pointer"
+                              onClick={() => navigate(`/profile/${profile.id}`)}
+                            >
+                              <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                                <div className="relative mb-1">
+                                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                    <img 
+                                      src={profile.imageUrl} 
+                                      alt={profile.name}
+                                      className="w-full h-full rounded-full object-cover"
+                                    />
+                                  </div>
+                               <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                 <Vote className="h-2.5 w-2.5" />
+                                 <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
                                </div>
-                               <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
-                               <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
-                             </div>
-                           </div>
-                         </div>
-                      </CarouselItem>
+                                </div>
+                                <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
+                                <p className="text-xs text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
+                              </div>
+                            </div>
+                          </div>
+                       </CarouselItem>
                     ))}
                   </CarouselContent>
                   <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
@@ -507,32 +507,32 @@ const Index = () => {
                       <div className="relative group">
                         <CarouselContent className="ml-0">
                            {Array.from({ length: 15 }, (_, i) => regionProfiles[i % regionProfiles.length] || profiles[i % profiles.length]).map((profile, index) => (
-                             <CarouselItem key={`${profile.id}-${index}`} className="pl-2 basis-1/5">
-                               <div className="flex-shrink-0 group/item">
-                                 <div 
-                                   className="cursor-pointer"
-                                   onClick={() => navigate(`/profile/${profile.id}`)}
-                                 >
-                                   <div className="flex flex-col items-center p-2 rounded-lg hover:bg-accent/50 transition-colors">
-                                     <div className="relative mb-3">
-                                       <div className="w-28 h-28 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
-                                         <img 
-                                           src={profile.imageUrl} 
-                                           alt={profile.name}
-                                           className="w-full h-full rounded-full object-cover"
-                                         />
-                                       </div>
-                                       <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                                         <Vote className="h-3 w-3" />
-                                         {profile.votes.reduce((total, vote) => total + vote.count, 0)}
-                                       </div>
-                                     </div>
-                                     <h3 className="font-semibold text-foreground mb-1 text-center">{profile.name}</h3>
-                                     <p className="text-sm text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
-                                   </div>
-                                 </div>
-                               </div>
-                            </CarouselItem>
+                              <CarouselItem key={`${profile.id}-${index}`} className="pl-1 basis-1/8">
+                                <div className="flex-shrink-0 group/item">
+                                  <div 
+                                    className="cursor-pointer"
+                                    onClick={() => navigate(`/profile/${profile.id}`)}
+                                  >
+                                    <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                                      <div className="relative mb-1">
+                                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                          <img 
+                                            src={profile.imageUrl} 
+                                            alt={profile.name}
+                                            className="w-full h-full rounded-full object-cover"
+                                          />
+                                        </div>
+                                        <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                          <Vote className="h-2.5 w-2.5" />
+                                          <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
+                                        </div>
+                                      </div>
+                                      <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
+                                      <p className="text-xs text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                             </CarouselItem>
                           ))}
                         </CarouselContent>
                         <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
