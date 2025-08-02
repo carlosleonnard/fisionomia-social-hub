@@ -501,7 +501,7 @@ const Index = () => {
                       <div className="relative group">
                         <CarouselContent className="ml-0">
                        {celebrityProfiles.map((profile, index) => (
-                        <CarouselItem key={profile.id} className="pl-1 basis-1/8">
+                        <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                           <div className="flex-shrink-0 group/item">
                             <div 
                               className="cursor-pointer"
@@ -545,7 +545,7 @@ const Index = () => {
                 <div className="relative group">
                   <CarouselContent className="ml-0">
                      {profiles.slice(0, 10).map((profile, index) => (
-                      <CarouselItem key={profile.id} className="pl-1 basis-1/8">
+                      <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                         <div className="flex-shrink-0 group/item">
                           <div 
                             className="cursor-pointer"
@@ -589,7 +589,7 @@ const Index = () => {
                   <div className="relative group">
                     <CarouselContent className="ml-0">
                        {profiles.slice(0, 20).map((profile, index) => (
-                        <CarouselItem key={profile.id} className="pl-1 basis-1/8">
+                        <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                           <div className="flex-shrink-0 group/item">
                             <div 
                               className="cursor-pointer"
