@@ -53,14 +53,14 @@ export const Footer = () => {
         {/* Social Media Icons */}
         <div className="flex justify-end mb-8">
           <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 bg-muted rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-              <Instagram className="w-5 h-5 text-white" />
+            <a href="#" className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+              <Instagram className="w-5 h-5" style={{ color: '#007a75' }} />
             </a>
-            <a href="#" className="w-10 h-10 bg-muted rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-              <Twitter className="w-5 h-5 text-white" />
+            <a href="#" className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+              <Twitter className="w-5 h-5" style={{ color: '#007a75' }} />
             </a>
-            <a href="#" className="w-10 h-10 bg-muted rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-              <Facebook className="w-5 h-5 text-white" />
+            <a href="#" className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+              <Facebook className="w-5 h-5" style={{ color: '#007a75' }} />
             </a>
           </div>
         </div>
