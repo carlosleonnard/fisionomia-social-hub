@@ -501,15 +501,15 @@ const Index = () => {
                       <div className="relative group">
                         <CarouselContent className="ml-0">
                        {celebrityProfiles.map((profile, index) => (
-                        <CarouselItem key={profile.id} className="pl-1 basis-1/6">
+                        <CarouselItem key={profile.id} className="pl-0.5 basis-1/8">
                           <div className="flex-shrink-0 group/item">
                             <div 
                               className="cursor-pointer"
                               onClick={() => navigate(`/profile/${profile.id}`)}
                             >
-                              <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                              <div className="flex flex-col items-center p-0.5 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
-                                  <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-0.5 cursor-pointer">
                                     <img 
                                       src={profile.imageUrl} 
                                       alt={profile.name}
@@ -545,15 +545,15 @@ const Index = () => {
                 <div className="relative group">
                   <CarouselContent className="ml-0">
                      {profiles.slice(0, 10).map((profile, index) => (
-                      <CarouselItem key={profile.id} className="pl-1 basis-1/5">
+                      <CarouselItem key={profile.id} className="pl-0.5 basis-1/8">
                         <div className="flex-shrink-0 group/item">
                           <div 
                             className="cursor-pointer"
                             onClick={() => navigate(`/profile/${profile.id}`)}
                           >
-                            <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                            <div className="flex flex-col items-center p-0.5 rounded-lg hover:bg-accent/50 transition-colors">
                               <div className="relative mb-1">
-                                <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                                <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-0.5 cursor-pointer">
                                     <img 
                                       src={profile.imageUrl} 
                                       alt={profile.name}
@@ -585,19 +585,19 @@ const Index = () => {
                 <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
               </div>
 
-              <Carousel className="w-full" opts={{ align: "start", loop: false }}>
-                <div className="relative group">
-                  <CarouselContent className="ml-0">
-                     {profiles.slice(0, 20).map((profile, index) => (
-                      <CarouselItem key={profile.id} className="pl-1 basis-1/6">
-                        <div className="flex-shrink-0 group/item">
-                          <div 
-                            className="cursor-pointer"
-                            onClick={() => navigate(`/profile/${profile.id}`)}
-                          >
-                            <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
-                              <div className="relative mb-1">
-                                <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
+                <Carousel className="w-full" opts={{ align: "start", loop: false }}>
+                  <div className="relative group">
+                    <CarouselContent className="ml-0">
+                       {profiles.slice(0, 20).map((profile, index) => (
+                        <CarouselItem key={profile.id} className="pl-0.5 basis-1/8">
+                          <div className="flex-shrink-0 group/item">
+                            <div 
+                              className="cursor-pointer"
+                              onClick={() => navigate(`/profile/${profile.id}`)}
+                            >
+                              <div className="flex flex-col items-center p-0.5 rounded-lg hover:bg-accent/50 transition-colors">
+                                <div className="relative mb-1">
+                                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-0.5 cursor-pointer">
                                   <img 
                                     src={profile.imageUrl} 
                                     alt={profile.name}
