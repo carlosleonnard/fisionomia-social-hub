@@ -1,7 +1,6 @@
 import { Search, User, Bell, Plus, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import phindexLogo from "@/assets/phindex-logo.png";
 
 export const Header = () => {
   return (
@@ -10,7 +9,7 @@ export const Header = () => {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
             <img 
-              src={phindexLogo} 
+              src="/lovable-uploads/74754dd6-d16a-49be-a1ae-4762e3110fe0.png" 
               alt="Phindex Logo" 
               className="w-12 h-12 object-contain"
             />
