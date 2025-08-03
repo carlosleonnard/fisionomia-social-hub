@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, MessageSquare, Vote, BarChart } from "lucide-react";
+import { ArrowLeft, Users, MessageSquare, Vote, BarChart, MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -243,9 +243,13 @@ export default function ProfileDetail() {
                       <h1 className="text-2xl font-bold text-phindex-teal mb-2">
                         {profile.name}
                       </h1>
-                      <p className="text-muted-foreground mb-4">
-                        {profile.age} anos • {profile.gender} • {profile.height} • {profile.location}
+                      <p className="text-muted-foreground mb-2">
+                        {profile.age} anos • {profile.gender} • {profile.height}
                       </p>
+                      <div className="flex items-center justify-center gap-1 mb-4">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">{profile.location}</span>
+                      </div>
                       
                       {/* Ancestry Description */}
                       <div className="mb-6 p-4 bg-muted/30 rounded-lg text-left">
