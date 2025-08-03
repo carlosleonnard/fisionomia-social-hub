@@ -312,7 +312,7 @@ export default function ProfileDetail() {
                   <CardHeader>
                     <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
                   </CardHeader>
-                  <CardContent className="h-96 overflow-y-auto">
+                  <CardContent className="h-72 overflow-y-auto">
                     <div className="space-y-6">
                       {/* Primary Phenotype */}
                       <div>
