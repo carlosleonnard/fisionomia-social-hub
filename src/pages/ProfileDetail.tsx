@@ -26,7 +26,6 @@ interface CharacteristicVote {
 
 interface PhysicalCharacteristic {
   name: string;
-  category: "primary" | "secondary" | "tertiary";
   votes: CharacteristicVote[];
 }
 
@@ -84,7 +83,6 @@ const mockProfiles: Profile[] = [
     physicalCharacteristics: [
       {
         name: "Hair Color",
-        category: "primary",
         votes: [
           { option: "Black", count: 45, percentage: 60 },
           { option: "Dark Brown", count: 25, percentage: 33 },
@@ -92,8 +90,15 @@ const mockProfiles: Profile[] = [
         ]
       },
       {
+        name: "Hair Texture",
+        votes: [
+          { option: "Ondulado", count: 50, percentage: 67 },
+          { option: "Liso", count: 20, percentage: 27 },
+          { option: "Cacheado", count: 5, percentage: 6 }
+        ]
+      },
+      {
         name: "Eye Color",
-        category: "primary",
         votes: [
           { option: "Brown", count: 50, percentage: 67 },
           { option: "Hazel", count: 20, percentage: 27 },
@@ -102,7 +107,6 @@ const mockProfiles: Profile[] = [
       },
       {
         name: "Skin Tone",
-        category: "primary",
         votes: [
           { option: "Light Brown", count: 40, percentage: 53 },
           { option: "Medium Brown", count: 25, percentage: 34 },
@@ -110,26 +114,7 @@ const mockProfiles: Profile[] = [
         ]
       },
       {
-        name: "Hair Texture",
-        category: "secondary",
-        votes: [
-          { option: "Ondulado", count: 50, percentage: 67 },
-          { option: "Liso", count: 20, percentage: 27 },
-          { option: "Cacheado", count: 5, percentage: 6 }
-        ]
-      },
-      {
-        name: "Face Shape",
-        category: "secondary",
-        votes: [
-          { option: "Oval", count: 35, percentage: 47 },
-          { option: "Round", count: 20, percentage: 27 },
-          { option: "Square", count: 20, percentage: 26 }
-        ]
-      },
-      {
         name: "Nasal Breadth",
-        category: "secondary",
         votes: [
           { option: "Médio", count: 45, percentage: 60 },
           { option: "Estreito", count: 20, percentage: 27 },
@@ -138,7 +123,6 @@ const mockProfiles: Profile[] = [
       },
       {
         name: "Facial Breadth",
-        category: "secondary",
         votes: [
           { option: "Médio", count: 40, percentage: 53 },
           { option: "Largo", count: 25, percentage: 34 },
@@ -147,7 +131,6 @@ const mockProfiles: Profile[] = [
       },
       {
         name: "Body Type",
-        category: "tertiary",
         votes: [
           { option: "Mesomorfo", count: 45, percentage: 60 },
           { option: "Ectomorfo", count: 20, percentage: 27 },
@@ -156,7 +139,6 @@ const mockProfiles: Profile[] = [
       },
       {
         name: "Jaw Type",
-        category: "tertiary",
         votes: [
           { option: "Angular", count: 40, percentage: 53 },
           { option: "Quadrado", count: 25, percentage: 34 },
@@ -165,11 +147,18 @@ const mockProfiles: Profile[] = [
       },
       {
         name: "Head Breadth",
-        category: "tertiary",
         votes: [
           { option: "Médio", count: 50, percentage: 67 },
           { option: "Largo", count: 15, percentage: 20 },
           { option: "Estreito", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Face Shape",
+        votes: [
+          { option: "Oval", count: 35, percentage: 47 },
+          { option: "Round", count: 20, percentage: 27 },
+          { option: "Square", count: 20, percentage: 26 }
         ]
       }
     ]
@@ -338,6 +327,7 @@ export default function ProfileDetail() {
 
               </div>
 
+              {/* Right Column - Physical Characteristics with Bar Charts */}
               <div className="space-y-6">
                 <Card className="bg-gradient-card border-phindex-teal/20">
                   <CardHeader>
@@ -347,91 +337,27 @@ export default function ProfileDetail() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {/* Primary Characteristics */}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold text-phindex-teal mb-4">Primário</h3>
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        {profile.physicalCharacteristics
-                          .filter(characteristic => characteristic.category === "primary")
-                          .map((characteristic, index) => (
-                          <div key={index} className="p-4 bg-muted/30 rounded-lg">
-                            <h4 className="font-semibold text-sm text-phindex-teal mb-3">
-                              {characteristic.name}
-                            </h4>
-                            <div className="space-y-2">
-                              {characteristic.votes.map((vote, voteIndex) => (
-                                <div key={voteIndex} className="space-y-1">
-                                  <div className="flex items-center justify-between text-xs">
-                                    <span className="text-foreground">{vote.option}</span>
-                                    <span className="text-muted-foreground">
-                                      {vote.count} votes ({vote.percentage}%)
-                                    </span>
-                                  </div>
-                                  <Progress value={vote.percentage} className="h-1.5" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {profile.physicalCharacteristics.map((characteristic, index) => (
+                        <div key={index} className="p-4 bg-muted/30 rounded-lg">
+                          <h4 className="font-semibold text-sm text-phindex-teal mb-3">
+                            {characteristic.name}
+                          </h4>
+                          <div className="space-y-2">
+                            {characteristic.votes.map((vote, voteIndex) => (
+                              <div key={voteIndex} className="space-y-1">
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="text-foreground">{vote.option}</span>
+                                  <span className="text-muted-foreground">
+                                    {vote.count} votes ({vote.percentage}%)
+                                  </span>
                                 </div>
-                              ))}
-                            </div>
+                                <Progress value={vote.percentage} className="h-1.5" />
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Secondary Characteristics */}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold text-phindex-teal mb-4">Secundário</h3>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        {profile.physicalCharacteristics
-                          .filter(characteristic => characteristic.category === "secondary")
-                          .map((characteristic, index) => (
-                          <div key={index} className="p-4 bg-muted/30 rounded-lg">
-                            <h4 className="font-semibold text-sm text-phindex-teal mb-3">
-                              {characteristic.name}
-                            </h4>
-                            <div className="space-y-2">
-                              {characteristic.votes.map((vote, voteIndex) => (
-                                <div key={voteIndex} className="space-y-1">
-                                  <div className="flex items-center justify-between text-xs">
-                                    <span className="text-foreground">{vote.option}</span>
-                                    <span className="text-muted-foreground">
-                                      {vote.count} votes ({vote.percentage}%)
-                                    </span>
-                                  </div>
-                                  <Progress value={vote.percentage} className="h-1.5" />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Tertiary Characteristics */}
-                    <div>
-                      <h3 className="text-lg font-semibold text-phindex-teal mb-4">Terciário</h3>
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        {profile.physicalCharacteristics
-                          .filter(characteristic => characteristic.category === "tertiary")
-                          .map((characteristic, index) => (
-                          <div key={index} className="p-4 bg-muted/30 rounded-lg">
-                            <h4 className="font-semibold text-sm text-phindex-teal mb-3">
-                              {characteristic.name}
-                            </h4>
-                            <div className="space-y-2">
-                              {characteristic.votes.map((vote, voteIndex) => (
-                                <div key={voteIndex} className="space-y-1">
-                                  <div className="flex items-center justify-between text-xs">
-                                    <span className="text-foreground">{vote.option}</span>
-                                    <span className="text-muted-foreground">
-                                      {vote.count} votes ({vote.percentage}%)
-                                    </span>
-                                  </div>
-                                  <Progress value={vote.percentage} className="h-1.5" />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
