@@ -278,14 +278,14 @@ export default function ProfileDetail() {
                              Login to Vote
                            </Button>
                          )}
-                         <Button 
-                           onClick={() => setShowComments(!showComments)}
-                           className="w-full"
-                           variant="outline"
-                         >
-                           <MessageSquare className="mr-2 h-4 w-4" />
-                           Comments
-                         </Button>
+                          <Button 
+                            onClick={() => setShowComments(!showComments)}
+                            className="w-full"
+                            variant="outline"
+                          >
+                            <MessageSquare className="mr-2 h-4 w-4" />
+                            {showComments ? 'Hide Comments' : 'Show Comments'}
+                          </Button>
                        </div>
                     </div>
                   </CardContent>
@@ -313,17 +313,6 @@ export default function ProfileDetail() {
                   </CardContent>
                 </Card>
 
-                {/* Comments Section - Same width as above cards */}
-                {showComments && (
-                  <div>
-                    <CommentsSection 
-                      profileId={profile.id}
-                      comments={[]}
-                      onAddComment={(comment) => console.log('New comment:', comment)}
-                      onLikeComment={(commentId) => console.log('Liked comment:', commentId)}
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Right Column - Physical Characteristics with Bar Charts */}
@@ -361,6 +350,16 @@ export default function ProfileDetail() {
                   </CardContent>
                 </Card>
               </div>
+            </div>
+            
+            {/* Comments Section - Fixed below the grid */}
+            <div className="mt-8">
+              <CommentsSection 
+                profileId={profile.id}
+                comments={[]}
+                onAddComment={(comment) => console.log('New comment:', comment)}
+                onLikeComment={(commentId) => console.log('Liked comment:', commentId)}
+              />
             </div>
           </div>
         </div>
