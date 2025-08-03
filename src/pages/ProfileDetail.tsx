@@ -34,6 +34,7 @@ interface Profile {
   name: string;
   age: number;
   location: string;
+  description: string;
   frontImage: string;
   sideImage: string;
   phenotype: string;
@@ -58,6 +59,7 @@ const mockProfiles: Profile[] = [
     name: "Sofia Martinez",
     age: 24,
     location: "São Paulo, Brazil",
+    description: "Minha família é de origem espanhola e italiana, com algumas influências indígenas brasileiras. Meus avós paternos vieram da Galícia, Espanha, e meus avós maternos do norte da Itália.",
     frontImage: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
     sideImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     phenotype: "Mediterranean",
@@ -242,6 +244,14 @@ export default function ProfileDetail() {
                       <p className="text-muted-foreground mb-4">
                         {profile.age} years old • {profile.location}
                       </p>
+                      
+                      {/* Ancestry Description */}
+                      <div className="mb-6 p-4 bg-muted/30 rounded-lg text-left">
+                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                        <p className="text-sm text-foreground leading-relaxed">
+                          {profile.description}
+                        </p>
+                      </div>
                       
                       <div className="flex justify-center gap-4 mb-6">
                         <div className="flex items-center gap-2">
