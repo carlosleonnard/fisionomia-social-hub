@@ -33,6 +33,8 @@ interface Profile {
   id: string;
   name: string;
   age: number;
+  gender: string;
+  height: string;
   location: string;
   description: string;
   frontImage: string;
@@ -43,7 +45,6 @@ interface Profile {
   skin: string;
   region: string;
   nasalIndex: string;
-  height: string;
   cephalicIndex: string;
   eyeFolds: string;
   likes: number;
@@ -58,6 +59,8 @@ const mockProfiles: Profile[] = [
     id: "1",
     name: "Sofia Martinez",
     age: 24,
+    gender: "Feminino",
+    height: "1.68m",
     location: "São Paulo, Brazil",
     description: "Minha família é de origem espanhola e italiana, com algumas influências indígenas brasileiras. Meus avós paternos vieram da Galícia, Espanha, e meus avós maternos do norte da Itália.",
     frontImage: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
@@ -68,7 +71,6 @@ const mockProfiles: Profile[] = [
     skin: "Light Brown",
     region: "South America",
     nasalIndex: "Mesorrhine",
-    height: "1.68m",
     cephalicIndex: "Mesocephalic",
     eyeFolds: "Absent",
     likes: 42,
@@ -242,7 +244,7 @@ export default function ProfileDetail() {
                         {profile.name}
                       </h1>
                       <p className="text-muted-foreground mb-4">
-                        {profile.age} years old • {profile.location}
+                        {profile.age} anos • {profile.gender} • {profile.height} • {profile.location}
                       </p>
                       
                       {/* Ancestry Description */}
