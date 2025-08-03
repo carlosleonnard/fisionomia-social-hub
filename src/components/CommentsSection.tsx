@@ -5,6 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -37,6 +44,15 @@ export const CommentsSection = ({
   onLikeComment 
 }: CommentsSectionProps) => {
   const [newComment, setNewComment] = useState("");
+  const [sortBy, setSortBy] = useState<"recent" | "top">("recent");
+
+  const sortedComments = [...comments].sort((a, b) => {
+    if (sortBy === "top") {
+      return b.likes - a.likes;
+    }
+    // Para recent, assumindo que o timestamp é uma string de data
+    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+  });
 
   const handleSubmitComment = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +64,18 @@ export const CommentsSection = ({
 
   return (
     <Card className="bg-gradient-card border-border/50 p-4 space-y-4">
-      <h3 className="font-semibold text-lg">Comentários ({comments.length})</h3>
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold text-lg">Comentários ({comments.length})</h3>
+        <Select value={sortBy} onValueChange={(value: "recent" | "top") => setSortBy(value)}>
+          <SelectTrigger className="w-[140px] bg-muted/50 border-border/50">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="bg-card/95 backdrop-blur border-border/50">
+            <SelectItem value="recent">Recentes</SelectItem>
+            <SelectItem value="top">Mais curtidos</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       
       {/* Formulário para novo comentário */}
       <form onSubmit={handleSubmitComment} className="flex gap-3">
@@ -77,7 +104,7 @@ export const CommentsSection = ({
 
       {/* Lista de comentários */}
       <div className="space-y-3 max-h-96 overflow-y-auto">
-        {comments.map((comment) => (
+        {sortedComments.map((comment) => (
           <div key={comment.id} className="flex gap-3 p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
             <Avatar className="h-8 w-8">
               <AvatarImage src={comment.user.avatar} />

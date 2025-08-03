@@ -368,7 +368,52 @@ export default function ProfileDetail() {
             <div className="mt-8" data-comments-section>
               <CommentsSection 
                 profileId={profile.id}
-                comments={[]}
+                comments={[
+                  {
+                    id: "1",
+                    user: {
+                      name: "Carlos Silva",
+                      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
+                    },
+                    content: "Características muito interessantes! Lembra muito a diversidade encontrada no sul do Brasil.",
+                    timestamp: "2024-01-15T10:30:00Z",
+                    likes: 12,
+                    isLiked: false
+                  },
+                  {
+                    id: "2",
+                    user: {
+                      name: "Ana Rodrigues",
+                      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face"
+                    },
+                    content: "Fenótipo mediterrâneo bem definido. A mistura espanhola e italiana é bem evidente nas características faciais.",
+                    timestamp: "2024-01-15T09:45:00Z",
+                    likes: 24,
+                    isLiked: true
+                  },
+                  {
+                    id: "3",
+                    user: {
+                      name: "Pedro Costa",
+                      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face"
+                    },
+                    content: "Interessante ver como as características indígenas se misturam com as europeias no Brasil.",
+                    timestamp: "2024-01-15T08:20:00Z",
+                    likes: 8,
+                    isLiked: false
+                  },
+                  {
+                    id: "4",
+                    user: {
+                      name: "Maria Santos",
+                      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=32&h=32&fit=crop&crop=face"
+                    },
+                    content: "Muito boa análise antropológica! 👏",
+                    timestamp: "2024-01-15T07:15:00Z",
+                    likes: 5,
+                    isLiked: false
+                  }
+                ]}
                 onAddComment={(comment) => console.log('New comment:', comment)}
                 onLikeComment={(commentId) => console.log('Liked comment:', commentId)}
               />
