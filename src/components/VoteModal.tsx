@@ -33,6 +33,30 @@ const characteristics = [
     options: ["Europa", "Ásia", "África", "América do Norte", "América do Sul", "Oceania"]
   },
   {
+    category: "Nasal Breadth",
+    options: ["Estreito", "Médio", "Largo"]
+  },
+  {
+    category: "Facial Breadth",
+    options: ["Estreito", "Médio", "Largo"]
+  },
+  {
+    category: "Prognatismo",
+    options: ["Ausente", "Leve", "Moderado", "Acentuado"]
+  },
+  {
+    category: "Body Type",
+    options: ["Ectomorfo", "Mesomorfo", "Endomorfo"]
+  },
+  {
+    category: "Jaw Type",
+    options: ["Quadrado", "Arredondado", "Pontiagudo", "Angular"]
+  },
+  {
+    category: "Head Breadth",
+    options: ["Estreito", "Médio", "Largo"]
+  },
+  {
     category: "Nasal Index",
     options: ["Leptorrino", "Mesorrino", "Platirrino"]
   },

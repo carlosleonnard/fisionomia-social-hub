@@ -34,7 +34,8 @@ interface Profile {
   name: string;
   age: number;
   location: string;
-  image: string;
+  frontImage: string;
+  sideImage: string;
   phenotype: string;
   hairColor: string;
   hairTexture: string;
@@ -57,7 +58,8 @@ const mockProfiles: Profile[] = [
     name: "Sofia Martinez",
     age: 24,
     location: "São Paulo, Brazil",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+    frontImage: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+    sideImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     phenotype: "Mediterranean",
     hairColor: "Dark Brown",
     hairTexture: "Wavy",
@@ -84,6 +86,14 @@ const mockProfiles: Profile[] = [
         ]
       },
       {
+        name: "Hair Texture",
+        votes: [
+          { option: "Ondulado", count: 50, percentage: 67 },
+          { option: "Liso", count: 20, percentage: 27 },
+          { option: "Cacheado", count: 5, percentage: 6 }
+        ]
+      },
+      {
         name: "Eye Color",
         votes: [
           { option: "Brown", count: 50, percentage: 67 },
@@ -97,6 +107,54 @@ const mockProfiles: Profile[] = [
           { option: "Light Brown", count: 40, percentage: 53 },
           { option: "Medium Brown", count: 25, percentage: 34 },
           { option: "Olive", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Nasal Breadth",
+        votes: [
+          { option: "Médio", count: 45, percentage: 60 },
+          { option: "Estreito", count: 20, percentage: 27 },
+          { option: "Largo", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Facial Breadth",
+        votes: [
+          { option: "Médio", count: 40, percentage: 53 },
+          { option: "Largo", count: 25, percentage: 34 },
+          { option: "Estreito", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Prognatismo",
+        votes: [
+          { option: "Leve", count: 35, percentage: 47 },
+          { option: "Ausente", count: 30, percentage: 40 },
+          { option: "Moderado", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Body Type",
+        votes: [
+          { option: "Mesomorfo", count: 45, percentage: 60 },
+          { option: "Ectomorfo", count: 20, percentage: 27 },
+          { option: "Endomorfo", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Jaw Type",
+        votes: [
+          { option: "Angular", count: 40, percentage: 53 },
+          { option: "Quadrado", count: 25, percentage: 34 },
+          { option: "Arredondado", count: 10, percentage: 13 }
+        ]
+      },
+      {
+        name: "Head Breadth",
+        votes: [
+          { option: "Médio", count: 50, percentage: 67 },
+          { option: "Largo", count: 15, percentage: 20 },
+          { option: "Estreito", count: 10, percentage: 13 }
         ]
       },
       {
@@ -163,15 +221,29 @@ export default function ProfileDetail() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Column */}
               <div className="space-y-6">
-                {/* Profile Image and Basic Info */}
+                {/* Profile Images and Basic Info */}
                 <Card className="bg-gradient-card border-phindex-teal/20">
                   <CardContent className="p-6">
                     <div className="text-center">
-                      <img 
-                        src={profile.image} 
-                        alt={profile.name}
-                        className="w-full max-w-sm mx-auto rounded-lg mb-4"
-                      />
+                      {/* Duas fotos lado a lado */}
+                      <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="text-center">
+                          <img 
+                            src={profile.frontImage} 
+                            alt={`${profile.name} - frente`}
+                            className="w-full max-w-xs mx-auto rounded-lg"
+                          />
+                          <p className="text-xs text-muted-foreground mt-2">Frente</p>
+                        </div>
+                        <div className="text-center">
+                          <img 
+                            src={profile.sideImage} 
+                            alt={`${profile.name} - lado`}
+                            className="w-full max-w-xs mx-auto rounded-lg"
+                          />
+                          <p className="text-xs text-muted-foreground mt-2">Perfil</p>
+                        </div>
+                      </div>
                       <h1 className="text-2xl font-bold text-phindex-teal mb-2">
                         {profile.name}
                       </h1>
