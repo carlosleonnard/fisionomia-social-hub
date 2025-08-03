@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, MessageSquare, Heart, BarChart } from "lucide-react";
+import { ArrowLeft, Users, MessageSquare, Vote, BarChart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -245,7 +245,7 @@ export default function ProfileDetail() {
                       
                       <div className="flex justify-center gap-4 mb-6">
                         <div className="flex items-center gap-2">
-                          <Heart className="h-4 w-4 text-red-500" />
+                          <Vote className="h-4 w-4 text-red-500" />
                           <span>{profile.likes} votos</span>
                         </div>
                         <div 
