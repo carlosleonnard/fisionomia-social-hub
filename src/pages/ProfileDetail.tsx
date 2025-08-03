@@ -245,7 +245,7 @@ export default function ProfileDetail() {
                       
                       <div className="flex justify-center gap-4 mb-6">
                         <div className="flex items-center gap-2">
-                          <Vote className="h-4 w-4 text-red-500" />
+                          <Vote className="h-4 w-4 text-phindex-teal" />
                           <span>{profile.likes} votos</span>
                         </div>
                         <div 
