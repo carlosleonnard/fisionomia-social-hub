@@ -246,15 +246,19 @@ export default function ProfileDetail() {
                       <div className="flex justify-center gap-4 mb-6">
                         <div className="flex items-center gap-2">
                           <Heart className="h-4 w-4 text-red-500" />
-                          <span>{profile.likes}</span>
+                          <span>{profile.likes} votos</span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div 
+                          className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                          onClick={() => {
+                            const commentsSection = document.querySelector('[data-comments-section]');
+                            if (commentsSection) {
+                              commentsSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }}
+                        >
                           <MessageSquare className="h-4 w-4 text-blue-500" />
                           <span>{profile.comments}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4 text-green-500" />
-                          <span>{profile.votes.reduce((sum, vote) => sum + vote.count, 0)}</span>
                         </div>
                       </div>
 
@@ -353,7 +357,7 @@ export default function ProfileDetail() {
             </div>
             
             {/* Comments Section - Fixed below the grid */}
-            <div className="mt-8">
+            <div className="mt-8" data-comments-section>
               <CommentsSection 
                 profileId={profile.id}
                 comments={[]}
