@@ -378,7 +378,8 @@ export default function ProfileDetail() {
                     content: "Características muito interessantes! Lembra muito a diversidade encontrada no sul do Brasil.",
                     timestamp: "2024-01-15T10:30:00Z",
                     likes: 12,
-                    isLiked: false
+                    isLiked: false,
+                    userVote: "Mediterrâneo"
                   },
                   {
                     id: "2",
@@ -389,7 +390,8 @@ export default function ProfileDetail() {
                     content: "Fenótipo mediterrâneo bem definido. A mistura espanhola e italiana é bem evidente nas características faciais.",
                     timestamp: "2024-01-15T09:45:00Z",
                     likes: 24,
-                    isLiked: true
+                    isLiked: true,
+                    userVote: "Ibérico"
                   },
                   {
                     id: "3",
@@ -400,7 +402,8 @@ export default function ProfileDetail() {
                     content: "Interessante ver como as características indígenas se misturam com as europeias no Brasil.",
                     timestamp: "2024-01-15T08:20:00Z",
                     likes: 8,
-                    isLiked: false
+                    isLiked: false,
+                    userVote: "Ameríndio"
                   },
                   {
                     id: "4",
@@ -411,7 +414,8 @@ export default function ProfileDetail() {
                     content: "Muito boa análise antropológica! 👏",
                     timestamp: "2024-01-15T07:15:00Z",
                     likes: 5,
-                    isLiked: false
+                    isLiked: false,
+                    userVote: "Mediterrâneo"
                   }
                 ]}
                 onAddComment={(comment) => console.log('New comment:', comment)}

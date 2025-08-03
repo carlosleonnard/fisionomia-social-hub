@@ -28,6 +28,7 @@ interface Comment {
   timestamp: string;
   likes: number;
   isLiked: boolean;
+  userVote?: string; // Fenótipo que o usuário votou
 }
 
 interface CommentsSectionProps {
@@ -113,9 +114,19 @@ export const CommentsSection = ({
             
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-sm">{comment.user.name}</span>
-                  <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-sm">{comment.user.name}</span>
+                    <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
+                  </div>
+                  {comment.userVote && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground">Votou em:</span>
+                      <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                        {comment.userVote}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 
                 <DropdownMenu>
