@@ -9,14 +9,10 @@ export const Header = () => {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/74754dd6-d16a-49be-a1ae-4762e3110fe0.png" 
+              src="/lovable-uploads/0bb0f67a-5193-46cf-af4e-dcef06f7d781.png" 
               alt="Phindex Logo" 
-              className="w-12 h-12 object-contain"
+              className="h-12 object-contain"
             />
-            <div>
-              <h1 className="text-2xl font-bold text-phindex-teal">PHINDEX</h1>
-              <p className="text-xs text-muted-foreground -mt-1">Phenotype Database</p>
-            </div>
           </div>
         </div>
 
