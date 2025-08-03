@@ -9,7 +9,7 @@ export const Header = () => {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/0bb0f67a-5193-46cf-af4e-dcef06f7d781.png" 
+              src="/lovable-uploads/5c97c417-8b46-4ee6-8cd0-e926b15fad5e.png" 
               alt="Phindex Logo" 
               className="h-12 object-contain"
             />
