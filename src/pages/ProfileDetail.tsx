@@ -16,6 +16,7 @@ interface Vote {
   classification: string;
   count: number;
   percentage: number;
+  category: 'primary' | 'secondary' | 'tertiary';
 }
 
 interface CharacteristicVote {
@@ -76,9 +77,12 @@ const mockProfiles: Profile[] = [
     likes: 42,
     comments: 18,
     votes: [
-      { classification: "Mediterranean", count: 35, percentage: 58.3 },
-      { classification: "Latino", count: 15, percentage: 25.0 },
-      { classification: "Iberian", count: 10, percentage: 16.7 }
+      { classification: "Mediterranean", count: 35, percentage: 58.3, category: 'primary' },
+      { classification: "Latino", count: 15, percentage: 25.0, category: 'primary' },
+      { classification: "Iberian", count: 10, percentage: 16.7, category: 'secondary' },
+      { classification: "Alpine", count: 8, percentage: 13.3, category: 'secondary' },
+      { classification: "Nordic", count: 5, percentage: 8.3, category: 'tertiary' },
+      { classification: "Dinaric", count: 3, percentage: 5.0, category: 'tertiary' }
     ],
     physicalCharacteristics: [
       {
@@ -309,18 +313,72 @@ export default function ProfileDetail() {
                     <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
-                      {profile.votes.map((vote, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="secondary" className="text-sm">
-                              {vote.classification}
-                            </Badge>
-                            <span className="text-sm font-medium">{vote.percentage}%</span>
-                          </div>
-                          <Progress value={vote.percentage} className="h-2" />
+                    <div className="space-y-6">
+                      {/* Primary Phenotype */}
+                      <div>
+                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Phenotype</h4>
+                        <div className="space-y-3">
+                          {profile.votes
+                            .filter(vote => vote.category === 'primary')
+                            .sort((a, b) => b.percentage - a.percentage)
+                            .slice(0, 2)
+                            .map((vote, index) => (
+                            <div key={index} className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
+                                  {vote.classification}
+                                </Badge>
+                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                              </div>
+                              <Progress value={vote.percentage} className="h-2" />
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+
+                      {/* Secondary Phenotype */}
+                      <div>
+                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Phenotype</h4>
+                        <div className="space-y-3">
+                          {profile.votes
+                            .filter(vote => vote.category === 'secondary')
+                            .sort((a, b) => b.percentage - a.percentage)
+                            .slice(0, 2)
+                            .map((vote, index) => (
+                            <div key={index} className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge variant="outline" className="text-sm">
+                                  {vote.classification}
+                                </Badge>
+                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                              </div>
+                              <Progress value={vote.percentage} className="h-2" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Tertiary Phenotype */}
+                      <div>
+                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Phenotype</h4>
+                        <div className="space-y-3">
+                          {profile.votes
+                            .filter(vote => vote.category === 'tertiary')
+                            .sort((a, b) => b.percentage - a.percentage)
+                            .slice(0, 2)
+                            .map((vote, index) => (
+                            <div key={index} className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge variant="outline" className="text-sm opacity-75">
+                                  {vote.classification}
+                                </Badge>
+                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                              </div>
+                              <Progress value={vote.percentage} className="h-2" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
