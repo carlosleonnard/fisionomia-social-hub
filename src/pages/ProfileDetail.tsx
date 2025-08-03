@@ -292,14 +292,6 @@ export default function ProfileDetail() {
                              Login to Vote
                            </Button>
                          )}
-                          <Button 
-                            onClick={() => setShowComments(!showComments)}
-                            className="w-full"
-                            variant="outline"
-                          >
-                            <MessageSquare className="mr-2 h-4 w-4" />
-                            {showComments ? 'Hide Comments' : 'Show Comments'}
-                          </Button>
                        </div>
                     </div>
                   </CardContent>
