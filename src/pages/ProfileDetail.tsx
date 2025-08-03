@@ -394,7 +394,7 @@ export default function ProfileDetail() {
                       Physical Characteristics
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="h-96 overflow-y-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       {profile.physicalCharacteristics.map((characteristic, index) => (
                         <div key={index} className="p-4 bg-muted/30 rounded-lg">
