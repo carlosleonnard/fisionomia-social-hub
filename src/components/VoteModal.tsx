@@ -41,10 +41,6 @@ const characteristics = [
     options: ["Estreito", "Médio", "Largo"]
   },
   {
-    category: "Prognatismo",
-    options: ["Ausente", "Leve", "Moderado", "Acentuado"]
-  },
-  {
     category: "Body Type",
     options: ["Ectomorfo", "Mesomorfo", "Endomorfo"]
   },

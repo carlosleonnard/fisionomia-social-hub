@@ -126,14 +126,6 @@ const mockProfiles: Profile[] = [
         ]
       },
       {
-        name: "Prognatismo",
-        votes: [
-          { option: "Leve", count: 35, percentage: 47 },
-          { option: "Ausente", count: 30, percentage: 40 },
-          { option: "Moderado", count: 10, percentage: 13 }
-        ]
-      },
-      {
         name: "Body Type",
         votes: [
           { option: "Mesomorfo", count: 45, percentage: 60 },
