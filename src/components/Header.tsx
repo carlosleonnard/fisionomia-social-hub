@@ -6,47 +6,36 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-6">
+        <div className="flex-1">
           <div className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
-              alt="Phindex Logo" 
-              className="h-12 object-contain"
-            />
-          </div>
-        </div>
-
-        <div className="flex-1 max-w-2xl mx-8">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input 
-              placeholder="Look for famous people, characters, athletes..." 
-              className="pl-12 h-12 bg-muted/30 border-border/30 focus:border-primary/50 rounded-full text-base"
-            />
-            <Button 
-              size="sm" 
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-primary hover:shadow-button rounded-full"
-            >
-              Search
+            <Button variant="default" size="sm" className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9">
+              <Plus className="mr-1 h-4 w-4" />
+              Classify Now!
+            </Button>
+            <Button variant="outline" size="icon">
+              <HelpCircle className="h-4 w-4" />
             </Button>
           </div>
         </div>
+        
+        <div className="flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
+            alt="Phindex Logo" 
+            className="h-12 object-contain"
+          />
+        </div>
 
-        <div className="flex items-center gap-3">
-          <Button variant="default" size="sm" className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9">
-            <Plus className="mr-1 h-4 w-4" />
-            Classify Now!
-          </Button>
-          <Button variant="outline" size="icon">
-            <HelpCircle className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="hover:bg-muted/50">
-            <Bell className="h-5 w-5" />
-          </Button>
-          <Button variant="default" className="bg-phindex-dark hover:bg-phindex-teal transition-all duration-300 rounded-full px-6">
-            <User className="mr-2 h-4 w-4" />
-            Login Google
-          </Button>
+        <div className="flex-1 flex justify-end">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" className="hover:bg-muted/50">
+              <Bell className="h-5 w-5" />
+            </Button>
+            <Button variant="default" className="bg-phindex-dark hover:bg-phindex-teal transition-all duration-300 rounded-full px-6">
+              <User className="mr-2 h-4 w-4" />
+              Login Google
+            </Button>
+          </div>
         </div>
       </div>
     </header>
