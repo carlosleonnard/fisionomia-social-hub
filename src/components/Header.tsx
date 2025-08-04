@@ -2,8 +2,13 @@ import { Search, User, Bell, Plus, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import { AddProfileModal } from "./AddProfileModal";
 
 export const Header = () => {
+  const handleAddProfile = (profile: any) => {
+    console.log('Novo perfil adicionado:', profile);
+    // Aqui você pode adicionar a lógica para salvar o perfil
+  };
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container px-4 h-16 flex items-center justify-between">
@@ -36,10 +41,7 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="default" size="sm" className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9">
-            <Plus className="mr-1 h-4 w-4" />
-            Classify Now!
-          </Button>
+          <AddProfileModal onAddProfile={handleAddProfile} />
           <Button variant="outline" size="icon">
             <HelpCircle className="h-4 w-4" />
           </Button>

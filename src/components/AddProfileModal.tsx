@@ -68,9 +68,9 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-gradient-primary hover:shadow-button transition-all duration-300 gap-2">
-          <Plus className="h-4 w-4" />
-          Adicionar Perfil
+        <Button variant="default" size="sm" className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9">
+          <Plus className="mr-1 h-4 w-4" />
+          Classify Now!
         </Button>
       </DialogTrigger>
       
