@@ -129,7 +129,7 @@ export const CommentsSection = ({
                       <div className="flex gap-1.5">
                         {comment.userVotes.primary && (
                           <div className="flex items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-2 py-1 rounded-md">
-                            <div className="w-2 h-2 bg-primary rounded-full"></div>
+                            <span className="text-xs font-bold text-primary">1.</span>
                             <span className="text-xs font-medium text-primary">
                               {comment.userVotes.primary}
                             </span>
@@ -137,7 +137,7 @@ export const CommentsSection = ({
                         )}
                         {comment.userVotes.secondary && (
                           <div className="flex items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-2 py-1 rounded-md">
-                            <div className="w-2 h-2 bg-primary rounded-full"></div>
+                            <span className="text-xs font-bold text-primary">2.</span>
                             <span className="text-xs font-medium text-primary">
                               {comment.userVotes.secondary}
                             </span>
@@ -145,7 +145,7 @@ export const CommentsSection = ({
                         )}
                         {comment.userVotes.tertiary && (
                           <div className="flex items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-2 py-1 rounded-md">
-                            <div className="w-2 h-2 bg-primary rounded-full"></div>
+                            <span className="text-xs font-bold text-primary">3.</span>
                             <span className="text-xs font-medium text-primary">
                               {comment.userVotes.tertiary}
                             </span>
