@@ -14,7 +14,7 @@ interface VoteModalProps {
 const characteristics = [
   {
     category: "Phenotype",
-    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
+    options: ["Fenotipo Primario", "Fenotipo Secundario", "Fenotipo Terciario"]
   },
   {
     category: "Hair Color",
