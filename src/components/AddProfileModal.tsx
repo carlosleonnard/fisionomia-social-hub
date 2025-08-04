@@ -203,42 +203,94 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="country">País *</Label>
+              <Label htmlFor="height">Altura *</Label>
               <Input
-                id="country"
-                placeholder="ex: Brasil"
-                value={formData.country}
-                onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
+                id="height"
+                placeholder="ex: 1,75m"
+                value={formData.height}
+                onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="gender">Gênero *</Label>
+              <Label htmlFor="country">País *</Label>
               <select
-                id="gender"
-                value={formData.gender}
-                onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
+                id="country"
+                value={formData.country}
+                onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               >
-                <option value="">Selecionar</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-                <option value="Outro">Outro</option>
+                <option value="">Selecionar país</option>
+                <option value="Afeganistão">Afeganistão</option>
+                <option value="África do Sul">África do Sul</option>
+                <option value="Alemanha">Alemanha</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Austrália">Austrália</option>
+                <option value="Áustria">Áustria</option>
+                <option value="Bélgica">Bélgica</option>
+                <option value="Bolívia">Bolívia</option>
+                <option value="Brasil">Brasil</option>
+                <option value="Canadá">Canadá</option>
+                <option value="Chile">Chile</option>
+                <option value="China">China</option>
+                <option value="Colômbia">Colômbia</option>
+                <option value="Coreia do Sul">Coreia do Sul</option>
+                <option value="Costa Rica">Costa Rica</option>
+                <option value="Cuba">Cuba</option>
+                <option value="Dinamarca">Dinamarca</option>
+                <option value="Equador">Equador</option>
+                <option value="Espanha">Espanha</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Finlândia">Finlândia</option>
+                <option value="França">França</option>
+                <option value="Grécia">Grécia</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Honduras">Honduras</option>
+                <option value="Índia">Índia</option>
+                <option value="Indonésia">Indonésia</option>
+                <option value="Irlanda">Irlanda</option>
+                <option value="Islândia">Islândia</option>
+                <option value="Israel">Israel</option>
+                <option value="Itália">Itália</option>
+                <option value="Japão">Japão</option>
+                <option value="México">México</option>
+                <option value="Nicarágua">Nicarágua</option>
+                <option value="Noruega">Noruega</option>
+                <option value="Nova Zelândia">Nova Zelândia</option>
+                <option value="Panamá">Panamá</option>
+                <option value="Paraguai">Paraguai</option>
+                <option value="Peru">Peru</option>
+                <option value="Polônia">Polônia</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Reino Unido">Reino Unido</option>
+                <option value="República Dominicana">República Dominicana</option>
+                <option value="Rússia">Rússia</option>
+                <option value="Suécia">Suécia</option>
+                <option value="Suíça">Suíça</option>
+                <option value="Turquia">Turquia</option>
+                <option value="Ucrânia">Ucrânia</option>
+                <option value="Uruguai">Uruguai</option>
+                <option value="Venezuela">Venezuela</option>
               </select>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="height">Altura *</Label>
-            <Input
-              id="height"
-              placeholder="ex: 1,75m"
-              value={formData.height}
-              onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
+            <Label htmlFor="gender">Gênero *</Label>
+            <select
+              id="gender"
+              value={formData.gender}
+              onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               required
-            />
+            >
+              <option value="">Selecionar</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+              <option value="Outro">Outro</option>
+            </select>
           </div>
 
           <div className="space-y-2">
