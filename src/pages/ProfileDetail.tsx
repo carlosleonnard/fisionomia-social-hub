@@ -266,7 +266,7 @@ export default function ProfileDetail() {
                       </div>
 
                       {/* Created By Information */}
-                      <p className="text-xs text-muted-foreground text-center mb-6">
+                      <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
                         Criado por <span className="font-medium text-phindex-teal">Admin User</span> em 4 de agosto de 2025
                       </p>
                       
