@@ -266,16 +266,9 @@ export default function ProfileDetail() {
                       </div>
 
                       {/* Created By Information */}
-                      <div className="mb-6 p-3 bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 rounded-xl">
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">
-                            Criado por <span className="font-medium text-phindex-teal">Admin User</span>
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            em 4 de agosto de 2025
-                          </p>
-                        </div>
-                      </div>
+                      <p className="text-xs text-muted-foreground text-center mb-6">
+                        Criado por <span className="font-medium text-phindex-teal">Admin User</span> em 4 de agosto de 2025
+                      </p>
                       
                       <div className="flex justify-center gap-4 mb-6">
                         <div className="flex items-center gap-2">
