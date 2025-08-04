@@ -128,25 +128,25 @@ export const CommentsSection = ({
                       <span className="text-xs text-muted-foreground">Classificação:</span>
                       <div className="flex gap-1.5">
                         {comment.userVotes.primary && (
-                          <div className="flex items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-2 py-1 rounded-md">
-                            <span className="text-xs font-bold text-primary">1.</span>
-                            <span className="text-xs font-medium text-primary">
+                          <div className="flex items-center gap-0.5 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-bold text-primary">1.</span>
+                            <span className="text-[10px] font-medium text-primary">
                               {comment.userVotes.primary}
                             </span>
                           </div>
                         )}
                         {comment.userVotes.secondary && (
-                          <div className="flex items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-2 py-1 rounded-md">
-                            <span className="text-xs font-bold text-primary">2.</span>
-                            <span className="text-xs font-medium text-primary">
+                          <div className="flex items-center gap-0.5 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-bold text-primary">2.</span>
+                            <span className="text-[10px] font-medium text-primary">
                               {comment.userVotes.secondary}
                             </span>
                           </div>
                         )}
                         {comment.userVotes.tertiary && (
-                          <div className="flex items-center gap-1 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-2 py-1 rounded-md">
-                            <span className="text-xs font-bold text-primary">3.</span>
-                            <span className="text-xs font-medium text-primary">
+                          <div className="flex items-center gap-0.5 bg-gradient-to-r from-primary/20 to-primary/30 border border-primary/30 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-bold text-primary">3.</span>
+                            <span className="text-[10px] font-medium text-primary">
                               {comment.userVotes.tertiary}
                             </span>
                           </div>
