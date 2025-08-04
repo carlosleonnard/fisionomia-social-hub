@@ -10,10 +10,9 @@ import { Card } from "@/components/ui/card";
 interface AddProfileModalProps {
   onAddProfile: (profile: {
     name: string;
-    age: number;
     country: string;
     gender: string;
-    height: string;
+    height: number;
     ancestry: string;
     frontImageUrl: string;
     profileImageUrl?: string;
@@ -24,7 +23,6 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    age: "",
     country: "",
     gender: "",
     height: "",
@@ -37,14 +35,14 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.age && formData.country && formData.gender && formData.height && formData.ancestry && formData.frontImageUrl) {
+    if (formData.name && formData.country && formData.gender && formData.height && formData.ancestry && formData.frontImageUrl) {
       onAddProfile({
         ...formData,
-        age: parseInt(formData.age),
+        height: parseFloat(formData.height),
         frontImageUrl: formData.frontImageUrl,
         profileImageUrl: formData.profileImageUrl
       });
-      setFormData({ name: "", age: "", country: "", gender: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "" });
+      setFormData({ name: "", country: "", gender: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "" });
       setOpen(false);
     }
   };
@@ -176,37 +174,26 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
           </div>
 
           {/* Informações básicas */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Nome *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="age">Idade *</Label>
-              <Input
-                id="age"
-                type="number"
-                min="18"
-                max="100"
-                value={formData.age}
-                onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
-                required
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="name">Nome *</Label>
+            <Input
+              id="name"
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              required
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="height">Altura *</Label>
+              <Label htmlFor="height">Altura (metros) *</Label>
               <Input
                 id="height"
-                placeholder="ex: 1,75m"
+                type="number"
+                step="0.01"
+                min="0.5"
+                max="3"
+                placeholder="ex: 1.75"
                 value={formData.height}
                 onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
                 required
