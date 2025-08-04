@@ -128,7 +128,7 @@ export const CommentsSection = ({
                       <span className="text-xs text-muted-foreground">Classificação:</span>
                       <div className="flex gap-1.5">
                         {comment.userVotes.primary && (
-                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded">
+                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded-full">
                             <span className="text-[10px] font-bold text-primary">1.</span>
                             <span className="text-[10px] font-medium text-primary">
                               {comment.userVotes.primary}
@@ -136,7 +136,7 @@ export const CommentsSection = ({
                           </div>
                         )}
                         {comment.userVotes.secondary && (
-                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded">
+                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded-full">
                             <span className="text-[10px] font-bold text-primary">2.</span>
                             <span className="text-[10px] font-medium text-primary">
                               {comment.userVotes.secondary}
@@ -144,7 +144,7 @@ export const CommentsSection = ({
                           </div>
                         )}
                         {comment.userVotes.tertiary && (
-                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded">
+                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded-full">
                             <span className="text-[10px] font-bold text-primary">3.</span>
                             <span className="text-[10px] font-medium text-primary">
                               {comment.userVotes.tertiary}
