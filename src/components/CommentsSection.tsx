@@ -28,7 +28,11 @@ interface Comment {
   timestamp: string;
   likes: number;
   isLiked: boolean;
-  userVote?: string; // Fenótipo que o usuário votou
+  userVotes?: {
+    primary?: string;
+    secondary?: string;
+    tertiary?: string;
+  };
 }
 
 interface CommentsSectionProps {
@@ -119,12 +123,26 @@ export const CommentsSection = ({
                     <span className="font-medium text-sm">{comment.user.name}</span>
                     <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
                   </div>
-                  {comment.userVote && (
+                  {comment.userVotes && (comment.userVotes.primary || comment.userVotes.secondary || comment.userVotes.tertiary) && (
                     <div className="flex items-center gap-1">
                       <span className="text-xs text-muted-foreground">Votou em:</span>
-                      <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                        {comment.userVote}
-                      </span>
+                      <div className="flex gap-1">
+                        {comment.userVotes.primary && (
+                          <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                            1° {comment.userVotes.primary}
+                          </span>
+                        )}
+                        {comment.userVotes.secondary && (
+                          <span className="text-xs bg-secondary/20 text-secondary px-2 py-0.5 rounded-full">
+                            2° {comment.userVotes.secondary}
+                          </span>
+                        )}
+                        {comment.userVotes.tertiary && (
+                          <span className="text-xs bg-accent/20 text-accent px-2 py-0.5 rounded-full">
+                            3° {comment.userVotes.tertiary}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>

@@ -437,7 +437,7 @@ export default function ProfileDetail() {
                     timestamp: "2024-01-15T10:30:00Z",
                     likes: 12,
                     isLiked: false,
-                    userVote: "Mediterrâneo"
+                    userVotes: { primary: "Mediterrâneo", secondary: "Ibérico" }
                   },
                   {
                     id: "2",
@@ -449,7 +449,7 @@ export default function ProfileDetail() {
                     timestamp: "2024-01-15T09:45:00Z",
                     likes: 24,
                     isLiked: true,
-                    userVote: "Ibérico"
+                    userVotes: { primary: "Ibérico", secondary: "Mediterrâneo", tertiary: "Ameríndio" }
                   },
                   {
                     id: "3",
@@ -461,7 +461,7 @@ export default function ProfileDetail() {
                     timestamp: "2024-01-15T08:20:00Z",
                     likes: 8,
                     isLiked: false,
-                    userVote: "Ameríndio"
+                    userVotes: { primary: "Ameríndio" }
                   },
                   {
                     id: "4",
@@ -473,7 +473,7 @@ export default function ProfileDetail() {
                     timestamp: "2024-01-15T07:15:00Z",
                     likes: 5,
                     isLiked: false,
-                    userVote: "Mediterrâneo"
+                    userVotes: { primary: "Mediterrâneo", secondary: "Ibérico", tertiary: "Alpino" }
                   }
                 ]}
                 onAddComment={(comment) => console.log('New comment:', comment)}
