@@ -14,13 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          ancestry: string
+          country: string
+          created_at: string
+          created_by: string
+          front_image_url: string
+          gender: string
+          height: number
+          id: string
+          name: string
+          profile_image_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          ancestry: string
+          country: string
+          created_at?: string
+          created_by: string
+          front_image_url: string
+          gender: string
+          height: number
+          id?: string
+          name: string
+          profile_image_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ancestry?: string
+          country?: string
+          created_at?: string
+          created_by?: string
+          front_image_url?: string
+          gender?: string
+          height?: number
+          id?: string
+          name?: string
+          profile_image_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_display_name: {
+        Args: { user_id: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
