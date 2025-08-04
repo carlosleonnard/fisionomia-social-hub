@@ -88,97 +88,85 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Upload de imagens */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <Label>Fotos do Perfil</Label>
             
-            {/* Foto de Frente */}
-            <div className="space-y-2">
-              <Label className="text-sm text-muted-foreground">Foto de Frente</Label>
-              <Card
-                className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
-                  dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
-                }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={(e) => handleDrop(e, 'front')}
-              >
-                {formData.frontImageUrl ? (
-                  <div className="relative inline-block">
-                    <img 
-                      src={formData.frontImageUrl} 
-                      alt="Preview Frente" 
-                      className="w-16 h-16 rounded-lg mx-auto object-cover"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
-                      onClick={() => setFormData(prev => ({ ...prev, frontImageUrl: "" }))}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Foto de frente</p>
-                  </div>
-                )}
-              </Card>
-              
-              <Input
-                placeholder="URL da foto de frente..."
-                value={formData.frontImageUrl}
-                onChange={(e) => setFormData(prev => ({ ...prev, frontImageUrl: e.target.value }))}
-                className="text-xs"
-              />
-            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Foto de Frente */}
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">Foto de Frente</Label>
+                <Card
+                  className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
+                    dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+                  }`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={(e) => handleDrop(e, 'front')}
+                >
+                  {formData.frontImageUrl ? (
+                    <div className="relative inline-block">
+                      <img 
+                        src={formData.frontImageUrl} 
+                        alt="Preview Frente" 
+                        className="w-16 h-16 rounded-lg mx-auto object-cover"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
+                        onClick={() => setFormData(prev => ({ ...prev, frontImageUrl: "" }))}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Foto de frente</p>
+                    </div>
+                  )}
+                </Card>
+              </div>
 
-            {/* Foto de Perfil */}
-            <div className="space-y-2">
-              <Label className="text-sm text-muted-foreground">Foto de Perfil</Label>
-              <Card
-                className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
-                  dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
-                }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={(e) => handleDrop(e, 'profile')}
-              >
-                {formData.profileImageUrl ? (
-                  <div className="relative inline-block">
-                    <img 
-                      src={formData.profileImageUrl} 
-                      alt="Preview Perfil" 
-                      className="w-16 h-16 rounded-lg mx-auto object-cover"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
-                      onClick={() => setFormData(prev => ({ ...prev, profileImageUrl: "" }))}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Foto de perfil</p>
-                  </div>
-                )}
-              </Card>
-              
-              <Input
-                placeholder="URL da foto de perfil..."
-                value={formData.profileImageUrl}
-                onChange={(e) => setFormData(prev => ({ ...prev, profileImageUrl: e.target.value }))}
-                className="text-xs"
-              />
+              {/* Foto de Perfil */}
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">Foto de Perfil</Label>
+                <Card
+                  className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
+                    dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+                  }`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={(e) => handleDrop(e, 'profile')}
+                >
+                  {formData.profileImageUrl ? (
+                    <div className="relative inline-block">
+                      <img 
+                        src={formData.profileImageUrl} 
+                        alt="Preview Perfil" 
+                        className="w-16 h-16 rounded-lg mx-auto object-cover"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
+                        onClick={() => setFormData(prev => ({ ...prev, profileImageUrl: "" }))}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Foto de perfil</p>
+                    </div>
+                  )}
+                </Card>
+              </div>
             </div>
           </div>
 
