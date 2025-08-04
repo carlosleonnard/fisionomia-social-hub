@@ -13,6 +13,10 @@ interface VoteModalProps {
 
 const characteristics = [
   {
+    category: "Phenotype",
+    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
+  },
+  {
     category: "Hair Color",
     options: ["Black", "Dark Brown", "Brown"]
   },
@@ -67,7 +71,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
     onClose();
   };
 
-  const isComplete = Object.keys(votes).length === characteristics.length;
+  const isComplete = votes["Phenotype"] !== undefined;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -77,11 +81,14 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
         </DialogHeader>
         
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pr-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2">
           {characteristics.map((characteristic) => (
             <Card key={characteristic.category} className="p-4">
               <div className="space-y-3">
-                <Label className="font-semibold text-phindex-dark">{characteristic.category}</Label>
+                <Label className="font-semibold text-phindex-dark">
+                  {characteristic.category}
+                  {characteristic.category === "Phenotype" && <span className="text-red-500 ml-1">*</span>}
+                </Label>
                 <Select
                   value={votes[characteristic.category] || ""}
                   onValueChange={(value) => handleVoteChange(characteristic.category, value)}
