@@ -256,11 +256,13 @@ export default function ProfileDetail() {
                       </div>
                       
                       {/* Ancestry Description */}
-                      <div className="mb-6 p-4 bg-muted/30 rounded-lg text-left">
-                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
-                        <p className="text-sm text-foreground leading-relaxed">
-                          {profile.description}
-                        </p>
+                      <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
+                        <div className="p-4 bg-muted/30 rounded-lg text-left">
+                          <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                          <p className="text-sm text-foreground leading-relaxed">
+                            {profile.description}
+                          </p>
+                        </div>
                       </div>
                       
                       <div className="flex justify-center gap-4 mb-6">
