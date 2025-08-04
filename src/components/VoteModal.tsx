@@ -13,56 +13,44 @@ interface VoteModalProps {
 
 const characteristics = [
   {
-    category: "Phenotype",
-    options: ["Mediterrâneo", "Nórdico", "Atlântida", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
-  },
-  {
     category: "Hair Color",
-    options: ["Loiro", "Castanho", "Ruivo", "Preto", "Grisalho"]
+    options: ["Black", "Dark Brown", "Brown"]
   },
   {
     category: "Hair Texture", 
-    options: ["Liso", "Ondulado", "Cacheado", "Crespo"]
+    options: ["Ondulado", "Liso", "Cacheado"]
   },
   {
-    category: "Skin",
-    options: ["Muito Clara", "Clara", "Morena Clara", "Morena", "Morena Escura", "Escura"]
+    category: "Eye Color",
+    options: ["Brown", "Hazel", "Green"]
   },
   {
-    category: "Region",
-    options: ["Europa", "Ásia", "África", "América do Norte", "América do Sul", "Oceania"]
+    category: "Skin Tone",
+    options: ["Light Brown", "Medium Brown", "Olive"]
   },
   {
     category: "Nasal Breadth",
-    options: ["Estreito", "Médio", "Largo"]
+    options: ["Médio", "Estreito", "Largo"]
   },
   {
     category: "Facial Breadth",
-    options: ["Estreito", "Médio", "Largo"]
+    options: ["Médio", "Largo", "Estreito"]
   },
   {
     category: "Body Type",
-    options: ["Ectomorfo", "Mesomorfo", "Endomorfo"]
+    options: ["Mesomorfo", "Ectomorfo", "Endomorfo"]
   },
   {
     category: "Jaw Type",
-    options: ["Quadrado", "Arredondado", "Pontiagudo", "Angular"]
+    options: ["Angular", "Quadrado", "Arredondado"]
   },
   {
     category: "Head Breadth",
-    options: ["Estreito", "Médio", "Largo"]
+    options: ["Médio", "Largo", "Estreito"]
   },
   {
-    category: "Nasal Index",
-    options: ["Leptorrino", "Mesorrino", "Platirrino"]
-  },
-  {
-    category: "Cephalic Index",
-    options: ["Dolicocéfalo", "Mesocéfalo", "Braquicéfalo"]
-  },
-  {
-    category: "Eye Folds",
-    options: ["Presente", "Ausente", "Parcial"]
+    category: "Face Shape",
+    options: ["Oval", "Round", "Square"]
   }
 ];
 
