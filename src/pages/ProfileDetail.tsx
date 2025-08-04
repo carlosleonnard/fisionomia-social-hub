@@ -271,7 +271,15 @@ export default function ProfileDetail() {
                       </p>
                       
                       <div className="flex justify-center gap-4 mb-6">
-                        <div className="flex items-center gap-2">
+                        <div 
+                          className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                          onClick={() => {
+                            const votingSection = document.querySelector('[data-voting-section]');
+                            if (votingSection) {
+                              votingSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }}
+                        >
                           <Vote className="h-4 w-4 text-phindex-teal" />
                           <span>{profile.likes} votos</span>
                         </div>
@@ -315,7 +323,7 @@ export default function ProfileDetail() {
                 </Card>
 
                 {/* Phenotypic Classification */}
-                <Card className="bg-gradient-card border-phindex-teal/20">
+                <Card className="bg-gradient-card border-phindex-teal/20" data-voting-section>
                   <CardHeader>
                     <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
                   </CardHeader>
