@@ -12,7 +12,8 @@ interface AddProfileModalProps {
     name: string;
     age: number;
     location: string;
-    imageUrl: string;
+    frontImageUrl: string;
+    profileImageUrl: string;
     description: string;
   }) => void;
 }
@@ -23,7 +24,8 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     name: "",
     age: "",
     location: "",
-    imageUrl: "",
+    frontImageUrl: "",
+    profileImageUrl: "",
     description: ""
   });
 
@@ -35,9 +37,10 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
       onAddProfile({
         ...formData,
         age: parseInt(formData.age),
-        imageUrl: formData.imageUrl || "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=400&h=400&fit=crop&crop=face"
+        frontImageUrl: formData.frontImageUrl || "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=400&fit=crop&crop=face",
+        profileImageUrl: formData.profileImageUrl || "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=400&fit=crop&crop=face"
       });
-      setFormData({ name: "", age: "", location: "", imageUrl: "", description: "" });
+      setFormData({ name: "", age: "", location: "", frontImageUrl: "", profileImageUrl: "", description: "" });
       setOpen(false);
     }
   };
@@ -52,16 +55,18 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent, imageType: 'front' | 'profile') => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      // Em uma aplicação real, você faria upload da imagem
       const file = e.dataTransfer.files[0];
       const imageUrl = URL.createObjectURL(file);
-      setFormData(prev => ({ ...prev, imageUrl }));
+      setFormData(prev => ({ 
+        ...prev, 
+        [imageType === 'front' ? 'frontImageUrl' : 'profileImageUrl']: imageUrl 
+      }));
     }
   };
 
@@ -82,50 +87,99 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Upload de imagem */}
-          <div className="space-y-2">
-            <Label>Foto do Perfil</Label>
-            <Card
-              className={`border-2 border-dashed transition-colors p-6 text-center cursor-pointer ${
-                dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
-              }`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              {formData.imageUrl ? (
-                <div className="relative">
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Preview" 
-                    className="w-20 h-20 rounded-full mx-auto object-cover"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-destructive hover:bg-destructive/80"
-                    onClick={() => setFormData(prev => ({ ...prev, imageUrl: "" }))}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <Upload className="h-8 w-8 mx-auto text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">
-                    Arraste uma imagem ou cole uma URL
-                  </p>
-                </div>
-              )}
-            </Card>
+          {/* Upload de imagens */}
+          <div className="space-y-4">
+            <Label>Fotos do Perfil</Label>
             
-            <Input
-              placeholder="URL da imagem..."
-              value={formData.imageUrl}
-              onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
-            />
+            {/* Foto de Frente */}
+            <div className="space-y-2">
+              <Label className="text-sm text-muted-foreground">Foto de Frente</Label>
+              <Card
+                className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
+                  dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+                }`}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={(e) => handleDrop(e, 'front')}
+              >
+                {formData.frontImageUrl ? (
+                  <div className="relative inline-block">
+                    <img 
+                      src={formData.frontImageUrl} 
+                      alt="Preview Frente" 
+                      className="w-16 h-16 rounded-lg mx-auto object-cover"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
+                      onClick={() => setFormData(prev => ({ ...prev, frontImageUrl: "" }))}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">Foto de frente</p>
+                  </div>
+                )}
+              </Card>
+              
+              <Input
+                placeholder="URL da foto de frente..."
+                value={formData.frontImageUrl}
+                onChange={(e) => setFormData(prev => ({ ...prev, frontImageUrl: e.target.value }))}
+                className="text-xs"
+              />
+            </div>
+
+            {/* Foto de Perfil */}
+            <div className="space-y-2">
+              <Label className="text-sm text-muted-foreground">Foto de Perfil</Label>
+              <Card
+                className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
+                  dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+                }`}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={(e) => handleDrop(e, 'profile')}
+              >
+                {formData.profileImageUrl ? (
+                  <div className="relative inline-block">
+                    <img 
+                      src={formData.profileImageUrl} 
+                      alt="Preview Perfil" 
+                      className="w-16 h-16 rounded-lg mx-auto object-cover"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
+                      onClick={() => setFormData(prev => ({ ...prev, profileImageUrl: "" }))}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">Foto de perfil</p>
+                  </div>
+                )}
+              </Card>
+              
+              <Input
+                placeholder="URL da foto de perfil..."
+                value={formData.profileImageUrl}
+                onChange={(e) => setFormData(prev => ({ ...prev, profileImageUrl: e.target.value }))}
+                className="text-xs"
+              />
+            </div>
           </div>
 
           {/* Informações básicas */}
