@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 
@@ -83,30 +83,40 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl h-[85vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Vote nas Características Físicas</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-phindex-teal">Vote nas Características Físicas</DialogTitle>
         </DialogHeader>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex-1 overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pr-2">
           {characteristics.map((characteristic) => (
             <Card key={characteristic.category} className="p-4">
-              <h3 className="font-semibold mb-3 text-phindex-dark">{characteristic.category}</h3>
-              <RadioGroup
-                value={votes[characteristic.category] || ""}
-                onValueChange={(value) => handleVoteChange(characteristic.category, value)}
-              >
-                {characteristic.options.map((option) => (
-                  <div key={option} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option} id={`${characteristic.category}-${option}`} />
-                    <Label htmlFor={`${characteristic.category}-${option}`} className="text-sm">
-                      {option}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
+              <div className="space-y-3">
+                <Label className="font-semibold text-phindex-dark">{characteristic.category}</Label>
+                <Select
+                  value={votes[characteristic.category] || ""}
+                  onValueChange={(value) => handleVoteChange(characteristic.category, value)}
+                >
+                  <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                    <SelectValue placeholder={`Selecione ${characteristic.category}`} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border-border/50 z-50">
+                    {characteristic.options.map((option) => (
+                      <SelectItem 
+                        key={option} 
+                        value={option}
+                        className="hover:bg-muted focus:bg-muted"
+                      >
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </Card>
           ))}
+          </div>
         </div>
 
         <div className="flex justify-end gap-2 mt-6">

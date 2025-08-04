@@ -308,14 +308,14 @@ export default function ProfileDetail() {
                              Vote
                            </Button>
                          ) : (
-                           <Button 
-                             disabled
-                             className="w-full"
-                             variant="outline"
-                           >
-                             <Users className="mr-2 h-4 w-4" />
-                             Login to Vote
-                           </Button>
+                          <Button 
+                            onClick={() => setShowVoteModal(true)}
+                            className="w-full"
+                            variant="outline"
+                          >
+                            <Users className="mr-2 h-4 w-4" />
+                            Vote
+                          </Button>
                          )}
                        </div>
                     </div>
