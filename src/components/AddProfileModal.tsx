@@ -11,10 +11,12 @@ interface AddProfileModalProps {
   onAddProfile: (profile: {
     name: string;
     age: number;
-    location: string;
+    country: string;
+    gender: string;
+    height: string;
+    ancestry: string;
     frontImageUrl: string;
-    profileImageUrl: string;
-    description: string;
+    profileImageUrl?: string;
   }) => void;
 }
 
@@ -23,24 +25,26 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
   const [formData, setFormData] = useState({
     name: "",
     age: "",
-    location: "",
+    country: "",
+    gender: "",
+    height: "",
+    ancestry: "",
     frontImageUrl: "",
-    profileImageUrl: "",
-    description: ""
+    profileImageUrl: ""
   });
 
   const [dragActive, setDragActive] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.age && formData.location) {
+    if (formData.name && formData.age && formData.country && formData.gender && formData.height && formData.ancestry && formData.frontImageUrl) {
       onAddProfile({
         ...formData,
         age: parseInt(formData.age),
-        frontImageUrl: formData.frontImageUrl || "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=400&fit=crop&crop=face",
-        profileImageUrl: formData.profileImageUrl || "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=400&fit=crop&crop=face"
+        frontImageUrl: formData.frontImageUrl,
+        profileImageUrl: formData.profileImageUrl
       });
-      setFormData({ name: "", age: "", location: "", frontImageUrl: "", profileImageUrl: "", description: "" });
+      setFormData({ name: "", age: "", country: "", gender: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "" });
       setOpen(false);
     }
   };
@@ -90,11 +94,12 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
           {/* Upload de imagens */}
           <div className="space-y-3">
             <Label>Fotos do Perfil</Label>
+            <p className="text-xs text-muted-foreground">Foto de frente é obrigatória, foto de perfil é opcional</p>
             
             <div className="grid grid-cols-2 gap-3">
               {/* Foto de Frente */}
               <div className="space-y-2">
-                <Label className="text-sm text-muted-foreground">Foto de Frente</Label>
+                <Label className="text-sm text-muted-foreground">Foto de Frente *</Label>
                 <Card
                   className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
                     dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
@@ -124,7 +129,7 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
                   ) : (
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Foto de frente</p>
+                      <p className="text-xs text-muted-foreground">Foto de frente *</p>
                     </div>
                   )}
                 </Card>
@@ -196,25 +201,55 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
             </div>
           </div>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="country">País *</Label>
+              <Input
+                id="country"
+                placeholder="ex: Brasil"
+                value={formData.country}
+                onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
+                required
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gênero *</Label>
+              <select
+                id="gender"
+                value={formData.gender}
+                onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                required
+              >
+                <option value="">Selecionar</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+          </div>
+
           <div className="space-y-2">
-            <Label htmlFor="location">Localização *</Label>
+            <Label htmlFor="height">Altura *</Label>
             <Input
-              id="location"
-              placeholder="Cidade, Estado/País"
-              value={formData.location}
-              onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+              id="height"
+              placeholder="ex: 1,75m"
+              value={formData.height}
+              onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Descrição (opcional)</Label>
+            <Label htmlFor="ancestry">Ancestralidade Conhecida *</Label>
             <Textarea
-              id="description"
-              placeholder="Conte um pouco sobre a pessoa..."
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              id="ancestry"
+              placeholder="Descreva a ancestralidade conhecida..."
+              value={formData.ancestry}
+              onChange={(e) => setFormData(prev => ({ ...prev, ancestry: e.target.value }))}
               rows={3}
+              required
             />
           </div>
 
