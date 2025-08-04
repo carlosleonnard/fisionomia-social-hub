@@ -124,23 +124,32 @@ export const CommentsSection = ({
                     <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
                   </div>
                   {comment.userVotes && (comment.userVotes.primary || comment.userVotes.secondary || comment.userVotes.tertiary) && (
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-muted-foreground">Votou em:</span>
-                      <div className="flex gap-1">
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-muted-foreground">Classificação:</span>
+                      <div className="flex gap-1.5">
                         {comment.userVotes.primary && (
-                          <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                            1° {comment.userVotes.primary}
-                          </span>
+                          <div className="flex items-center gap-1 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 px-2 py-1 rounded-md">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">
+                              {comment.userVotes.primary}
+                            </span>
+                          </div>
                         )}
                         {comment.userVotes.secondary && (
-                          <span className="text-xs bg-secondary/20 text-secondary px-2 py-0.5 rounded-full">
-                            2° {comment.userVotes.secondary}
-                          </span>
+                          <div className="flex items-center gap-1 bg-gradient-to-r from-slate-400/20 to-slate-500/20 border border-slate-400/30 px-2 py-1 rounded-md">
+                            <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
+                            <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+                              {comment.userVotes.secondary}
+                            </span>
+                          </div>
                         )}
                         {comment.userVotes.tertiary && (
-                          <span className="text-xs bg-accent/20 text-accent px-2 py-0.5 rounded-full">
-                            3° {comment.userVotes.tertiary}
-                          </span>
+                          <div className="flex items-center gap-1 bg-gradient-to-r from-amber-600/20 to-amber-700/20 border border-amber-600/30 px-2 py-1 rounded-md">
+                            <div className="w-2 h-2 bg-amber-600 rounded-full"></div>
+                            <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
+                              {comment.userVotes.tertiary}
+                            </span>
+                          </div>
                         )}
                       </div>
                     </div>
