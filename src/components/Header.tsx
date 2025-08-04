@@ -1,6 +1,7 @@
 import { Search, User, Bell, Plus, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   return (
@@ -8,11 +9,13 @@ export const Header = () => {
       <div className="container px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
-              alt="Phindex Logo" 
-              className="h-12 object-contain"
-            />
+            <Link to="/" className="cursor-pointer">
+              <img 
+                src="/lovable-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
+                alt="Phindex Logo" 
+                className="h-12 object-contain"
+              />
+            </Link>
           </div>
         </div>
 
