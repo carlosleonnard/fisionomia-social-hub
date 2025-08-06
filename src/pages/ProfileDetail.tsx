@@ -257,7 +257,7 @@ export default function ProfileDetail() {
                           className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
                           onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
                         >
-                          {profile.category}
+                          {profile.category} fenótipo primário + secundário
                         </Badge>
                       </div>
                       
