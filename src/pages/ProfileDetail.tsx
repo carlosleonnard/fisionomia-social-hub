@@ -249,14 +249,7 @@ export default function ProfileDetail() {
                       <h1 className="text-2xl font-bold text-phindex-teal mb-2">
                         {profile.name}
                       </h1>
-                      <p className="text-muted-foreground mb-2">
-                        {profile.age} anos • {profile.gender} • {profile.height}
-                      </p>
-                      <div className="flex items-center justify-center gap-1 mb-4">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">{profile.location}</span>
-                      </div>
-
+                      
                       {/* Category Badge */}
                       <div className="flex justify-center mb-4">
                         <Badge 
@@ -266,6 +259,14 @@ export default function ProfileDetail() {
                         >
                           {profile.category}
                         </Badge>
+                      </div>
+                      
+                      <p className="text-muted-foreground mb-2">
+                        {profile.age} anos • {profile.gender} • {profile.height}
+                      </p>
+                      <div className="flex items-center justify-center gap-1 mb-4">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">{profile.location}</span>
                       </div>
                       
                       {/* Ancestry Description */}
