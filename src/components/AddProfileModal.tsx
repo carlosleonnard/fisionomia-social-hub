@@ -47,17 +47,18 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     setShowGuidelines(true);
   };
 
-  const handleAnonymousChange = (checked: boolean) => {
+  const handleAnonymousChange = (value: string) => {
+    const isAnonymous = value === "sim";
     setFormData(prev => ({ 
       ...prev, 
-      isAnonymous: checked,
-      category: checked ? "User Profiles" : ""
+      isAnonymous: isAnonymous,
+      category: isAnonymous ? "User Profiles" : ""
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl && formData.isAnonymous === true) {
+    if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl && formData.isAnonymous !== null) {
       onAddProfile({
         ...formData,
         height: parseFloat(formData.height),
@@ -250,22 +251,20 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
               </div>
             </div>
 
-            {/* Checkbox para perfil anônimo */}
+            {/* Campo sim/não para perfil anônimo */}
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg border border-input">
-                <Checkbox 
-                  id="anonymous"
-                  checked={formData.isAnonymous === true}
-                  onCheckedChange={() => handleAnonymousChange(true)}
-                  required
-                />
-                <Label htmlFor="anonymous" className="text-sm cursor-pointer">
-                  Esta é uma pessoa anônima (não famosa) *
-                </Label>
-              </div>
-              {formData.isAnonymous !== true && (
-                <p className="text-xs text-destructive">Este campo é obrigatório</p>
-              )}
+              <Label htmlFor="anonymousSelect">Esta é uma pessoa anônima (não famosa)? *</Label>
+              <select
+                id="anonymousSelect"
+                value={formData.isAnonymous === true ? "sim" : formData.isAnonymous === false ? "nao" : ""}
+                onChange={(e) => handleAnonymousChange(e.target.value)}
+                className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                required
+              >
+                <option value="">Selecionar</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+              </select>
             </div>
 
             {/* Informações básicas */}
