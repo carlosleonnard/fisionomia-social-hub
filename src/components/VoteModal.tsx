@@ -13,7 +13,15 @@ interface VoteModalProps {
 
 const characteristics = [
   {
-    category: "Phenotype",
+    category: "Primary Phenotype",
+    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
+  },
+  {
+    category: "Secondary Phenotype",
+    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
+  },
+  {
+    category: "Tertiary Phenotype",
     options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
   },
   {
@@ -71,7 +79,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
     onClose();
   };
 
-  const isComplete = votes["Phenotype"] !== undefined;
+  const isComplete = votes["Primary Phenotype"] !== undefined;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -87,7 +95,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
               <div className="space-y-3">
                 <Label className="font-semibold text-phindex-dark">
                   {characteristic.category}
-                  {characteristic.category === "Phenotype" && <span className="text-red-500 ml-1">*</span>}
+                  {characteristic.category === "Primary Phenotype" && <span className="text-red-500 ml-1">*</span>}
                 </Label>
                 <Select
                   value={votes[characteristic.category] || ""}
