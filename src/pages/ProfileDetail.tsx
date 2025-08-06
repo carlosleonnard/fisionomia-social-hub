@@ -251,13 +251,33 @@ export default function ProfileDetail() {
                       </h1>
                       
                       {/* Category Badge */}
-                      <div className="flex justify-center mb-4">
+                      <div className="flex justify-center gap-2 mb-4 flex-wrap">
                         <Badge 
                           variant="secondary" 
                           className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
                           onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
                         >
                           {profile.category}
+                        </Badge>
+                        
+                        {/* Phenotype Badge */}
+                        <Badge 
+                          variant="outline" 
+                          className="bg-primary/10 text-primary border-primary/20"
+                        >
+                          {(() => {
+                            const primaryPhenotype = profile.votes
+                              .filter(vote => vote.category === 'primary')
+                              .sort((a, b) => b.percentage - a.percentage)[0]?.classification;
+                            
+                            const secondaryPhenotype = profile.votes
+                              .filter(vote => vote.category === 'secondary')
+                              .sort((a, b) => b.percentage - a.percentage)[0]?.classification;
+                            
+                            return secondaryPhenotype 
+                              ? `${primaryPhenotype} + ${secondaryPhenotype}`
+                              : primaryPhenotype;
+                          })()}
                         </Badge>
                       </div>
                       
