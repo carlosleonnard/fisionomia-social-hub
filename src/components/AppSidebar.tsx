@@ -21,6 +21,11 @@ export const AppSidebar = () => {
     navigate(`/region/${regionSlug}`);
   };
 
+  const handleCategoryClick = (category: string) => {
+    const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/category/${categorySlug}`);
+  };
+
   const isRegionActive = (region: string) => {
     const regionSlug = region.toLowerCase()
       .replace(/\s+/g, '-')
@@ -34,6 +39,11 @@ export const AppSidebar = () => {
       .replace('ç', 'c');
     
     return location.pathname === `/region/${regionSlug}`;
+  };
+
+  const isCategoryActive = (category: string) => {
+    const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+    return location.pathname === `/category/${categorySlug}`;
   };
 
   return (
@@ -71,7 +81,12 @@ export const AppSidebar = () => {
             <div className="space-y-4">
               {/* User Profiles Section */}
               <button
-                className="flex items-center gap-4 w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                className={`flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors ${
+                  isCategoryActive("User Profiles") 
+                    ? "bg-phindex-teal/10 text-phindex-teal border border-phindex-teal/20" 
+                    : "hover:bg-muted/50"
+                }`}
+                onClick={() => handleCategoryClick("User Profiles")}
               >
                 <span className="text-xl" style={{ color: 'hsl(var(--category-primary))' }}>👤</span>
                 <span className="text-base">User Profiles</span>
@@ -90,15 +105,20 @@ export const AppSidebar = () => {
                 { icon: "⚽", name: "Sports" },
                 { icon: "💼", name: "Business" },
                 { icon: "🏛️", name: "Politics" }
-              ].map((category) => (
+               ].map((category) => (
                 <button
                   key={category.name}
-                  className="flex items-center gap-4 w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                  className={`flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors ${
+                    isCategoryActive(category.name) 
+                      ? "bg-phindex-teal/10 text-phindex-teal border border-phindex-teal/20" 
+                      : "hover:bg-muted/50"
+                  }`}
+                  onClick={() => handleCategoryClick(category.name)}
                 >
                   <span className="text-xl" style={{ color: 'hsl(var(--category-primary))' }}>{category.icon}</span>
                   <span className="text-base">{category.name}</span>
                 </button>
-              ))}
+               ))}
             </div>
           </div>
         </div>
