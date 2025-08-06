@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface AddProfileModalProps {
   onAddProfile: (profile: {
@@ -31,7 +32,8 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     height: "",
     ancestry: "",
     frontImageUrl: "",
-    profileImageUrl: ""
+    profileImageUrl: "",
+    isAnonymous: false
   });
 
   const [dragActive, setDragActive] = useState(false);
@@ -45,6 +47,14 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     setShowGuidelines(true);
   };
 
+  const handleAnonymousChange = (checked: boolean) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      isAnonymous: checked,
+      category: checked ? "User Profiles" : ""
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl) {
@@ -54,7 +64,7 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
         frontImageUrl: formData.frontImageUrl,
         profileImageUrl: formData.profileImageUrl
       });
-      setFormData({ name: "", country: "", gender: "", category: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "" });
+      setFormData({ name: "", country: "", gender: "", category: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "", isAnonymous: false });
       setOpen(false);
     }
   };
@@ -240,6 +250,18 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
               </div>
             </div>
 
+            {/* Checkbox para perfil anônimo */}
+            <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg">
+              <Checkbox 
+                id="anonymous"
+                checked={formData.isAnonymous}
+                onCheckedChange={handleAnonymousChange}
+              />
+              <Label htmlFor="anonymous" className="text-sm cursor-pointer">
+                Esta é uma pessoa anônima (não famosa)
+              </Label>
+            </div>
+
             {/* Informações básicas */}
             <div className="space-y-2">
               <Label htmlFor="name">Nome *</Label>
@@ -355,6 +377,7 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
                   value={formData.category}
                   onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
                   className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={formData.isAnonymous}
                   required
                 >
                   <option value="">Selecionar categoria</option>
