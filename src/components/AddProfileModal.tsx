@@ -57,7 +57,7 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl && formData.isAnonymous !== null) {
+    if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl && formData.isAnonymous === true) {
       onAddProfile({
         ...formData,
         height: parseFloat(formData.height),
@@ -252,31 +252,19 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
             {/* Checkbox para perfil anônimo */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Tipo de Perfil *</Label>
-              <div className="grid grid-cols-1 gap-3">
-                <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg border border-input">
-                  <Checkbox 
-                    id="anonymous"
-                    checked={formData.isAnonymous === true}
-                    onCheckedChange={() => handleAnonymousChange(true)}
-                  />
-                  <Label htmlFor="anonymous" className="text-sm cursor-pointer">
-                    Esta é uma pessoa anônima (não famosa)
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg border border-input">
-                  <Checkbox 
-                    id="famous"
-                    checked={formData.isAnonymous === false}
-                    onCheckedChange={() => handleAnonymousChange(false)}
-                  />
-                  <Label htmlFor="famous" className="text-sm cursor-pointer">
-                    Esta é uma pessoa famosa ou pública
-                  </Label>
-                </div>
+              <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg border border-input">
+                <Checkbox 
+                  id="anonymous"
+                  checked={formData.isAnonymous === true}
+                  onCheckedChange={() => handleAnonymousChange(true)}
+                  required
+                />
+                <Label htmlFor="anonymous" className="text-sm cursor-pointer">
+                  Esta é uma pessoa anônima (não famosa) *
+                </Label>
               </div>
-              {formData.isAnonymous === null && (
-                <p className="text-xs text-destructive">Por favor, selecione o tipo de perfil</p>
+              {formData.isAnonymous !== true && (
+                <p className="text-xs text-destructive">Este campo é obrigatório</p>
               )}
             </div>
 
