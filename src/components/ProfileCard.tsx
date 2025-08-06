@@ -3,6 +3,7 @@ import { Heart, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface Vote {
   classification: string;
@@ -42,6 +43,7 @@ export const ProfileCard = ({
   onVote 
 }: ProfileCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -54,7 +56,7 @@ export const ProfileCard = ({
 
   return (
     <Card className="bg-card border-border/50 hover:shadow-card transition-all duration-300 overflow-hidden group">
-      <div className="relative">
+      <div className="relative cursor-pointer" onClick={() => navigate(`/profile/${id}`)}>
         <img 
           src={imageUrl} 
           alt={name}
