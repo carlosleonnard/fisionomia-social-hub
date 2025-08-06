@@ -260,25 +260,37 @@ export default function ProfileDetail() {
                           {profile.category}
                         </Badge>
                         
-                        {/* Phenotype Badge */}
-                        <Badge 
-                          variant="outline" 
-                          className="bg-primary/10 text-primary border-primary/20"
-                        >
-                          {(() => {
-                            const primaryPhenotype = profile.votes
-                              .filter(vote => vote.category === 'primary')
-                              .sort((a, b) => b.percentage - a.percentage)[0]?.classification;
-                            
-                            const secondaryPhenotype = profile.votes
-                              .filter(vote => vote.category === 'secondary')
-                              .sort((a, b) => b.percentage - a.percentage)[0]?.classification;
-                            
-                            return secondaryPhenotype 
-                              ? `${primaryPhenotype} + ${secondaryPhenotype}`
-                              : primaryPhenotype;
-                          })()}
-                        </Badge>
+                        {/* Phenotype Badges */}
+                        {(() => {
+                          const primaryPhenotype = profile.votes
+                            .filter(vote => vote.category === 'primary')
+                            .sort((a, b) => b.percentage - a.percentage)[0];
+                          
+                          const secondaryPhenotype = profile.votes
+                            .filter(vote => vote.category === 'secondary')
+                            .sort((a, b) => b.percentage - a.percentage)[0];
+                          
+                          return (
+                            <>
+                              {primaryPhenotype && (
+                                <Badge 
+                                  variant="default" 
+                                  className="bg-primary text-primary-foreground"
+                                >
+                                  1º {primaryPhenotype.classification}
+                                </Badge>
+                              )}
+                              {secondaryPhenotype && (
+                                <Badge 
+                                  variant="outline" 
+                                  className="bg-secondary/20 text-secondary-foreground border-secondary"
+                                >
+                                  2º {secondaryPhenotype.classification}
+                                </Badge>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                       
                       <p className="text-muted-foreground mb-2">
