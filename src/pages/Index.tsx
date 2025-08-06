@@ -403,7 +403,7 @@ const Index = () => {
           <div className="flex-1">
             {/* Popular Celebrities Section */}
             <div className="mb-12">
-              <div className="relative bg-primary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+              <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
                 <div className="absolute inset-0 bg-primary/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
