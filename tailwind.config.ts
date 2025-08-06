@@ -65,17 +65,24 @@ export default {
 				},
 				'phindex-teal': 'hsl(var(--phindex-teal))',
 				'phindex-dark': 'hsl(var(--phindex-dark))',
-				'phindex-light': 'hsl(var(--phindex-light))'
+				'phindex-light': 'hsl(var(--phindex-light))',
+				'modal-background': 'hsl(var(--modal-background))',
+				'modal-card': 'hsl(var(--modal-card))',
+				'modal-hover': 'hsl(var(--modal-hover))',
+				'modal-text': 'hsl(var(--modal-text))',
+				'modal-accent': 'hsl(var(--modal-accent))'
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-card': 'var(--gradient-card)',
-				'gradient-accent': 'var(--gradient-accent)'
+				'gradient-accent': 'var(--gradient-accent)',
+				'gradient-modal': 'var(--gradient-modal)'
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
 				'card': 'var(--shadow-card)',
-				'button': 'var(--shadow-button)'
+				'button': 'var(--shadow-button)',
+				'modal': 'var(--shadow-modal)'
 			},
 			transitionProperty: {
 				'smooth': 'var(--transition-smooth)',

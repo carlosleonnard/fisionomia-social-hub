@@ -42,6 +42,13 @@
     --phindex-dark: 190 25% 25%;
     --phindex-light: 190 15% 95%;
     
+    /* Vibrant Modal Colors */
+    --modal-background: 185 100% 96%;
+    --modal-card: 185 40% 92%;
+    --modal-hover: 185 60% 85%;
+    --modal-text: 190 40% 20%;
+    --modal-accent: 185 70% 45%;
+    
     /* Category icon colors */
     --category-primary: 178 100% 24%; /* #007a75 */
     --category-secondary: 186 100% 7%; /* #001f23 */
@@ -50,11 +57,13 @@
     --gradient-primary: linear-gradient(135deg, hsl(var(--phindex-teal)), hsl(var(--primary-glow)));
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
     --gradient-accent: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
+    --gradient-modal: linear-gradient(135deg, hsl(var(--modal-background)), hsl(var(--modal-card)));
     
     /* Sombras elegantes */
     --shadow-glow: 0 0 40px hsl(var(--primary) / 0.15);
     --shadow-card: 0 2px 10px hsl(var(--primary) / 0.08);
     --shadow-button: 0 4px 15px hsl(var(--primary) / 0.25);
+    --shadow-modal: 0 10px 50px hsl(var(--phindex-teal) / 0.15);
     
     /* Animações */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -105,6 +114,13 @@
     --phindex-dark: 190 25% 8%;
     --phindex-light: 190 15% 15%;
     
+    /* Vibrant Modal Colors - Dark Mode */
+    --modal-background: 185 30% 12%;
+    --modal-card: 185 25% 18%;
+    --modal-hover: 185 40% 25%;
+    --modal-text: 185 20% 85%;
+    --modal-accent: 185 70% 55%;
+    
     /* Category icon colors - dark mode */
     --category-primary: 178 100% 35%; /* Lighter version for dark mode */
     --category-secondary: 178 100% 24%; /* #007a75 for dark mode */
@@ -112,9 +128,11 @@
     --gradient-primary: linear-gradient(135deg, hsl(var(--phindex-teal)), hsl(var(--primary-glow)));
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+    --gradient-modal: linear-gradient(135deg, hsl(var(--modal-background)), hsl(var(--modal-card)));
     --shadow-glow: 0 0 40px hsl(var(--primary) / 0.2);
     --shadow-card: 0 2px 10px hsl(var(--primary) / 0.1);
     --shadow-button: 0 4px 15px hsl(var(--primary) / 0.3);
+    --shadow-modal: 0 10px 50px hsl(var(--phindex-teal) / 0.25);
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
