@@ -11,19 +11,9 @@ interface VoteModalProps {
   onSubmit: (votes: Record<string, string>) => void;
 }
 
+const phenotypeOptions = ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"];
+
 const characteristics = [
-  {
-    category: "Primary Phenotype",
-    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
-  },
-  {
-    category: "Secondary Phenotype",
-    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
-  },
-  {
-    category: "Tertiary Phenotype",
-    options: ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"]
-  },
   {
     category: "Hair Color",
     options: ["Black", "Dark Brown", "Brown"]
@@ -89,36 +79,124 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
         </DialogHeader>
         
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2">
-          {characteristics.map((characteristic) => (
-            <Card key={characteristic.category} className="p-4">
-              <div className="space-y-3">
-                <Label className="font-semibold text-phindex-dark">
-                  {characteristic.category}
-                  {characteristic.category === "Primary Phenotype" && <span className="text-red-500 ml-1">*</span>}
-                </Label>
-                <Select
-                  value={votes[characteristic.category] || ""}
-                  onValueChange={(value) => handleVoteChange(characteristic.category, value)}
-                >
-                  <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                    <SelectValue placeholder={`Selecione ${characteristic.category}`} />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background border-border/50 z-50">
-                    {characteristic.options.map((option) => (
-                      <SelectItem 
-                        key={option} 
-                        value={option}
-                        className="hover:bg-muted focus:bg-muted"
-                      >
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+          <div className="grid grid-cols-1 gap-4 pr-2">
+            {/* Phenotype Card */}
+            <Card className="p-4">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-phindex-dark text-lg">Phenotypes</h3>
+                
+                {/* Primary Phenotype */}
+                <div className="space-y-3">
+                  <Label className="font-semibold text-phindex-dark">
+                    Primary Phenotype
+                    <span className="text-red-500 ml-1">*</span>
+                  </Label>
+                  <Select
+                    value={votes["Primary Phenotype"] || ""}
+                    onValueChange={(value) => handleVoteChange("Primary Phenotype", value)}
+                  >
+                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                      <SelectValue placeholder="Selecione Primary Phenotype" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-border/50 z-50">
+                      {phenotypeOptions.map((option) => (
+                        <SelectItem 
+                          key={option} 
+                          value={option}
+                          className="hover:bg-muted focus:bg-muted"
+                        >
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Secondary Phenotype */}
+                <div className="space-y-3">
+                  <Label className="font-semibold text-phindex-dark">
+                    Secondary Phenotype
+                  </Label>
+                  <Select
+                    value={votes["Secondary Phenotype"] || ""}
+                    onValueChange={(value) => handleVoteChange("Secondary Phenotype", value)}
+                  >
+                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                      <SelectValue placeholder="Selecione Secondary Phenotype" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-border/50 z-50">
+                      {phenotypeOptions.map((option) => (
+                        <SelectItem 
+                          key={option} 
+                          value={option}
+                          className="hover:bg-muted focus:bg-muted"
+                        >
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Tertiary Phenotype */}
+                <div className="space-y-3">
+                  <Label className="font-semibold text-phindex-dark">
+                    Tertiary Phenotype
+                  </Label>
+                  <Select
+                    value={votes["Tertiary Phenotype"] || ""}
+                    onValueChange={(value) => handleVoteChange("Tertiary Phenotype", value)}
+                  >
+                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                      <SelectValue placeholder="Selecione Tertiary Phenotype" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-border/50 z-50">
+                      {phenotypeOptions.map((option) => (
+                        <SelectItem 
+                          key={option} 
+                          value={option}
+                          className="hover:bg-muted focus:bg-muted"
+                        >
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </Card>
-          ))}
+
+            {/* Other characteristics in 2 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {characteristics.map((characteristic) => (
+                <Card key={characteristic.category} className="p-4">
+                  <div className="space-y-3">
+                    <Label className="font-semibold text-phindex-dark">
+                      {characteristic.category}
+                    </Label>
+                    <Select
+                      value={votes[characteristic.category] || ""}
+                      onValueChange={(value) => handleVoteChange(characteristic.category, value)}
+                    >
+                      <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                        <SelectValue placeholder={`Selecione ${characteristic.category}`} />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border/50 z-50">
+                        {characteristic.options.map((option) => (
+                          <SelectItem 
+                            key={option} 
+                            value={option}
+                            className="hover:bg-muted focus:bg-muted"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
 
