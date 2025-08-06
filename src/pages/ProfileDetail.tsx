@@ -52,6 +52,7 @@ interface Profile {
   comments: number;
   votes: Vote[];
   physicalCharacteristics: PhysicalCharacteristic[];
+  category: string;
 }
 
 // Mock data - in a real app this would come from your database
@@ -74,6 +75,7 @@ const mockProfiles: Profile[] = [
     nasalIndex: "Mesorrhine",
     cephalicIndex: "Mesocephalic",
     eyeFolds: "Absent",
+    category: "Pop Culture",
     likes: 42,
     comments: 18,
     votes: [
@@ -253,6 +255,17 @@ export default function ProfileDetail() {
                       <div className="flex items-center justify-center gap-1 mb-4">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">{profile.location}</span>
+                      </div>
+
+                      {/* Category Badge */}
+                      <div className="flex justify-center mb-4">
+                        <Badge 
+                          variant="secondary" 
+                          className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
+                          onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
+                        >
+                          {profile.category}
+                        </Badge>
                       </div>
                       
                       {/* Ancestry Description */}
