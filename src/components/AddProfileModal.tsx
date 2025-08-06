@@ -12,6 +12,7 @@ interface AddProfileModalProps {
     name: string;
     country: string;
     gender: string;
+    category: string;
     height: number;
     ancestry: string;
     frontImageUrl: string;
@@ -25,6 +26,7 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     name: "",
     country: "",
     gender: "",
+    category: "",
     height: "",
     ancestry: "",
     frontImageUrl: "",
@@ -35,14 +37,14 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.country && formData.gender && formData.height && formData.ancestry && formData.frontImageUrl) {
+    if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl) {
       onAddProfile({
         ...formData,
         height: parseFloat(formData.height),
         frontImageUrl: formData.frontImageUrl,
         profileImageUrl: formData.profileImageUrl
       });
-      setFormData({ name: "", country: "", gender: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "" });
+      setFormData({ name: "", country: "", gender: "", category: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "" });
       setOpen(false);
     }
   };
@@ -264,20 +266,44 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="gender">Gênero *</Label>
-            <select
-              id="gender"
-              value={formData.gender}
-              onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
-              className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              required
-            >
-              <option value="">Selecionar</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Feminino">Feminino</option>
-              <option value="Outro">Outro</option>
-            </select>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gênero *</Label>
+              <select
+                id="gender"
+                value={formData.gender}
+                onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
+                className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                required
+              >
+                <option value="">Selecionar</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="category">Categoria *</Label>
+              <select
+                id="category"
+                value={formData.category}
+                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                required
+              >
+                <option value="">Selecionar categoria</option>
+                <option value="User Profiles">User Profiles</option>
+                <option value="Pop Culture">Pop Culture</option>
+                <option value="Music and Entertainment">Music and Entertainment</option>
+                <option value="Arts">Arts</option>
+                <option value="Philosophy">Philosophy</option>
+                <option value="Sciences">Sciences</option>
+                <option value="Sports">Sports</option>
+                <option value="Business">Business</option>
+                <option value="Politics">Politics</option>
+              </select>
+            </div>
           </div>
 
           <div className="space-y-2">
