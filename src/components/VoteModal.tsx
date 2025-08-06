@@ -81,13 +81,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
         <div className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-1 gap-4 pr-2">
             {/* Phenotype Card */}
-            <Card className="p-4 bg-modal-card border-modal-accent/30 shadow-card">
+            <Card className="p-4 bg-card border-border shadow-card">
               <div className="space-y-4">
-                <h3 className="font-semibold text-modal-accent text-lg">Phenotypes</h3>
+                <h3 className="font-semibold text-phindex-teal text-lg">Phenotypes</h3>
                 
                 {/* Primary Phenotype */}
                 <div className="space-y-3">
-                  <Label className="font-semibold text-modal-text">
+                  <Label className="font-semibold text-foreground">
                     Primary Phenotype
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
@@ -95,15 +95,15 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                     value={votes["Primary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Primary Phenotype", value)}
                   >
-                    <SelectTrigger className="w-full bg-modal-background border-modal-accent/40 focus:ring-2 focus:ring-modal-accent/50 text-modal-text">
-                      <SelectValue placeholder="Selecione Primary Phenotype" className="text-modal-text" />
+                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                      <SelectValue placeholder="Selecione Primary Phenotype" />
                     </SelectTrigger>
-                    <SelectContent className="bg-modal-background border-modal-accent/40 z-50">
+                    <SelectContent className="bg-background border-border/50 z-50">
                       {phenotypeOptions.map((option) => (
                         <SelectItem 
                           key={option} 
                           value={option}
-                          className="hover:bg-modal-hover focus:bg-modal-hover text-modal-text hover:text-modal-text focus:text-modal-text"
+                          className="hover:bg-muted focus:bg-muted text-foreground"
                         >
                           {option}
                         </SelectItem>
@@ -114,22 +114,22 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
 
                 {/* Secondary Phenotype */}
                 <div className="space-y-3">
-                  <Label className="font-semibold text-modal-text">
+                  <Label className="font-semibold text-foreground">
                     Secondary Phenotype
                   </Label>
                   <Select
                     value={votes["Secondary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Secondary Phenotype", value)}
                   >
-                    <SelectTrigger className="w-full bg-modal-background border-modal-accent/40 focus:ring-2 focus:ring-modal-accent/50 text-modal-text">
-                      <SelectValue placeholder="Selecione Secondary Phenotype" className="text-modal-text" />
+                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                      <SelectValue placeholder="Selecione Secondary Phenotype" />
                     </SelectTrigger>
-                    <SelectContent className="bg-modal-background border-modal-accent/40 z-50">
+                    <SelectContent className="bg-background border-border/50 z-50">
                       {phenotypeOptions.map((option) => (
                         <SelectItem 
                           key={option} 
                           value={option}
-                          className="hover:bg-modal-hover focus:bg-modal-hover text-modal-text hover:text-modal-text focus:text-modal-text"
+                          className="hover:bg-muted focus:bg-muted text-foreground"
                         >
                           {option}
                         </SelectItem>
@@ -140,22 +140,22 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
 
                 {/* Tertiary Phenotype */}
                 <div className="space-y-3">
-                  <Label className="font-semibold text-modal-text">
+                  <Label className="font-semibold text-foreground">
                     Tertiary Phenotype
                   </Label>
                   <Select
                     value={votes["Tertiary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Tertiary Phenotype", value)}
                   >
-                    <SelectTrigger className="w-full bg-modal-background border-modal-accent/40 focus:ring-2 focus:ring-modal-accent/50 text-modal-text">
-                      <SelectValue placeholder="Selecione Tertiary Phenotype" className="text-modal-text" />
+                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                      <SelectValue placeholder="Selecione Tertiary Phenotype" />
                     </SelectTrigger>
-                    <SelectContent className="bg-modal-background border-modal-accent/40 z-50">
+                    <SelectContent className="bg-background border-border/50 z-50">
                       {phenotypeOptions.map((option) => (
                         <SelectItem 
                           key={option} 
                           value={option}
-                          className="hover:bg-modal-hover focus:bg-modal-hover text-modal-text hover:text-modal-text focus:text-modal-text"
+                          className="hover:bg-muted focus:bg-muted text-foreground"
                         >
                           {option}
                         </SelectItem>
@@ -169,24 +169,24 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
             {/* Other characteristics in 2 columns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {characteristics.map((characteristic) => (
-                <Card key={characteristic.category} className="p-4 bg-modal-card border-modal-accent/30 shadow-card">
+                <Card key={characteristic.category} className="p-4 bg-card border-border shadow-card">
                   <div className="space-y-3">
-                    <Label className="font-semibold text-modal-text">
+                    <Label className="font-semibold text-foreground">
                       {characteristic.category}
                     </Label>
                     <Select
                       value={votes[characteristic.category] || ""}
                       onValueChange={(value) => handleVoteChange(characteristic.category, value)}
                     >
-                      <SelectTrigger className="w-full bg-modal-background border-modal-accent/40 focus:ring-2 focus:ring-modal-accent/50 text-modal-text">
-                        <SelectValue placeholder={`Selecione ${characteristic.category}`} className="text-modal-text" />
+                      <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                        <SelectValue placeholder={`Selecione ${characteristic.category}`} />
                       </SelectTrigger>
-                      <SelectContent className="bg-modal-background border-modal-accent/40 z-50">
+                      <SelectContent className="bg-background border-border/50 z-50">
                         {characteristic.options.map((option) => (
                           <SelectItem 
                             key={option} 
                             value={option}
-                            className="hover:bg-modal-hover focus:bg-modal-hover text-modal-text hover:text-modal-text focus:text-modal-text"
+                            className="hover:bg-muted focus:bg-muted text-foreground"
                           >
                             {option}
                           </SelectItem>
@@ -207,7 +207,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
           <Button 
             onClick={handleSubmit} 
             disabled={!isComplete}
-            className="bg-modal-accent hover:bg-modal-accent/90 text-white shadow-button"
+            className="bg-phindex-teal hover:bg-phindex-teal/90"
           >
             Confirmar Voto
           </Button>
