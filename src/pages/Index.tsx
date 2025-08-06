@@ -404,7 +404,7 @@ const Index = () => {
             {/* Popular Celebrities Section */}
             <div className="mb-12">
               <div className="relative bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent rounded-xl"></div>
+                <div className="absolute inset-0 bg-primary/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
