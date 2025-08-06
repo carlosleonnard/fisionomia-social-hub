@@ -69,8 +69,19 @@ export const AppSidebar = () => {
           <div>
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">CATEGORIES</h3>
             <div className="space-y-4">
+              {/* User Profiles Section */}
+              <button
+                className="flex items-center gap-4 w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors"
+              >
+                <span className="text-xl" style={{ color: 'hsl(var(--category-primary))' }}>👤</span>
+                <span className="text-base">User Profiles</span>
+              </button>
+              
+              {/* Separator */}
+              <div className="border-t border-border/30 my-4"></div>
+              
+              {/* Other Categories */}
               {[
-                { icon: "👤", name: "Users Profiles" },
                 { icon: "🎭", name: "Pop Culture" },
                 { icon: "🎵", name: "Music and Entertainment" },
                 { icon: "🎨", name: "Arts" },
