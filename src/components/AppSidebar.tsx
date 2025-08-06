@@ -70,6 +70,7 @@ export const AppSidebar = () => {
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">CATEGORIES</h3>
             <div className="space-y-4">
               {[
+                { icon: "👤", name: "Users Profiles" },
                 { icon: "🎭", name: "Pop Culture" },
                 { icon: "🎵", name: "Music and Entertainment" },
                 { icon: "🎨", name: "Arts" },
