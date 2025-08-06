@@ -403,7 +403,7 @@ const Index = () => {
           <div className="flex-1">
             {/* Popular Celebrities Section */}
             <div className="mb-12">
-              <div className="relative bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+              <div className="relative bg-primary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
                 <div className="absolute inset-0 bg-primary/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
@@ -458,8 +458,8 @@ const Index = () => {
 
             {/* Top User Profiles Section */}
             <div className="mb-12">
-              <div className="relative bg-gradient-to-r from-secondary/10 via-accent/10 to-primary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-transparent rounded-xl"></div>
+              <div className="relative bg-secondary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-secondary/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-secondary/20">
@@ -513,8 +513,8 @@ const Index = () => {
 
             {/* Recent Profiles Section */}
             <div className="mb-12">
-              <div className="relative bg-gradient-to-r from-accent/10 via-primary/10 to-secondary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent rounded-xl"></div>
+              <div className="relative bg-accent/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-accent/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/20">
