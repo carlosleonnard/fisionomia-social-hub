@@ -403,8 +403,19 @@ const Index = () => {
           <div className="flex-1">
             {/* Popular Celebrities Section */}
             <div className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
+              <div className="relative bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent rounded-xl"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
+                      <Vote className="h-4 w-4 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Discover and classify the most voted public figures in our phenotyping community
+                  </p>
+                </div>
               </div>
               
                     <Carousel className="w-full" opts={{ align: "start", loop: false }}>
@@ -447,8 +458,19 @@ const Index = () => {
 
             {/* Top User Profiles Section */}
             <div className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
+              <div className="relative bg-gradient-to-r from-secondary/10 via-accent/10 to-primary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-transparent rounded-xl"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-secondary/20">
+                      <Vote className="h-4 w-4 text-secondary" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Browse community member profiles and participate in phenotype classification
+                  </p>
+                </div>
               </div>
 
               <Carousel className="w-full" opts={{ align: "start", loop: false }}>
@@ -491,8 +513,19 @@ const Index = () => {
 
             {/* Recent Profiles Section */}
             <div className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
+              <div className="relative bg-gradient-to-r from-accent/10 via-primary/10 to-secondary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent rounded-xl"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/20">
+                      <Vote className="h-4 w-4 text-accent" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Explore the latest profile submissions from our growing community
+                  </p>
+                </div>
               </div>
 
                 <Carousel className="w-full" opts={{ align: "start", loop: false }}>
