@@ -8,7 +8,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
 import { CommentsSection } from "@/components/CommentsSection";
-import { VotingSection } from "@/components/VotingSection";
+
 import { VoteModal } from "@/components/VoteModal";
 import { useState } from "react";
 
@@ -55,7 +55,6 @@ interface Profile {
   category: string;
 }
 
-// Mock data - in a real app this would come from your database
 const mockProfiles: Profile[] = [
   {
     id: "1",
@@ -176,7 +175,7 @@ export default function ProfileDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [showComments, setShowComments] = useState(false);
-  const [showVoting, setShowVoting] = useState(false);
+  
   const [showVoteModal, setShowVoteModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Para Supabase integration
 
@@ -220,361 +219,288 @@ export default function ProfileDetail() {
 
           {/* Main Content */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Left Column */}
-              <div className="space-y-6">
-                {/* Profile Images and Basic Info */}
-                <Card className="bg-gradient-card border-phindex-teal/20">
-                  <CardContent className="p-6">
+            {/* Profile Images and Basic Info - Full width */}
+            <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  {/* Duas fotos lado a lado */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="text-center">
-                      {/* Duas fotos lado a lado */}
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="text-center">
-                          <img 
-                            src={profile.frontImage} 
-                            alt={`${profile.name} - frente`}
-                            className="w-full max-w-xs mx-auto rounded-lg"
-                          />
-                          <p className="text-xs text-muted-foreground mt-2">Frente</p>
-                        </div>
-                        <div className="text-center">
-                          <img 
-                            src={profile.sideImage} 
-                            alt={`${profile.name} - lado`}
-                            className="w-full max-w-xs mx-auto rounded-lg"
-                          />
-                          <p className="text-xs text-muted-foreground mt-2">Perfil</p>
-                        </div>
-                      </div>
-                      <h1 className="text-2xl font-bold text-phindex-teal mb-2">
-                        {profile.name}
-                      </h1>
-                      
-                      {/* Category Badge */}
-                      <div className="flex justify-center gap-2 mb-4 flex-wrap">
-                        <Badge 
-                          variant="secondary" 
-                          className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
-                          onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
-                        >
-                          {profile.category}
-                        </Badge>
-                        
-                        {/* Phenotype Badges */}
-                        {(() => {
-                          const primaryPhenotype = profile.votes
-                            .filter(vote => vote.category === 'primary')
-                            .sort((a, b) => b.percentage - a.percentage)[0];
-                          
-                          const secondaryPhenotype = profile.votes
-                            .filter(vote => vote.category === 'secondary')
-                            .sort((a, b) => b.percentage - a.percentage)[0];
-                          
-                          return (
-                            <>
-                              {primaryPhenotype && (
-                                <Badge 
-                                  variant="default" 
-                                  className="bg-primary text-primary-foreground"
-                                >
-                                  1º {primaryPhenotype.classification}
-                                </Badge>
-                              )}
-                              {secondaryPhenotype && (
-                                <Badge 
-                                  variant="outline" 
-                                  className="bg-secondary/20 text-secondary-foreground border-secondary"
-                                >
-                                  2º {secondaryPhenotype.classification}
-                                </Badge>
-                              )}
-                            </>
-                          );
-                        })()}
-                      </div>
-                      
-                      <p className="text-muted-foreground mb-2">
-                        {profile.age} anos • {profile.gender} • {profile.height}
-                      </p>
-                      <div className="flex items-center justify-center gap-1 mb-4">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">{profile.location}</span>
-                      </div>
-                      
-                      {/* Ancestry Description */}
-                      <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
-                        <div className="p-4 bg-muted/30 rounded-lg text-left">
-                          <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
-                          <p className="text-sm text-foreground leading-relaxed">
-                            {profile.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Created By Information */}
-                      <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
-                        Criado por <span className="font-medium text-phindex-teal">Admin User</span> em 4 de agosto de 2025
-                      </p>
-                      
-                      <div className="flex justify-center gap-4 mb-6">
-                        <div 
-                          className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                          onClick={() => {
-                            const votingSection = document.querySelector('[data-voting-section]');
-                            if (votingSection) {
-                              votingSection.scrollIntoView({ behavior: 'smooth' });
-                            }
-                          }}
-                        >
-                          <Vote className="h-4 w-4 text-phindex-teal" />
-                          <span>{profile.likes} votos</span>
-                        </div>
-                        <div 
-                          className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                          onClick={() => {
-                            const commentsSection = document.querySelector('[data-comments-section]');
-                            if (commentsSection) {
-                              commentsSection.scrollIntoView({ behavior: 'smooth' });
-                            }
-                          }}
-                        >
-                          <MessageSquare className="h-4 w-4 text-blue-500" />
-                          <span>{profile.comments}</span>
-                        </div>
-                      </div>
-
-                       <div className="space-y-2">
-                         {isLoggedIn ? (
-                           <Button 
-                             onClick={() => setShowVoteModal(true)}
-                             className="w-full"
-                             variant="default"
-                           >
-                             <Users className="mr-2 h-4 w-4" />
-                             Vote
-                           </Button>
-                         ) : (
-                          <Button 
-                            onClick={() => setShowVoteModal(true)}
-                            className="w-full"
-                            variant="outline"
-                          >
-                            <Users className="mr-2 h-4 w-4" />
-                            Vote
-                          </Button>
-                         )}
-                       </div>
+                      <img 
+                        src={profile.frontImage} 
+                        alt={`${profile.name} - frente`}
+                        className="w-full max-w-xs mx-auto rounded-lg"
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">Frente</p>
                     </div>
-                  </CardContent>
-                </Card>
+                    <div className="text-center">
+                      <img 
+                        src={profile.sideImage} 
+                        alt={`${profile.name} - lado`}
+                        className="w-full max-w-xs mx-auto rounded-lg"
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">Perfil</p>
+                    </div>
+                  </div>
+                  <h1 className="text-2xl font-bold text-phindex-teal mb-2">
+                    {profile.name}
+                  </h1>
+                  
+                  {/* Category Badge */}
+                  <div className="flex justify-center gap-2 mb-4 flex-wrap">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
+                      onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
+                    >
+                      {profile.category}
+                    </Badge>
+                    
+                    {/* Phenotype Badges */}
+                    {(() => {
+                      const primaryPhenotype = profile.votes
+                        .filter(vote => vote.category === 'primary')
+                        .sort((a, b) => b.percentage - a.percentage)[0];
+                      
+                      const secondaryPhenotype = profile.votes
+                        .filter(vote => vote.category === 'secondary')
+                        .sort((a, b) => b.percentage - a.percentage)[0];
+                      
+                      return (
+                        <>
+                          {primaryPhenotype && (
+                            <Badge 
+                              variant="default" 
+                              className="bg-primary text-primary-foreground"
+                            >
+                              1º {primaryPhenotype.classification}
+                            </Badge>
+                          )}
+                          {secondaryPhenotype && (
+                            <Badge 
+                              variant="outline" 
+                              className="bg-secondary/20 text-secondary-foreground border-secondary"
+                            >
+                              2º {secondaryPhenotype.classification}
+                            </Badge>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                  
+                  <p className="text-muted-foreground mb-2">
+                    {profile.age} anos • {profile.gender} • {profile.height}
+                  </p>
+                  <div className="flex items-center justify-center gap-1 mb-4">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-muted-foreground">{profile.location}</span>
+                  </div>
+                  
+                  {/* Ancestry Description */}
+                  <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
+                    <div className="p-4 bg-muted/30 rounded-lg text-left">
+                      <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                      <p className="text-sm text-foreground leading-relaxed">
+                        {profile.description}
+                      </p>
+                    </div>
+                  </div>
 
-                {/* Two-column layout for classifications */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* General Phenotype Classification */}
-                  <Card className="bg-gradient-card border-phindex-teal/20">
-                    <CardHeader>
-                      <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
-                    </CardHeader>
-                    <CardContent className="h-52 overflow-y-auto">
-                      <div className="space-y-6">
-                        {/* Primary Geographic Region */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Geographic Classification</h4>
-                          <div className="space-y-3">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                                  Sul Europa
-                                </Badge>
-                                <span className="text-sm font-medium">65%</span>
-                              </div>
-                              <Progress value={65} className="h-2" />
-                            </div>
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                                  América do Sul
-                                </Badge>
-                                <span className="text-sm font-medium">25%</span>
-                              </div>
-                              <Progress value={25} className="h-2" />
-                            </div>
-                          </div>
-                        </div>
+                  {/* Created By Information */}
+                  <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
+                    Criado por <span className="font-medium text-phindex-teal">Admin User</span> em 4 de agosto de 2025
+                  </p>
+                  
+                  <div className="flex justify-center gap-4 mb-6">
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                      onClick={() => {
+                        const votingSection = document.querySelector('[data-voting-section]');
+                        if (votingSection) {
+                          votingSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <Vote className="h-4 w-4 text-phindex-teal" />
+                      <span>{profile.likes} votos</span>
+                    </div>
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                      onClick={() => {
+                        const commentsSection = document.querySelector('[data-comments-section]');
+                        if (commentsSection) {
+                          commentsSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <MessageSquare className="h-4 w-4 text-blue-500" />
+                      <span>{profile.comments}</span>
+                    </div>
+                  </div>
 
-                        {/* Secondary Geographic Region */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Geographic Classification</h4>
-                          <div className="space-y-3">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge variant="outline" className="text-sm">
-                                  Norte Europa
-                                </Badge>
-                                <span className="text-sm font-medium">8%</span>
-                              </div>
-                              <Progress value={8} className="h-2" />
-                            </div>
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge variant="outline" className="text-sm">
-                                  Oriente Médio
-                                </Badge>
-                                <span className="text-sm font-medium">2%</span>
-                              </div>
-                              <Progress value={2} className="h-2" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Tertiary Geographic Region */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Geographic Classification</h4>
-                          <div className="space-y-3">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge variant="outline" className="text-sm opacity-75">
-                                  Norte África
-                                </Badge>
-                                <span className="text-sm font-medium">3%</span>
-                              </div>
-                              <Progress value={3} className="h-2" />
-                            </div>
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge variant="outline" className="text-sm opacity-75">
-                                  Ásia Central
-                                </Badge>
-                                <span className="text-sm font-medium">1%</span>
-                              </div>
-                              <Progress value={1} className="h-2" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Phenotypic Classification */}
-                  <Card className="bg-gradient-card border-phindex-teal/20" data-voting-section>
-                    <CardHeader>
-                      <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
-                    </CardHeader>
-                    <CardContent className="h-52 overflow-y-auto">
-                      <div className="space-y-6">
-                        {/* Primary Phenotype */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Phenotype</h4>
-                          <div className="space-y-3">
-                            {profile.votes
-                              .filter(vote => vote.category === 'primary')
-                              .sort((a, b) => b.percentage - a.percentage)
-                              .slice(0, 2)
-                              .map((vote, index) => (
-                              <div key={index} className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                                    {vote.classification}
-                                  </Badge>
-                                  <span className="text-sm font-medium">{vote.percentage}%</span>
-                                </div>
-                                <Progress value={vote.percentage} className="h-2" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Secondary Phenotype */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Phenotype</h4>
-                          <div className="space-y-3">
-                            {profile.votes
-                              .filter(vote => vote.category === 'secondary')
-                              .sort((a, b) => b.percentage - a.percentage)
-                              .slice(0, 2)
-                              .map((vote, index) => (
-                              <div key={index} className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <Badge variant="outline" className="text-sm">
-                                    {vote.classification}
-                                  </Badge>
-                                  <span className="text-sm font-medium">{vote.percentage}%</span>
-                                </div>
-                                <Progress value={vote.percentage} className="h-2" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Tertiary Phenotype */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Phenotype</h4>
-                          <div className="space-y-3">
-                            {profile.votes
-                              .filter(vote => vote.category === 'tertiary')
-                              .sort((a, b) => b.percentage - a.percentage)
-                              .slice(0, 2)
-                              .map((vote, index) => (
-                              <div key={index} className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <Badge variant="outline" className="text-sm opacity-75">
-                                    {vote.classification}
-                                  </Badge>
-                                  <span className="text-sm font-medium">{vote.percentage}%</span>
-                                </div>
-                                <Progress value={vote.percentage} className="h-2" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                   <div className="space-y-2">
+                     {isLoggedIn ? (
+                       <Button 
+                         onClick={() => setShowVoteModal(true)}
+                         className="w-full"
+                         variant="default"
+                       >
+                         <Users className="mr-2 h-4 w-4" />
+                         Vote
+                       </Button>
+                     ) : (
+                      <Button 
+                        onClick={() => setShowVoteModal(true)}
+                        className="w-full"
+                        variant="outline"
+                      >
+                        <Users className="mr-2 h-4 w-4" />
+                        Vote
+                      </Button>
+                     )}
+                   </div>
                 </div>
+              </CardContent>
+            </Card>
 
-              </div>
-            </div>
-            
-            {/* Physical Characteristics - Centered below the grid */}
-            <div className="mt-8">
+            {/* Two-column layout for classifications - Each 50% width */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* General Phenotype Classification */}
               <Card className="bg-gradient-card border-phindex-teal/20">
                 <CardHeader>
-                  <CardTitle className="text-phindex-teal flex items-center gap-2">
-                    <BarChart className="h-5 w-5" />
-                    Physical Characteristics
-                  </CardTitle>
+                  <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {profile.physicalCharacteristics.map((characteristic, index) => (
-                      <div key={index} className="p-4 bg-muted/30 rounded-lg">
-                        <h4 className="font-semibold text-sm text-phindex-teal mb-3">
-                          {characteristic.name}
-                        </h4>
+                <CardContent className="h-52 overflow-y-auto">
+                  <div className="space-y-6">
+                    {/* Primary Geographic Region */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Geographic Classification</h4>
+                      <div className="space-y-3">
                         <div className="space-y-2">
-                          {characteristic.votes.map((vote, voteIndex) => (
-                            <div key={voteIndex} className="space-y-1">
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="text-foreground">{vote.option}</span>
-                                <span className="text-muted-foreground">
-                                  {vote.count} votes ({vote.percentage}%)
-                                </span>
-                              </div>
-                              <Progress value={vote.percentage} className="h-1.5" />
-                            </div>
-                          ))}
+                          <div className="flex items-center justify-between">
+                            <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
+                              Sul Europa
+                            </Badge>
+                            <span className="text-sm font-medium">65%</span>
+                          </div>
+                          <Progress value={65} className="h-2" />
                         </div>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
+                              América do Sul
+                            </Badge>
+                            <span className="text-sm font-medium">25%</span>
+                          </div>
+                          <Progress value={25} className="h-2" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Secondary Geographic Region */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Geographic Classification</h4>
+                      <div className="space-y-3">
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="outline" className="text-sm">
+                              Norte Europa
+                            </Badge>
+                            <span className="text-sm font-medium">8%</span>
+                          </div>
+                          <Progress value={8} className="h-2" />
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="outline" className="text-sm">
+                              Oriente Médio
+                            </Badge>
+                            <span className="text-sm font-medium">2%</span>
+                          </div>
+                          <Progress value={2} className="h-2" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Phenotypic Classification */}
+              <Card className="bg-gradient-card border-phindex-teal/20">
+                <CardHeader>
+                  <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
+                </CardHeader>
+                <CardContent className="h-52 overflow-y-auto">
+                  <div className="space-y-4">
+                    {profile.votes.map((vote, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Badge
+                              variant={vote.category === 'primary' ? 'default' : 
+                                      vote.category === 'secondary' ? 'secondary' : 'outline'}
+                              className={
+                                vote.category === 'primary' 
+                                  ? 'bg-primary text-primary-foreground' 
+                                  : vote.category === 'secondary'
+                                  ? 'bg-secondary text-secondary-foreground'
+                                  : 'bg-muted text-muted-foreground'
+                              }
+                            >
+                              {vote.classification}
+                            </Badge>
+                          </div>
+                          <span className="text-sm font-medium">{vote.percentage}%</span>
+                        </div>
+                        <Progress value={vote.percentage} className="h-2" />
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
             </div>
-            
-            {/* Comments Section - Fixed below the grid */}
-            <div className="mt-8" data-comments-section>
+
+            {/* Physical Characteristics - Full width */}
+            <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
+              <CardHeader>
+                <CardTitle className="text-phindex-teal">Physical Characteristics</CardTitle>
+              </CardHeader>
+              <CardContent className="h-96 overflow-y-auto">
+                <div className="grid gap-6">
+                  {profile.physicalCharacteristics.map((characteristic, index) => (
+                    <div key={index} className="space-y-3">
+                      <h4 className="font-semibold text-phindex-teal">{characteristic.name}</h4>
+                      <div className="space-y-2">
+                        {characteristic.votes.map((vote, voteIndex) => (
+                          <div key={voteIndex} className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm">{vote.option}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                                <span className="text-xs text-muted-foreground">({vote.count})</span>
+                              </div>
+                            </div>
+                            <Progress value={vote.percentage} className="h-2" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Comments Section */}
+            <div data-comments-section>
               <CommentsSection 
                 profileId={profile.id}
+                onAddComment={(profileId, content) => {
+                  console.log("Adding comment:", profileId, content);
+                }}
+                onLikeComment={(commentId) => {
+                  console.log("Liking comment:", commentId);
+                }}
                 comments={[
                   {
                     id: "1",
@@ -582,7 +508,7 @@ export default function ProfileDetail() {
                       name: "Carlos Silva",
                       avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
                     },
-                    content: "Características muito interessantes! Lembra muito a diversidade encontrada no sul do Brasil.",
+                    content: "Claramente mediterrâneo, com fortes influências ibéricas. As características faciais e a estrutura óssea são muito típicas dessa região.",
                     timestamp: "2024-01-15T10:30:00Z",
                     likes: 12,
                     isLiked: false,
@@ -591,12 +517,12 @@ export default function ProfileDetail() {
                   {
                     id: "2",
                     user: {
-                      name: "Ana Rodrigues",
-                      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face"
+                      name: "Ana Rodriguez",
+                      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face"
                     },
-                    content: "Fenótipo mediterrâneo bem definido. A mistura espanhola e italiana é bem evidente nas características faciais.",
-                    timestamp: "2024-01-15T09:45:00Z",
-                    likes: 24,
+                    content: "Concordo com a classificação mediterrânea. A pigmentação da pele e a estrutura do cabelo são característicos dessa ancestralidade.",
+                    timestamp: "2024-01-15T09:15:00Z",
+                    likes: 8,
                     isLiked: true,
                     userVotes: { primary: "Ibérico", secondary: "Mediterrâneo", tertiary: "Ameríndio" }
                   },
@@ -618,46 +544,30 @@ export default function ProfileDetail() {
                       name: "Maria Santos",
                       avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=32&h=32&fit=crop&crop=face"
                     },
-                    content: "Muito boa análise antropológica! 👏",
-                    timestamp: "2024-01-15T07:15:00Z",
-                    likes: 5,
+                    content: "A estrutura nasal e a forma dos olhos sugerem uma mistura interessante de ancestralidades.",
+                    timestamp: "2024-01-15T07:45:00Z",
+                    likes: 6,
                     isLiked: false,
-                    userVotes: { primary: "Mediterrâneo", secondary: "Ibérico", tertiary: "Alpino" }
+                    userVotes: { primary: "Mediterrâneo", secondary: "Alpino" }
                   }
                 ]}
-                onAddComment={(comment) => console.log('New comment:', comment)}
-                onLikeComment={(commentId) => console.log('Liked comment:', commentId)}
               />
             </div>
+
+            {/* Vote Modal */}
+            {showVoteModal && (
+              <VoteModal
+                isOpen={showVoteModal}
+                onClose={() => setShowVoteModal(false)}
+                onSubmit={(votes) => {
+                  console.log("Submitting votes:", votes);
+                  setShowVoteModal(false);
+                }}
+              />
+            )}
           </div>
         </div>
-
-        {/* Voting Section */}
-        {showVoting && (
-          <div className="mt-8">
-            <VotingSection 
-              profileId={profile.id}
-              votes={profile.votes}
-              hasUserVoted={false}
-              onVote={(profileId, classification) => {
-                console.log(`Voted for: ${classification}`);
-                setShowVoting(false);
-              }}
-            />
-          </div>
-        )}
-
       </div>
-
-      {/* Vote Modal */}
-      <VoteModal
-        isOpen={showVoteModal}
-        onClose={() => setShowVoteModal(false)}
-        onSubmit={(votes) => {
-          console.log('Submitted votes:', votes);
-          // Aqui você processará os votos quando integrar com Supabase
-        }}
-      />
 
       <Footer />
     </div>
