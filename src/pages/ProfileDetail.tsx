@@ -368,6 +368,37 @@ export default function ProfileDetail() {
                   </CardContent>
                 </Card>
 
+                {/* General Phenotype Classification */}
+                <Card className="bg-gradient-card border-phindex-teal/20">
+                  <CardHeader>
+                    <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground">
+                          Geographic Region
+                        </label>
+                        <select className="w-full p-2 border border-border rounded-md bg-background text-foreground">
+                          <option value="">Select a region</option>
+                          <option value="north-europe">Norte Europa</option>
+                          <option value="south-europe">Sul Europa</option>
+                          <option value="southeast-asia">Sudeste Asiático</option>
+                          <option value="north-africa">Norte Africano</option>
+                          <option value="sub-saharan-africa">África Subsaariana</option>
+                          <option value="middle-east">Oriente Médio</option>
+                          <option value="east-asia">Ásia Oriental</option>
+                          <option value="south-asia">Sul da Ásia</option>
+                          <option value="central-asia">Ásia Central</option>
+                          <option value="north-america">América do Norte</option>
+                          <option value="south-america">América do Sul</option>
+                          <option value="oceania">Oceania</option>
+                        </select>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* Phenotypic Classification */}
                 <Card className="bg-gradient-card border-phindex-teal/20" data-voting-section>
                   <CardHeader>
