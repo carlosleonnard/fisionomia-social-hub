@@ -257,6 +257,52 @@ export default function ProfileDetail() {
                     </Badge>
                   </div>
                   
+                  {/* General Phenotypes */}
+                  <div className="flex justify-center gap-2 mb-3 flex-wrap">
+                    {(() => {
+                      const primaryGeneral = profile.votes
+                        .filter(vote => vote.category === 'primary')
+                        .sort((a, b) => b.percentage - a.percentage)[0];
+                      
+                      const secondaryGeneral = profile.votes
+                        .filter(vote => vote.category === 'secondary')
+                        .sort((a, b) => b.percentage - a.percentage)[0];
+                        
+                      const tertiaryGeneral = profile.votes
+                        .filter(vote => vote.category === 'tertiary')
+                        .sort((a, b) => b.percentage - a.percentage)[0];
+                      
+                      return (
+                        <>
+                          {primaryGeneral && (
+                            <Badge 
+                              variant="default" 
+                              className="bg-primary text-primary-foreground"
+                            >
+                              Primário: {primaryGeneral.classification}
+                            </Badge>
+                          )}
+                          {secondaryGeneral && (
+                            <Badge 
+                              variant="secondary" 
+                              className="bg-secondary text-secondary-foreground"
+                            >
+                              Secundário: {secondaryGeneral.classification}
+                            </Badge>
+                          )}
+                          {tertiaryGeneral && (
+                            <Badge 
+                              variant="outline" 
+                              className="bg-muted text-muted-foreground"
+                            >
+                              Terciário: {tertiaryGeneral.classification}
+                            </Badge>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                  
                   {/* Phenotype Badges */}
                   <div className="flex justify-center gap-2 mb-4 flex-wrap">
                     {(() => {
