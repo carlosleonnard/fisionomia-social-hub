@@ -530,42 +530,42 @@ export default function ProfileDetail() {
                 </Card>
 
               </div>
-
-              {/* Right Column - Physical Characteristics with Bar Charts */}
-              <div className="space-y-6">
-                <Card className="bg-gradient-card border-phindex-teal/20">
-                  <CardHeader>
-                    <CardTitle className="text-phindex-teal flex items-center gap-2">
-                      <BarChart className="h-5 w-5" />
-                      Physical Characteristics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      {profile.physicalCharacteristics.map((characteristic, index) => (
-                        <div key={index} className="p-4 bg-muted/30 rounded-lg">
-                          <h4 className="font-semibold text-sm text-phindex-teal mb-3">
-                            {characteristic.name}
-                          </h4>
-                          <div className="space-y-2">
-                            {characteristic.votes.map((vote, voteIndex) => (
-                              <div key={voteIndex} className="space-y-1">
-                                <div className="flex items-center justify-between text-xs">
-                                  <span className="text-foreground">{vote.option}</span>
-                                  <span className="text-muted-foreground">
-                                    {vote.count} votes ({vote.percentage}%)
-                                  </span>
-                                </div>
-                                <Progress value={vote.percentage} className="h-1.5" />
+            </div>
+            
+            {/* Physical Characteristics - Centered below the grid */}
+            <div className="mt-8">
+              <Card className="bg-gradient-card border-phindex-teal/20">
+                <CardHeader>
+                  <CardTitle className="text-phindex-teal flex items-center gap-2">
+                    <BarChart className="h-5 w-5" />
+                    Physical Characteristics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {profile.physicalCharacteristics.map((characteristic, index) => (
+                      <div key={index} className="p-4 bg-muted/30 rounded-lg">
+                        <h4 className="font-semibold text-sm text-phindex-teal mb-3">
+                          {characteristic.name}
+                        </h4>
+                        <div className="space-y-2">
+                          {characteristic.votes.map((vote, voteIndex) => (
+                            <div key={voteIndex} className="space-y-1">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-foreground">{vote.option}</span>
+                                <span className="text-muted-foreground">
+                                  {vote.count} votes ({vote.percentage}%)
+                                </span>
                               </div>
-                            ))}
-                          </div>
+                              <Progress value={vote.percentage} className="h-1.5" />
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
             
             {/* Comments Section - Fixed below the grid */}
