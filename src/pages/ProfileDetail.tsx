@@ -246,33 +246,6 @@ export default function ProfileDetail() {
                     {profile.name}
                   </h1>
                   
-                  {/* Pop Culture Badge */}
-                  <div className="mb-3">
-                    <Badge variant="secondary" className="bg-phindex-teal/10 text-phindex-teal text-sm">
-                      Pop Culture
-                    </Badge>
-                  </div>
-                  
-                  {/* Most Voted Characteristics Summary */}
-                  <div className="mb-4 p-3 bg-muted/20 rounded-lg border border-border/30">
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="space-y-1">
-                        <div><span className="font-medium text-phindex-teal">Geografia:</span> Sul Europa</div>
-                        <div><span className="font-medium text-phindex-teal">Fenótipo:</span> Mediterranean</div>
-                        <div><span className="font-medium text-phindex-teal">Cabelo:</span> Black, Ondulado</div>
-                        <div><span className="font-medium text-phindex-teal">Olhos:</span> Brown</div>
-                        <div><span className="font-medium text-phindex-teal">Pele:</span> Light Brown</div>
-                      </div>
-                      <div className="space-y-1">
-                        <div><span className="font-medium text-phindex-teal">Nariz:</span> Médio</div>
-                        <div><span className="font-medium text-phindex-teal">Face:</span> Oval, Médio</div>
-                        <div><span className="font-medium text-phindex-teal">Corpo:</span> Mesomorfo</div>
-                        <div><span className="font-medium text-phindex-teal">Maxilar:</span> Angular</div>
-                        <div><span className="font-medium text-phindex-teal">Cabeça:</span> Médio</div>
-                      </div>
-                    </div>
-                  </div>
-                  
                   {/* Category Badge */}
                   <div className="flex justify-center gap-2 mb-4 flex-wrap">
                     <Badge 
