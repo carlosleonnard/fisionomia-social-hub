@@ -442,10 +442,10 @@ export default function ProfileDetail() {
                 </CardContent>
               </Card>
 
-              {/* Phenotypic Classification */}
+              {/* Specific Phenotype Classification */}
               <Card className="bg-gradient-card border-phindex-teal/20">
                 <CardHeader>
-                  <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
+                  <CardTitle className="text-phindex-teal">Specific Phenotype Classification</CardTitle>
                 </CardHeader>
                 <CardContent className="h-52 overflow-y-auto">
                   <div className="space-y-4">
