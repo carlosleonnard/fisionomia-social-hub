@@ -424,6 +424,31 @@ export default function ProfileDetail() {
                           </div>
                         </div>
                       </div>
+
+                      {/* Tertiary Geographic Region */}
+                      <div>
+                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Geographic Classification</h4>
+                        <div className="space-y-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Badge variant="outline" className="text-sm opacity-75">
+                                Norte África
+                              </Badge>
+                              <span className="text-sm font-medium">3%</span>
+                            </div>
+                            <Progress value={3} className="h-2" />
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Badge variant="outline" className="text-sm opacity-75">
+                                Ásia Central
+                              </Badge>
+                              <span className="text-sm font-medium">1%</span>
+                            </div>
+                            <Progress value={1} className="h-2" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
