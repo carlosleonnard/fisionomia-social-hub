@@ -372,9 +372,9 @@ export default function ProfileDetail() {
                   <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
                 </CardHeader>
                 <CardContent className="h-52 overflow-y-auto">
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {/* Primary Geographic Region */}
-                    <div>
+                    <div className="bg-muted/30 p-3 rounded-lg">
                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Geographic Classification</h4>
                       <div className="space-y-3">
                         <div className="space-y-2">
@@ -399,7 +399,7 @@ export default function ProfileDetail() {
                     </div>
 
                     {/* Secondary Geographic Region */}
-                    <div>
+                    <div className="bg-muted/30 p-3 rounded-lg">
                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Geographic Classification</h4>
                       <div className="space-y-3">
                         <div className="space-y-2">
@@ -422,6 +422,22 @@ export default function ProfileDetail() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Tertiary Geographic Region */}
+                    <div className="bg-muted/30 p-3 rounded-lg">
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Geographic Classification</h4>
+                      <div className="space-y-3">
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="outline" className="text-sm">
+                              Ásia Central
+                            </Badge>
+                            <span className="text-sm font-medium">2%</span>
+                          </div>
+                          <Progress value={2} className="h-2" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -433,29 +449,59 @@ export default function ProfileDetail() {
                 </CardHeader>
                 <CardContent className="h-52 overflow-y-auto">
                   <div className="space-y-4">
-                    {profile.votes.map((vote, index) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant={vote.category === 'primary' ? 'default' : 
-                                      vote.category === 'secondary' ? 'secondary' : 'outline'}
-                              className={
-                                vote.category === 'primary' 
-                                  ? 'bg-primary text-primary-foreground' 
-                                  : vote.category === 'secondary'
-                                  ? 'bg-secondary text-secondary-foreground'
-                                  : 'bg-muted text-muted-foreground'
-                              }
-                            >
-                              {vote.classification}
-                            </Badge>
+                    {/* Primary Phenotypes */}
+                    <div className="bg-muted/30 p-3 rounded-lg">
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary</h4>
+                      <div className="space-y-3">
+                        {profile.votes.filter(vote => vote.category === 'primary').map((vote, index) => (
+                          <div key={index} className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Badge variant="default" className="bg-primary text-primary-foreground text-sm">
+                                {vote.classification}
+                              </Badge>
+                              <span className="text-sm font-medium">{vote.percentage}%</span>
+                            </div>
+                            <Progress value={vote.percentage} className="h-2" />
                           </div>
-                          <span className="text-sm font-medium">{vote.percentage}%</span>
-                        </div>
-                        <Progress value={vote.percentage} className="h-2" />
+                        ))}
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Secondary Phenotypes */}
+                    <div className="bg-muted/30 p-3 rounded-lg">
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary</h4>
+                      <div className="space-y-3">
+                        {profile.votes.filter(vote => vote.category === 'secondary').map((vote, index) => (
+                          <div key={index} className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Badge variant="secondary" className="bg-secondary text-secondary-foreground text-sm">
+                                {vote.classification}
+                              </Badge>
+                              <span className="text-sm font-medium">{vote.percentage}%</span>
+                            </div>
+                            <Progress value={vote.percentage} className="h-2" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Tertiary Phenotypes */}
+                    <div className="bg-muted/30 p-3 rounded-lg">
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary</h4>
+                      <div className="space-y-3">
+                        {profile.votes.filter(vote => vote.category === 'tertiary').map((vote, index) => (
+                          <div key={index} className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Badge variant="outline" className="bg-muted text-muted-foreground text-sm">
+                                {vote.classification}
+                              </Badge>
+                              <span className="text-sm font-medium">{vote.percentage}%</span>
+                            </div>
+                            <Progress value={vote.percentage} className="h-2" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
