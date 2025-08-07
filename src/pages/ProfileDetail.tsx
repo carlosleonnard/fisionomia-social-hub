@@ -246,8 +246,8 @@ export default function ProfileDetail() {
                     {profile.name}
                   </h1>
                   
-                  {/* Category Badge */}
-                  <div className="flex justify-center gap-2 mb-4 flex-wrap">
+                  {/* Pop Culture Badge */}
+                  <div className="flex justify-center mb-3">
                     <Badge 
                       variant="secondary" 
                       className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
@@ -255,8 +255,10 @@ export default function ProfileDetail() {
                     >
                       {profile.category}
                     </Badge>
-                    
-                    {/* Phenotype Badges */}
+                  </div>
+                  
+                  {/* Phenotype Badges */}
+                  <div className="flex justify-center gap-2 mb-4 flex-wrap">
                     {(() => {
                       const primaryPhenotype = profile.votes
                         .filter(vote => vote.category === 'primary')
