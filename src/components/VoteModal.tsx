@@ -71,7 +71,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
     onClose();
   };
 
-  const isComplete = votes["Primary Geographic"] !== undefined;
+  const isComplete = votes["Primary Geographic"] !== undefined && votes["Primary Phenotype"] !== undefined;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -93,6 +93,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                     Primary Geographic
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-2">Selecione a região geográfica que melhor representa a ancestralidade primária</p>
                   <Select
                     value={votes["Primary Geographic"] || ""}
                     onValueChange={(value) => handleVoteChange("Primary Geographic", value)}
@@ -119,6 +120,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                   <Label className="font-semibold text-foreground">
                     Secondary Geographic
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica secundária, se aplicável</p>
                   <Select
                     value={votes["Secondary Geographic"] || ""}
                     onValueChange={(value) => handleVoteChange("Secondary Geographic", value)}
@@ -145,6 +147,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                   <Label className="font-semibold text-foreground">
                     Tertiary Geographic
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica terciária, se aplicável</p>
                   <Select
                     value={votes["Tertiary Geographic"] || ""}
                     onValueChange={(value) => handleVoteChange("Tertiary Geographic", value)}
@@ -177,7 +180,9 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                 <div className="space-y-3">
                   <Label className="font-semibold text-foreground">
                     Primary Phenotype
+                    <span className="text-red-500 ml-1">*</span>
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-2">Selecione o fenótipo específico que melhor representa as características físicas</p>
                   <Select
                     value={votes["Primary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Primary Phenotype", value)}
@@ -204,6 +209,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                   <Label className="font-semibold text-foreground">
                     Secondary Phenotype
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo secundário, se aplicável</p>
                   <Select
                     value={votes["Secondary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Secondary Phenotype", value)}
@@ -230,6 +236,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                   <Label className="font-semibold text-foreground">
                     Tertiary Phenotype
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo terciário, se aplicável</p>
                   <Select
                     value={votes["Tertiary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Tertiary Phenotype", value)}
@@ -261,6 +268,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
                     <Label className="font-semibold text-foreground">
                       {characteristic.category}
                     </Label>
+                    <p className="text-xs text-muted-foreground mb-2">Avalie esta característica física específica</p>
                     <Select
                       value={votes[characteristic.category] || ""}
                       onValueChange={(value) => handleVoteChange(characteristic.category, value)}
