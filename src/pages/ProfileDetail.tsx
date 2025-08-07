@@ -368,166 +368,169 @@ export default function ProfileDetail() {
                   </CardContent>
                 </Card>
 
-                {/* Phenotypic Classification */}
-                <Card className="bg-gradient-card border-phindex-teal/20" data-voting-section>
-                  <CardHeader>
-                    <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
-                  </CardHeader>
-                  <CardContent className="h-52 overflow-y-auto">
-                    <div className="space-y-6">
-                      {/* Primary Phenotype */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Phenotype</h4>
-                        <div className="space-y-3">
-                          {profile.votes
-                            .filter(vote => vote.category === 'primary')
-                            .sort((a, b) => b.percentage - a.percentage)
-                            .slice(0, 2)
-                            .map((vote, index) => (
-                            <div key={index} className="space-y-2">
+                {/* Two-column layout for classifications */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* General Phenotype Classification */}
+                  <Card className="bg-gradient-card border-phindex-teal/20">
+                    <CardHeader>
+                      <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-52 overflow-y-auto">
+                      <div className="space-y-6">
+                        {/* Primary Geographic Region */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Geographic Classification</h4>
+                          <div className="space-y-3">
+                            <div className="space-y-2">
                               <div className="flex items-center justify-between">
                                 <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                                  {vote.classification}
+                                  Sul Europa
                                 </Badge>
-                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                                <span className="text-sm font-medium">65%</span>
                               </div>
-                              <Progress value={vote.percentage} className="h-2" />
+                              <Progress value={65} className="h-2" />
                             </div>
-                          ))}
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
+                                  América do Sul
+                                </Badge>
+                                <span className="text-sm font-medium">25%</span>
+                              </div>
+                              <Progress value={25} className="h-2" />
+                            </div>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Secondary Phenotype */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Phenotype</h4>
-                        <div className="space-y-3">
-                          {profile.votes
-                            .filter(vote => vote.category === 'secondary')
-                            .sort((a, b) => b.percentage - a.percentage)
-                            .slice(0, 2)
-                            .map((vote, index) => (
-                            <div key={index} className="space-y-2">
+                        {/* Secondary Geographic Region */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Geographic Classification</h4>
+                          <div className="space-y-3">
+                            <div className="space-y-2">
                               <div className="flex items-center justify-between">
                                 <Badge variant="outline" className="text-sm">
-                                  {vote.classification}
+                                  Norte Europa
                                 </Badge>
-                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                                <span className="text-sm font-medium">8%</span>
                               </div>
-                              <Progress value={vote.percentage} className="h-2" />
+                              <Progress value={8} className="h-2" />
                             </div>
-                          ))}
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge variant="outline" className="text-sm">
+                                  Oriente Médio
+                                </Badge>
+                                <span className="text-sm font-medium">2%</span>
+                              </div>
+                              <Progress value={2} className="h-2" />
+                            </div>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Tertiary Phenotype */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Phenotype</h4>
-                        <div className="space-y-3">
-                          {profile.votes
-                            .filter(vote => vote.category === 'tertiary')
-                            .sort((a, b) => b.percentage - a.percentage)
-                            .slice(0, 2)
-                            .map((vote, index) => (
-                            <div key={index} className="space-y-2">
+                        {/* Tertiary Geographic Region */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Geographic Classification</h4>
+                          <div className="space-y-3">
+                            <div className="space-y-2">
                               <div className="flex items-center justify-between">
                                 <Badge variant="outline" className="text-sm opacity-75">
-                                  {vote.classification}
+                                  Norte África
                                 </Badge>
-                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                                <span className="text-sm font-medium">3%</span>
                               </div>
-                              <Progress value={vote.percentage} className="h-2" />
+                              <Progress value={3} className="h-2" />
                             </div>
-                          ))}
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge variant="outline" className="text-sm opacity-75">
+                                  Ásia Central
+                                </Badge>
+                                <span className="text-sm font-medium">1%</span>
+                              </div>
+                              <Progress value={1} className="h-2" />
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
 
-                {/* General Phenotype Classification */}
-                <Card className="bg-gradient-card border-phindex-teal/20">
-                  <CardHeader>
-                    <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
-                  </CardHeader>
-                  <CardContent className="h-52 overflow-y-auto">
-                    <div className="space-y-6">
-                      {/* Primary Geographic Region */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Geographic Classification</h4>
-                        <div className="space-y-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                                Sul Europa
-                              </Badge>
-                              <span className="text-sm font-medium">65%</span>
-                            </div>
-                            <Progress value={65} className="h-2" />
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                                América do Sul
-                              </Badge>
-                              <span className="text-sm font-medium">25%</span>
-                            </div>
-                            <Progress value={25} className="h-2" />
+                  {/* Phenotypic Classification */}
+                  <Card className="bg-gradient-card border-phindex-teal/20" data-voting-section>
+                    <CardHeader>
+                      <CardTitle className="text-phindex-teal">Phenotypic Classification</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-52 overflow-y-auto">
+                      <div className="space-y-6">
+                        {/* Primary Phenotype */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Phenotype</h4>
+                          <div className="space-y-3">
+                            {profile.votes
+                              .filter(vote => vote.category === 'primary')
+                              .sort((a, b) => b.percentage - a.percentage)
+                              .slice(0, 2)
+                              .map((vote, index) => (
+                              <div key={index} className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
+                                    {vote.classification}
+                                  </Badge>
+                                  <span className="text-sm font-medium">{vote.percentage}%</span>
+                                </div>
+                                <Progress value={vote.percentage} className="h-2" />
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      </div>
 
-                      {/* Secondary Geographic Region */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Geographic Classification</h4>
-                        <div className="space-y-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="outline" className="text-sm">
-                                Norte Europa
-                              </Badge>
-                              <span className="text-sm font-medium">8%</span>
-                            </div>
-                            <Progress value={8} className="h-2" />
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="outline" className="text-sm">
-                                Oriente Médio
-                              </Badge>
-                              <span className="text-sm font-medium">2%</span>
-                            </div>
-                            <Progress value={2} className="h-2" />
+                        {/* Secondary Phenotype */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Phenotype</h4>
+                          <div className="space-y-3">
+                            {profile.votes
+                              .filter(vote => vote.category === 'secondary')
+                              .sort((a, b) => b.percentage - a.percentage)
+                              .slice(0, 2)
+                              .map((vote, index) => (
+                              <div key={index} className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <Badge variant="outline" className="text-sm">
+                                    {vote.classification}
+                                  </Badge>
+                                  <span className="text-sm font-medium">{vote.percentage}%</span>
+                                </div>
+                                <Progress value={vote.percentage} className="h-2" />
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      </div>
 
-                      {/* Tertiary Geographic Region */}
-                      <div>
-                        <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Geographic Classification</h4>
-                        <div className="space-y-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="outline" className="text-sm opacity-75">
-                                Norte África
-                              </Badge>
-                              <span className="text-sm font-medium">3%</span>
-                            </div>
-                            <Progress value={3} className="h-2" />
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="outline" className="text-sm opacity-75">
-                                Ásia Central
-                              </Badge>
-                              <span className="text-sm font-medium">1%</span>
-                            </div>
-                            <Progress value={1} className="h-2" />
+                        {/* Tertiary Phenotype */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Phenotype</h4>
+                          <div className="space-y-3">
+                            {profile.votes
+                              .filter(vote => vote.category === 'tertiary')
+                              .sort((a, b) => b.percentage - a.percentage)
+                              .slice(0, 2)
+                              .map((vote, index) => (
+                              <div key={index} className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <Badge variant="outline" className="text-sm opacity-75">
+                                    {vote.classification}
+                                  </Badge>
+                                  <span className="text-sm font-medium">{vote.percentage}%</span>
+                                </div>
+                                <Progress value={vote.percentage} className="h-2" />
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
 
               </div>
             </div>
