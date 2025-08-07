@@ -268,12 +268,6 @@ export default function ProfileDetail() {
                         .filter(vote => vote.category === 'secondary')
                         .sort((a, b) => b.percentage - a.percentage)[0];
                       
-                      // Get most voted physical characteristics
-                      const topPhysicalCharacteristics = profile.physicalCharacteristics.map(characteristic => ({
-                        name: characteristic.name,
-                        topVote: characteristic.votes.sort((a, b) => b.percentage - a.percentage)[0]
-                      })).slice(0, 6); // Show top 6 characteristics
-                      
                       return (
                         <>
                           {primaryPhenotype && (
@@ -292,15 +286,6 @@ export default function ProfileDetail() {
                               2º {secondaryPhenotype.classification}
                             </Badge>
                           )}
-                          {topPhysicalCharacteristics.map((characteristic, index) => (
-                            <Badge 
-                              key={index}
-                              variant="outline" 
-                              className="bg-muted/30 text-muted-foreground text-xs"
-                            >
-                              {characteristic.topVote.option}
-                            </Badge>
-                          ))}
                         </>
                       );
                     })()}
