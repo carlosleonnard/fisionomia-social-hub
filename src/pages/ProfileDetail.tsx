@@ -277,7 +277,7 @@ export default function ProfileDetail() {
                           {primaryGeneral && (
                             <Badge 
                               variant="default" 
-                              className="bg-primary text-primary-foreground"
+                              className="bg-phindex-teal text-white font-medium shadow-md"
                             >
                               1º {primaryGeneral.classification}
                             </Badge>
@@ -285,7 +285,7 @@ export default function ProfileDetail() {
                           {secondaryGeneral && (
                             <Badge 
                               variant="secondary" 
-                              className="bg-secondary text-secondary-foreground"
+                              className="bg-phindex-teal/60 text-white font-medium"
                             >
                               2º {secondaryGeneral.classification}
                             </Badge>
@@ -293,7 +293,7 @@ export default function ProfileDetail() {
                           {tertiaryGeneral && (
                             <Badge 
                               variant="outline" 
-                              className="bg-muted text-muted-foreground"
+                              className="bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
                             >
                               3º {tertiaryGeneral.classification}
                             </Badge>
@@ -319,15 +319,15 @@ export default function ProfileDetail() {
                           {primaryPhenotype && (
                             <Badge 
                               variant="default" 
-                              className="bg-primary text-primary-foreground"
+                              className="bg-phindex-teal text-white font-medium shadow-md"
                             >
                               1º {primaryPhenotype.classification}
                             </Badge>
                           )}
                           {secondaryPhenotype && (
                             <Badge 
-                              variant="outline" 
-                              className="bg-secondary/20 text-secondary-foreground border-secondary"
+                              variant="secondary" 
+                              className="bg-phindex-teal/60 text-white font-medium"
                             >
                               2º {secondaryPhenotype.classification}
                             </Badge>
