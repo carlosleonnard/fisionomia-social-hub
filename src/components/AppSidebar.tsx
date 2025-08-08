@@ -37,6 +37,33 @@ export const AppSidebar = () => {
                 </Button>)}
             </div>
           </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-6 text-phindex-dark">BIRTHPLACE</h3>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { flag: "🇧🇷", country: "Brazil" },
+                { flag: "🇺🇸", country: "USA" },
+                { flag: "🇫🇷", country: "France" },
+                { flag: "🇩🇪", country: "Germany" },
+                { flag: "🇮🇹", country: "Italy" },
+                { flag: "🇪🇸", country: "Spain" },
+                { flag: "🇬🇧", country: "UK" },
+                { flag: "🇨🇦", country: "Canada" },
+                { flag: "🇦🇺", country: "Australia" }
+              ].map(country => (
+                <Button
+                  key={country.country}
+                  variant="outline"
+                  size="sm"
+                  className="text-lg py-2 px-2 h-auto aspect-square flex items-center justify-center"
+                  title={country.country}
+                >
+                  {country.flag}
+                </Button>
+              ))}
+            </div>
+          </div>
           
           <div>
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">CATEGORIES</h3>
