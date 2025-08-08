@@ -10,8 +10,8 @@ export const Header = () => {
     // Aqui você pode adicionar a lógica para salvar o perfil
   };
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      <div className="container px-4 h-16 flex items-center justify-between">
+    <header className="fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+      <div className="container px-4 h-16 flex items-center justify-between lg:ml-80">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
             <Link to="/" className="cursor-pointer">

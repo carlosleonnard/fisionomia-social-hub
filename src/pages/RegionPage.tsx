@@ -174,7 +174,7 @@ const RegionPage = () => {
       <Header />
       
       <div className="container px-4 py-8">
-        <div className="lg:ml-80 pt-8">
+        <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
           <AppSidebar />
 

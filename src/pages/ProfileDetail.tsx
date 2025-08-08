@@ -213,7 +213,7 @@ export default function ProfileDetail() {
           Back
         </Button>
 
-        <div className="lg:ml-80">
+        <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
           <AppSidebar />
 
