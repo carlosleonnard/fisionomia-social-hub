@@ -403,8 +403,7 @@ const Index = () => {
           <div className="bg-slate-100">
             {/* Popular Celebrities Section */}
             <div className="mb-12">
-              <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-primary/5 rounded-xl"></div>
+              <div className="relative p-6">
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
@@ -458,8 +457,7 @@ const Index = () => {
 
             {/* Top User Profiles Section */}
             <div className="mb-12">
-              <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-primary/5 rounded-xl"></div>
+              <div className="relative p-6">
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-secondary/20">
@@ -513,8 +511,7 @@ const Index = () => {
 
             {/* Recent Profiles Section */}
             <div className="mb-12">
-              <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-accent/5 rounded-xl"></div>
+              <div className="relative p-6">
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/20">
