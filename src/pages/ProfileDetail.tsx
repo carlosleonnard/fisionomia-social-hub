@@ -279,7 +279,7 @@ export default function ProfileDetail() {
                               variant="default" 
                               className="bg-primary text-primary-foreground"
                             >
-                              Primário: {primaryGeneral.classification}
+                              1º {primaryGeneral.classification}
                             </Badge>
                           )}
                           {secondaryGeneral && (
@@ -287,7 +287,7 @@ export default function ProfileDetail() {
                               variant="secondary" 
                               className="bg-secondary text-secondary-foreground"
                             >
-                              Secundário: {secondaryGeneral.classification}
+                              2º {secondaryGeneral.classification}
                             </Badge>
                           )}
                           {tertiaryGeneral && (
@@ -295,7 +295,7 @@ export default function ProfileDetail() {
                               variant="outline" 
                               className="bg-muted text-muted-foreground"
                             >
-                              Terciário: {tertiaryGeneral.classification}
+                              3º {tertiaryGeneral.classification}
                             </Badge>
                           )}
                         </>
