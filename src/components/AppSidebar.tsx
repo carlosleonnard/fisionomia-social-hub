@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Users } from "lucide-react";
 
 export const AppSidebar = () => {
   const navigate = useNavigate();
@@ -79,17 +80,17 @@ export const AppSidebar = () => {
           <div>
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">CATEGORIES</h3>
             <div className="space-y-4">
-              {/* User Profiles Section */}
+              {/* Community Section */}
               <button
                 className={`flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors ${
-                  isCategoryActive("User Profiles") 
+                  isCategoryActive("Community") 
                     ? "bg-phindex-teal/10 text-phindex-teal border border-phindex-teal/20" 
                     : "hover:bg-muted/50"
                 }`}
-                onClick={() => handleCategoryClick("User Profiles")}
+                onClick={() => handleCategoryClick("Community")}
               >
-                <span className="text-xl" style={{ color: 'hsl(var(--category-primary))' }}>👤</span>
-                <span className="text-base">User Profiles</span>
+                <Users className="h-5 w-5" style={{ color: 'hsl(var(--category-primary))' }} />
+                <span className="text-base">Community</span>
               </button>
               
               {/* Separator */}
