@@ -395,12 +395,12 @@ const Index = () => {
       <Header />
       
       <div className="container px-4 max-w-none">
-        <div className="flex gap-6 pt-8">
+        <div className="lg:ml-80">
           {/* Sidebar */}
           <AppSidebar />
 
           {/* Main Content */}
-          <div className="flex-1">
+          <div className="pt-8">
             {/* Popular Celebrities Section */}
             <div className="mb-12">
               <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">

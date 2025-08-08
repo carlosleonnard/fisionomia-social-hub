@@ -48,8 +48,8 @@ export const AppSidebar = () => {
   };
 
   return (
-    <div className="w-80 hidden lg:block h-screen">
-      <Card className="bg-card border-border/50 p-6 h-full overflow-y-auto">
+    <div className="w-80 hidden lg:block fixed left-0 top-0 h-screen z-10">
+      <div className="bg-card border-r border-border/50 p-6 h-full overflow-y-auto">
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">PHENOTYPE REGION</h3>
@@ -123,7 +123,7 @@ export const AppSidebar = () => {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

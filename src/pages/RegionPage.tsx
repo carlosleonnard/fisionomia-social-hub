@@ -174,12 +174,12 @@ const RegionPage = () => {
       <Header />
       
       <div className="container px-4 py-8">
-        <div className="flex gap-8 pt-8">
+        <div className="lg:ml-80 pt-8">
           {/* Sidebar */}
           <AppSidebar />
 
           {/* Main Content */}
-          <div className="flex-1">
+          <div>
             <div className="mb-8">
               <Button 
                 variant="ghost" 

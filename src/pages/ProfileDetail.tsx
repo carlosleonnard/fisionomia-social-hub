@@ -213,12 +213,12 @@ export default function ProfileDetail() {
           Back
         </Button>
 
-        <div className="flex gap-8">
+        <div className="lg:ml-80">
           {/* Sidebar */}
           <AppSidebar />
 
           {/* Main Content */}
-          <div className="flex-1">
+          <div>
             {/* Profile Images and Basic Info - Full width */}
             <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardContent className="p-6">
