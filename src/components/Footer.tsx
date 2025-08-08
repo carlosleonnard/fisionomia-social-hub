@@ -2,8 +2,8 @@ import { Instagram, Twitter, Facebook } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-phindex-teal/20 mt-24" style={{ backgroundColor: '#007a75' }}>
-      <div className="container mx-auto px-4 py-6 lg:ml-80">
+    <footer className="border-t border-phindex-teal/20 mt-24 lg:ml-80" style={{ backgroundColor: '#007a75' }}>
+      <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6 max-w-2xl mx-auto">
           {/* Company */}
           <div className="text-center">
