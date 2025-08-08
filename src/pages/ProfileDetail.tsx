@@ -259,48 +259,24 @@ export default function ProfileDetail() {
                   
                   {/* General Phenotypes */}
                   <div className="flex justify-center gap-2 mb-3 flex-wrap">
-                    {(() => {
-                      const primaryGeneral = profile.votes
-                        .filter(vote => vote.category === 'primary')
-                        .sort((a, b) => b.percentage - a.percentage)[0];
-                      
-                      const secondaryGeneral = profile.votes
-                        .filter(vote => vote.category === 'secondary')
-                        .sort((a, b) => b.percentage - a.percentage)[0];
-                        
-                      const tertiaryGeneral = profile.votes
-                        .filter(vote => vote.category === 'tertiary')
-                        .sort((a, b) => b.percentage - a.percentage)[0];
-                      
-                      return (
-                        <>
-                          {primaryGeneral && (
-                            <Badge 
-                              variant="default" 
-                              className="bg-phindex-teal text-white font-medium shadow-md"
-                            >
-                              1º {primaryGeneral.classification}
-                            </Badge>
-                          )}
-                          {secondaryGeneral && (
-                            <Badge 
-                              variant="secondary" 
-                              className="bg-phindex-teal/60 text-white font-medium"
-                            >
-                              2º {secondaryGeneral.classification}
-                            </Badge>
-                          )}
-                          {tertiaryGeneral && (
-                            <Badge 
-                              variant="outline" 
-                              className="bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
-                            >
-                              3º {tertiaryGeneral.classification}
-                            </Badge>
-                          )}
-                        </>
-                      );
-                    })()}
+                    <Badge 
+                      variant="default" 
+                      className="bg-phindex-teal text-white font-medium shadow-md"
+                    >
+                      1º Sul Europa
+                    </Badge>
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-phindex-teal/60 text-white font-medium"
+                    >
+                      2º Norte Europa
+                    </Badge>
+                    <Badge 
+                      variant="outline" 
+                      className="bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
+                    >
+                      3º Ásia Central
+                    </Badge>
                   </div>
                   
                   {/* Phenotype Badges */}
