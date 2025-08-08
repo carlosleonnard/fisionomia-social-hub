@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-diversity.jpg";
@@ -455,6 +456,11 @@ const Index = () => {
               </div>
             </div>
 
+            {/* Separator */}
+            <div className="px-6 mb-8">
+              <Separator className="bg-border" />
+            </div>
+
             {/* Top User Profiles Section */}
             <div className="mb-12">
               <div className="relative p-6">
@@ -507,6 +513,11 @@ const Index = () => {
                 </Carousel>
                 </div>
               </div>
+            </div>
+
+            {/* Separator */}
+            <div className="px-6 mb-8">
+              <Separator className="bg-border" />
             </div>
 
             {/* Recent Profiles Section */}
