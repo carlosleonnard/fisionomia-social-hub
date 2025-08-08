@@ -48,18 +48,8 @@ export const AppSidebar = () => {
   };
 
   return (
-    <div className="w-80 hidden lg:block fixed left-0 top-0 h-screen z-40">
-      <div className="bg-card border-r border-border/50 h-full overflow-y-auto">
-        {/* Logo centralizado no topo do sidebar */}
-        <div className="h-16 flex items-center justify-center border-b border-border/50 bg-card/95 backdrop-blur">
-          <img 
-            src="/lovable-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
-            alt="Phindex Logo" 
-            className="h-10 object-contain"
-          />
-        </div>
-        
-        <div className="p-6">
+    <div className="w-80 hidden lg:block fixed left-0 top-16 h-screen z-40">
+      <div className="bg-card border-r border-border/50 h-full overflow-y-auto pt-6 px-6">
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">PHENOTYPE REGION</h3>
@@ -131,7 +121,6 @@ export const AppSidebar = () => {
                 </button>
                ))}
             </div>
-          </div>
           </div>
         </div>
       </div>
