@@ -48,11 +48,11 @@ export const AppSidebar = () => {
   };
 
   return (
-    <div className="w-80 hidden lg:block">
-      <Card className="bg-card border-border/50 p-6 sticky top-24 h-fit">
+    <div className="w-80 hidden lg:block h-screen">
+      <Card className="bg-card border-border/50 p-6 h-full overflow-y-auto">
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-6 text-phindex-dark">REGION</h3>
+            <h3 className="text-xl font-semibold mb-6 text-phindex-dark">PHENOTYPE REGION</h3>
             <div className="grid grid-cols-2 gap-3">
               {[
                 "Africa", "Asia", "Europe", "North America",
