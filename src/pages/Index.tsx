@@ -391,7 +391,7 @@ const Index = () => {
   const selectedProfileData = profiles.find(p => p.id === selectedProfile);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-slate-100 overflow-x-hidden">
       <Header />
       
       <div className="container px-4 max-w-none">
@@ -400,7 +400,7 @@ const Index = () => {
           <AppSidebar />
 
           {/* Main Content */}
-          <div>
+          <div className="bg-slate-100">
             {/* Popular Celebrities Section */}
             <div className="mb-12">
               <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
@@ -458,7 +458,7 @@ const Index = () => {
 
             {/* Top User Profiles Section */}
             <div className="mb-12">
-              <div className="relative bg-secondary/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+              <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
                 <div className="absolute inset-0 bg-primary/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
@@ -513,7 +513,7 @@ const Index = () => {
 
             {/* Recent Profiles Section */}
             <div className="mb-12">
-              <div className="relative bg-accent/10 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
+              <div className="relative bg-slate-200 rounded-xl p-6 border border-border/50 backdrop-blur-sm">
                 <div className="absolute inset-0 bg-accent/5 rounded-xl"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-2">
