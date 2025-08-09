@@ -25,6 +25,7 @@ interface ProfileCardProps {
   onLike: (id: string) => void;
   onComment: (id: string) => void;
   onVote: (id: string, classification: string) => void;
+  country: string;
 }
 
 export const ProfileCard = ({ 
@@ -40,10 +41,19 @@ export const ProfileCard = ({
   hasUserVoted,
   onLike,
   onComment,
-  onVote 
+  onVote,
+  country 
 }: ProfileCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
+
+  // Mapeamento de códigos de países para emojis de bandeiras
+  const countryFlags: Record<string, string> = {
+    "US": "🇺🇸", "BR": "🇧🇷", "IN": "🇮🇳", "IL": "🇮🇱", "ES": "🇪🇸", 
+    "NG": "🇳🇬", "FR": "🇫🇷", "DE": "🇩🇪", "IT": "🇮🇹", "JP": "🇯🇵",
+    "CN": "🇨🇳", "KR": "🇰🇷", "MX": "🇲🇽", "CA": "🇨🇦", "AU": "🇦🇺",
+    "GB": "🇬🇧", "RU": "🇷🇺", "AR": "🇦🇷", "EG": "🇪🇬", "ZA": "🇿🇦"
+  };
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -57,11 +67,16 @@ export const ProfileCard = ({
   return (
     <Card className="bg-card border-border/50 hover:shadow-card transition-all duration-300 overflow-hidden group">
       <div className="relative cursor-pointer" onClick={() => navigate(`/profile/${id}`)}>
-        <img 
-          src={imageUrl} 
-          alt={name}
-          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        <div className="relative">
+          <img 
+            src={imageUrl} 
+            alt={name}
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105 border-2 border-primary"
+          />
+          <div className="absolute top-2 left-2 text-lg">
+            {countryFlags[country] || "🌎"}
+          </div>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       </div>
 

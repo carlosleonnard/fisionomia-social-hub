@@ -21,6 +21,7 @@ interface Profile {
   hasUserVoted: boolean;
   description?: string;
   category: string;
+  country: string;
 }
 
 // Mock data - in a real app this would come from your database
@@ -36,7 +37,8 @@ const mockProfiles: Profile[] = [
     comments: [],
     votes: [],
     hasUserVoted: false,
-    category: "Pop Culture"
+    category: "Pop Culture",
+    country: "BR"
   },
   {
     id: "2",
@@ -49,7 +51,8 @@ const mockProfiles: Profile[] = [
     comments: [],
     votes: [],
     hasUserVoted: false,
-    category: "User Profiles"
+    category: "User Profiles",
+    country: "US"
   },
   {
     id: "3",
@@ -62,7 +65,8 @@ const mockProfiles: Profile[] = [
     comments: [],
     votes: [],
     hasUserVoted: false,
-    category: "Pop Culture"
+    category: "Pop Culture",
+    country: "BR"
   },
   {
     id: "4",
@@ -75,7 +79,8 @@ const mockProfiles: Profile[] = [
     comments: [],
     votes: [],
     hasUserVoted: false,
-    category: "User Profiles"
+    category: "User Profiles",
+    country: "BR"
   }
 ];
 
@@ -195,6 +200,7 @@ export default function CategoryPage() {
                     onLike={() => {}}
                     onComment={() => {}}
                     onVote={() => {}}
+                    country={profile.country || "BR"}
                   />
                 ))}
               </div>

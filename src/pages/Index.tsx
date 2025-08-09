@@ -33,6 +33,7 @@ interface Profile {
   votes: Vote[];
   hasUserVoted: boolean;
   description?: string;
+  country: string;
 }
 
 const Index = () => {
@@ -54,7 +55,8 @@ const Index = () => {
         { classification: "Alpine", count: 1000, percentage: 35 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "US"
     },
     {
       id: "c2", 
@@ -69,7 +71,8 @@ const Index = () => {
         { classification: "Anglo-Saxon", count: 1408, percentage: 40 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "US"
     },
     {
       id: "c3",
@@ -84,7 +87,8 @@ const Index = () => {
         { classification: "Dravidian", count: 750, percentage: 40 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "IN"
     },
     {
       id: "c4",
@@ -99,7 +103,8 @@ const Index = () => {
         { classification: "Nilotic", count: 421, percentage: 10 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "US"
     },
     {
       id: "c5",
@@ -114,7 +119,8 @@ const Index = () => {
         { classification: "Levantine", count: 1178, percentage: 40 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "IL"
     },
     {
       id: "c6",
@@ -129,7 +135,8 @@ const Index = () => {
         { classification: "Mediterranean", count: 660, percentage: 40 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "ES"
     }
   ]);
   // Regular user profiles
@@ -156,7 +163,8 @@ const Index = () => {
           likes: 5,
           isLiked: false
         }
-      ]
+      ],
+      country: "BR"
     },
     {
       id: "2", 
@@ -171,7 +179,8 @@ const Index = () => {
         { classification: "Nordic", count: 4, percentage: 25 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "BR"
     },
     {
       id: "3",
@@ -185,7 +194,8 @@ const Index = () => {
         { classification: "Alpine", count: 10, percentage: 100 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "BR"
     },
     {
       id: "4",
@@ -201,7 +211,8 @@ const Index = () => {
         { classification: "Bantu", count: 6, percentage: 7.1 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "NG"
     },
     {
       id: "5",
@@ -217,7 +228,8 @@ const Index = () => {
         { classification: "Indian", count: 8, percentage: 13.3 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "IN"
     },
     {
       id: "6",
@@ -233,13 +245,22 @@ const Index = () => {
         { classification: "Catalan", count: 8, percentage: 11.8 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "ES"
     }
   ]);
 
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [selectedPhenotype, setSelectedPhenotype] = useState<string | null>(null);
+
+  // Mapeamento de códigos de países para emojis de bandeiras
+  const countryFlags: Record<string, string> = {
+    "US": "🇺🇸", "BR": "🇧🇷", "IN": "🇮🇳", "IL": "🇮🇱", "ES": "🇪🇸", 
+    "NG": "🇳🇬", "FR": "🇫🇷", "DE": "🇩🇪", "IT": "🇮🇹", "JP": "🇯🇵",
+    "CN": "🇨🇳", "KR": "🇰🇷", "MX": "🇲🇽", "CA": "🇨🇦", "AU": "🇦🇺",
+    "GB": "🇬🇧", "RU": "🇷🇺", "AR": "🇦🇷", "EG": "🇪🇬", "ZA": "🇿🇦"
+  };
 
   // Mapeamento de regiões e seus fenótipos
   const regionPhenotypes: Record<string, string[]> = {
@@ -265,7 +286,8 @@ const Index = () => {
       likes: 0,
       comments: [],
       votes: [],
-      hasUserVoted: false
+      hasUserVoted: false,
+      country: "BR" // default country
     };
     
     setProfiles(prev => [newProfile, ...prev]);
@@ -426,20 +448,23 @@ const Index = () => {
                             className="cursor-pointer"
                             onClick={() => navigate(`/profile/${profile.id}`)}
                           >
-                            <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
-                              <div className="relative mb-1">
-                                <div className="w-36 h-36 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
-                                  <img 
-                                    src={profile.imageUrl} 
-                                    alt={profile.name}
-                                    className="w-full h-full rounded-full object-cover"
-                                  />
-                                </div>
-                             <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                               <Vote className="h-2.5 w-2.5" />
-                               <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
-                             </div>
+                             <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                               <div className="relative mb-1">
+                                 <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                   <img 
+                                     src={profile.imageUrl} 
+                                     alt={profile.name}
+                                     className="w-full h-full rounded-full object-cover"
+                                   />
+                                 </div>
+                              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                <Vote className="h-2.5 w-2.5" />
+                                <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
                               </div>
+                              <div className="absolute -top-1 -left-1 text-lg">
+                                {countryFlags[profile.country] || "🌎"}
+                              </div>
+                               </div>
                               <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
                               <p className="text-xs text-muted-foreground text-center">{profile.phenotypes[0]}</p>
                             </div>
@@ -485,20 +510,23 @@ const Index = () => {
                                 className="cursor-pointer"
                                 onClick={() => navigate(`/profile/${profile.id}`)}
                               >
-                                <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
-                                  <div className="relative mb-1">
-                                      <div className="w-36 h-36 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
-                                        <img 
-                                          src={profile.imageUrl} 
-                                          alt={profile.name}
-                                          className="w-full h-full rounded-full object-cover"
-                                        />
-                                      </div>
-                                   <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                                     <Vote className="h-2.5 w-2.5" />
-                                     <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
+                                 <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                                   <div className="relative mb-1">
+                                       <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                         <img 
+                                           src={profile.imageUrl} 
+                                           alt={profile.name}
+                                           className="w-full h-full rounded-full object-cover"
+                                         />
+                                       </div>
+                                    <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                      <Vote className="h-2.5 w-2.5" />
+                                      <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
+                                    </div>
+                                    <div className="absolute -top-1 -left-1 text-lg">
+                                      {countryFlags[profile.country] || "🌎"}
+                                    </div>
                                    </div>
-                                  </div>
                                   <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
                                   <p className="text-xs text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
                                 </div>
@@ -544,20 +572,23 @@ const Index = () => {
                                 className="cursor-pointer"
                                 onClick={() => navigate(`/profile/${profile.id}`)}
                               >
-                                <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
-                                  <div className="relative mb-1">
-                                    <div className="w-36 h-36 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 cursor-pointer">
-                                    <img 
-                                      src={profile.imageUrl} 
-                                      alt={profile.name}
-                                      className="w-full h-full rounded-full object-cover"
-                                    />
-                                  </div>
-                                  <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                                    <Vote className="h-2.5 w-2.5" />
-                                    <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
-                                  </div>
-                                </div>
+                                 <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                                   <div className="relative mb-1">
+                                     <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                     <img 
+                                       src={profile.imageUrl} 
+                                       alt={profile.name}
+                                       className="w-full h-full rounded-full object-cover"
+                                     />
+                                   </div>
+                                   <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                     <Vote className="h-2.5 w-2.5" />
+                                     <span className="text-xs">{profile.votes.reduce((total, vote) => total + vote.count, 0)}</span>
+                                   </div>
+                                   <div className="absolute -top-1 -left-1 text-lg">
+                                     {countryFlags[profile.country] || "🌎"}
+                                   </div>
+                                 </div>
                                 <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
                                 <p className="text-xs text-muted-foreground text-center">{profile.phenotypes[0] || 'Unknown'}</p>
                               </div>

@@ -27,6 +27,7 @@ interface Profile {
   votes: Vote[];
   hasUserVoted: boolean;
   description?: string;
+  country: string;
 }
 
 const RegionPage = () => {
@@ -71,7 +72,8 @@ const RegionPage = () => {
         { classification: "Dinárico", count: 8, percentage: 35 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "BR"
     },
     {
       id: "4",
@@ -86,7 +88,8 @@ const RegionPage = () => {
         { classification: "Sudanese", count: 12, percentage: 21.2 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "NG"
     },
     {
       id: "5",
@@ -100,7 +103,8 @@ const RegionPage = () => {
         { classification: "Dravídico", count: 34, percentage: 100 }
       ],
       hasUserVoted: false,
-      comments: []
+      comments: [],
+      country: "IN"
     }
   ]);
 
@@ -243,6 +247,7 @@ const RegionPage = () => {
                         onLike={handleLike}
                         onComment={handleComment}
                         onVote={handleClassify}
+                        country={profile.country || "BR"}
                       />
                     </div>
                   ))}
