@@ -14,6 +14,8 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useVoting } from "@/hooks/use-voting";
 import { useComments } from "@/hooks/use-comments";
+import { usePhysicalVoting } from "@/hooks/use-physical-voting";
+import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
 
 interface Vote {
   classification: string;
@@ -183,6 +185,7 @@ export default function ProfileDetail() {
   const { user } = useAuth();
   const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(id || '');
   const { comments: realComments, addComment, likeComment, deleteComment } = useComments(id || '');
+  const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
 
@@ -479,24 +482,14 @@ export default function ProfileDetail() {
               </CardHeader>
               <CardContent className="h-96 overflow-y-auto">
                 <div className="grid gap-6">
-                  {profile.physicalCharacteristics.map((characteristic, index) => (
-                    <div key={index} className="space-y-3">
-                      <h4 className="font-semibold text-phindex-teal">{characteristic.name}</h4>
-                      <div className="space-y-2">
-                        {characteristic.votes.map((vote, voteIndex) => (
-                          <div key={voteIndex} className="space-y-1">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm">{vote.option}</span>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium">{vote.percentage}%</span>
-                                <span className="text-xs text-muted-foreground">({vote.count})</span>
-                              </div>
-                            </div>
-                            <Progress value={vote.percentage} className="h-2" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                  {physicalCharacteristics.map((characteristic, index) => (
+                    <PhysicalCharacteristicVoting
+                      key={index}
+                      characteristic={characteristic}
+                      userVote={physicalUserVotes[characteristic.name]}
+                      onVote={(classification) => castPhysicalVote(characteristic.name, classification)}
+                      isAuthenticated={!!user}
+                    />
                   ))}
                 </div>
               </CardContent>
