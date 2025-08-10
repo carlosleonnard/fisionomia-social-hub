@@ -486,9 +486,6 @@ export default function ProfileDetail() {
                     <PhysicalCharacteristicVoting
                       key={index}
                       characteristic={characteristic}
-                      userVote={physicalUserVotes[characteristic.name]}
-                      onVote={(classification) => castPhysicalVote(characteristic.name, classification)}
-                      isAuthenticated={!!user}
                     />
                   ))}
                 </div>
