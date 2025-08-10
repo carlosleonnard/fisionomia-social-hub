@@ -55,11 +55,8 @@ export const AppSidebar = () => {
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">PHENOTYPE REGION</h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                "Eastern Europe", "Southern Europe", "Northern Europe", 
-                "North Africa", "East Africa", "Sub-Saharan Africa",
-                "Middle East", "Central Asia", "Southern Asia", 
-                "Southeastern Asia", "Northern America", "Central America",
-                "Southern America", "Oceania"
+                "Africa", "Asia", "Europe", "North America",
+                "South America", "Oceania"
               ].map((region) => (
                 <Button
                   key={region}
