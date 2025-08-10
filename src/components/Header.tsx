@@ -3,8 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { AddProfileModal } from "./AddProfileModal";
+import { LoginModal } from "./LoginModal";
+import { useState } from "react";
 
 export const Header = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  
   const handleAddProfile = (profile: any) => {
     console.log('Novo perfil adicionado:', profile);
     // Aqui você pode adicionar a lógica para salvar o perfil
@@ -48,12 +52,21 @@ export const Header = () => {
           <Button variant="ghost" size="icon" className="hover:bg-muted/50">
             <Bell className="h-5 w-5" />
           </Button>
-          <Button variant="default" className="bg-phindex-dark hover:bg-phindex-teal transition-all duration-300 rounded-full px-6">
+          <Button 
+            variant="default" 
+            className="bg-phindex-dark hover:bg-phindex-teal transition-all duration-300 rounded-full px-6"
+            onClick={() => setIsLoginModalOpen(true)}
+          >
             <User className="mr-2 h-4 w-4" />
             Login Google
           </Button>
         </div>
       </div>
+      
+      <LoginModal 
+        open={isLoginModalOpen} 
+        onOpenChange={setIsLoginModalOpen} 
+      />
     </header>
   );
 };
