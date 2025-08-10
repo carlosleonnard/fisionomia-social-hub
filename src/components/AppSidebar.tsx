@@ -55,8 +55,8 @@ export const AppSidebar = () => {
             <h3 className="text-xl font-semibold mb-6 text-phindex-dark">PHENOTYPE REGION</h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                "Africa", "Asia", "Europe", "North America",
-                "South America", "Oceania"
+                "Africa", "Asia", "Europe", "Americas",
+                "Middle East", "Oceania"
               ].map((region) => (
                 <Button
                   key={region}
@@ -68,8 +68,7 @@ export const AppSidebar = () => {
                 >
                   <span className="hidden xl:inline">{region}</span>
                   <span className="xl:hidden">
-                    {region === "North America" ? "N.A" : 
-                     region === "South America" ? "S.A" : 
+                    {region === "Middle East" ? "M.E" : 
                      region}
                   </span>
                 </Button>
