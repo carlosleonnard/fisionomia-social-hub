@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileCard } from "@/components/ProfileCard";
 import { CommentsSection } from "@/components/CommentsSection";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
 interface Vote {
@@ -37,24 +38,254 @@ const RegionPage = () => {
   
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
   const [selectedPhenotype, setSelectedPhenotype] = useState<string | null>(null);
+  const [selectedDivision, setSelectedDivision] = useState<string | null>(null);
+  const [selectedSubdivision, setSelectedSubdivision] = useState<string | null>(null);
 
-  // Mapeamento de regiões e seus fenótipos
-  const regionPhenotypes: Record<string, string[]> = {
-    "africa": ["Negrillo", "Hottentot", "South African", "Sudanese", "Tropical", "Nilotic"],
-    "asia": ["Dravídico", "Indo-Ariano", "Mongolóide", "Malaio", "Sino-Tibetano"],
-    "europa": ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Ibérico", "Catalão"],
-    "america-do-norte": ["Ameríndio", "Anglo-Saxão", "Hispânico"],
-    "america-do-sul": ["Atlântida", "Ameríndio", "Mestiço"],
-    "oceania": ["Australóide", "Melanésio", "Polinésio"]
+  // Mapeamento hierárquico de regiões
+  const regionHierarchy: Record<string, { divisions: Record<string, { subdivisions: Record<string, string[]> }> }> = {
+    "africa": {
+      divisions: {
+        "North Africa": {
+          subdivisions: {
+            "Egypt": ["Berberid", "Arabic"],
+            "Libya": ["Berberid", "Arabic"],
+            "Tunisia": ["Berberid", "Arabic"],
+            "Algeria": ["Berberid", "Arabic"],
+            "Morocco": ["Berberid", "Arabic"]
+          }
+        },
+        "West Africa": {
+          subdivisions: {
+            "Nigeria": ["Sudanese", "Tropical"],
+            "Ghana": ["Sudanese", "Tropical"],
+            "Senegal": ["Sudanese", "Tropical"],
+            "Mali": ["Sudanese", "Tropical"],
+            "Burkina Faso": ["Sudanese", "Tropical"]
+          }
+        },
+        "East Africa": {
+          subdivisions: {
+            "Ethiopia": ["Nilotic", "Tropical"],
+            "Kenya": ["Nilotic", "Tropical"],
+            "Tanzania": ["Nilotic", "Tropical"],
+            "Uganda": ["Nilotic", "Tropical"],
+            "Sudan": ["Nilotic", "Sudanese"]
+          }
+        },
+        "Sub-Saharan Africa": {
+          subdivisions: {
+            "South Africa": ["Hottentot", "Negrillo"],
+            "Zimbabwe": ["Negrillo", "Tropical"],
+            "Botswana": ["Hottentot", "Negrillo"],
+            "Namibia": ["Hottentot", "Negrillo"],
+            "Angola": ["Negrillo", "Tropical"]
+          }
+        }
+      }
+    },
+    "asia": {
+      divisions: {
+        "South Asia": {
+          subdivisions: {
+            "India": ["Dravídico", "Indo-Ariano"],
+            "Pakistan": ["Indo-Ariano"],
+            "Bangladesh": ["Indo-Ariano"],
+            "Sri Lanka": ["Dravídico"],
+            "Nepal": ["Indo-Ariano", "Mongolóide"]
+          }
+        },
+        "East Asia": {
+          subdivisions: {
+            "China": ["Mongolóide", "Sino-Tibetano"],
+            "Japan": ["Mongolóide"],
+            "Korea": ["Mongolóide"],
+            "Mongolia": ["Mongolóide"],
+            "Tibet": ["Sino-Tibetano"]
+          }
+        },
+        "Southeast Asia": {
+          subdivisions: {
+            "Indonesia": ["Malaio"],
+            "Malaysia": ["Malaio"],
+            "Thailand": ["Malaio", "Mongolóide"],
+            "Philippines": ["Malaio"],
+            "Vietnam": ["Mongolóide", "Malaio"]
+          }
+        },
+        "Central Asia": {
+          subdivisions: {
+            "Kazakhstan": ["Mongolóide"],
+            "Uzbekistan": ["Mongolóide"],
+            "Kyrgyzstan": ["Mongolóide"],
+            "Tajikistan": ["Indo-Ariano"],
+            "Turkmenistan": ["Mongolóide"]
+          }
+        }
+      }
+    },
+    "europe": {
+      divisions: {
+        "Western Europe": {
+          subdivisions: {
+            "France": ["Mediterrâneo", "Alpino"],
+            "Germany": ["Nórdico", "Alpino"],
+            "United Kingdom": ["Nórdico"],
+            "Netherlands": ["Nórdico"],
+            "Belgium": ["Nórdico", "Alpino"]
+          }
+        },
+        "Southern Europe": {
+          subdivisions: {
+            "Spain": ["Mediterrâneo", "Ibérico"],
+            "Italy": ["Mediterrâneo"],
+            "Portugal": ["Mediterrâneo", "Ibérico"],
+            "Greece": ["Mediterrâneo"],
+            "Croatia": ["Dinárico"]
+          }
+        },
+        "Northern Europe": {
+          subdivisions: {
+            "Sweden": ["Nórdico"],
+            "Norway": ["Nórdico"],
+            "Denmark": ["Nórdico"],
+            "Finland": ["Nórdico"],
+            "Iceland": ["Nórdico"]
+          }
+        },
+        "Eastern Europe": {
+          subdivisions: {
+            "Poland": ["Alpino", "Nórdico"],
+            "Russia": ["Nórdico", "Alpino"],
+            "Ukraine": ["Alpino"],
+            "Czech Republic": ["Alpino"],
+            "Romania": ["Dinárico", "Alpino"]
+          }
+        }
+      }
+    },
+    "americas": {
+      divisions: {
+        "North America": {
+          subdivisions: {
+            "United States": ["Anglo-Saxão", "Ameríndio"],
+            "Canada": ["Anglo-Saxão", "Ameríndio"],
+            "Mexico": ["Hispânico", "Ameríndio"]
+          }
+        },
+        "Central America": {
+          subdivisions: {
+            "Guatemala": ["Ameríndio", "Hispânico"],
+            "Honduras": ["Ameríndio", "Hispânico"],
+            "El Salvador": ["Ameríndio", "Hispânico"],
+            "Nicaragua": ["Ameríndio", "Hispânico"],
+            "Costa Rica": ["Hispânico", "Ameríndio"]
+          }
+        },
+        "South America": {
+          subdivisions: {
+            "Brazil": ["Atlântida", "Ameríndio", "Mestiço"],
+            "Argentina": ["Mediterrâneo", "Mestiço"],
+            "Chile": ["Mediterrâneo", "Ameríndio"],
+            "Peru": ["Ameríndio", "Mestiço"],
+            "Colombia": ["Mestiço", "Ameríndio"]
+          }
+        }
+      }
+    },
+    "middle-east": {
+      divisions: {
+        "Arabian Peninsula": {
+          subdivisions: {
+            "Saudi Arabia": ["Arabic", "Berberid"],
+            "UAE": ["Arabic"],
+            "Qatar": ["Arabic"],
+            "Kuwait": ["Arabic"],
+            "Oman": ["Arabic"]
+          }
+        },
+        "Levant": {
+          subdivisions: {
+            "Syria": ["Arabic", "Mediterrâneo"],
+            "Lebanon": ["Arabic", "Mediterrâneo"],
+            "Jordan": ["Arabic"],
+            "Palestine": ["Arabic", "Mediterrâneo"],
+            "Israel": ["Mediterrâneo", "Arabic"]
+          }
+        },
+        "Mesopotamia": {
+          subdivisions: {
+            "Iraq": ["Arabic"],
+            "Iran": ["Indo-Ariano"],
+            "Turkey": ["Mediterrâneo", "Alpino"],
+            "Afghanistan": ["Indo-Ariano"]
+          }
+        }
+      }
+    },
+    "oceania": {
+      divisions: {
+        "Australia": {
+          subdivisions: {
+            "Australia": ["Australóide", "Anglo-Saxão"]
+          }
+        },
+        "Melanesia": {
+          subdivisions: {
+            "Papua New Guinea": ["Melanésio"],
+            "Fiji": ["Melanésio"],
+            "Solomon Islands": ["Melanésio"],
+            "Vanuatu": ["Melanésio"]
+          }
+        },
+        "Polynesia": {
+          subdivisions: {
+            "Samoa": ["Polinésio"],
+            "Tonga": ["Polinésio"],
+            "Hawaii": ["Polinésio"],
+            "Tahiti": ["Polinésio"]
+          }
+        }
+      }
+    }
   };
 
   const regionNames: Record<string, string> = {
     "africa": "Africa",
     "asia": "Asia", 
     "europe": "Europe",
-    "north-america": "North America",
-    "south-america": "South America",
+    "americas": "Americas",
+    "middle-east": "Middle East",
     "oceania": "Oceania"
+  };
+
+  // Get current region data
+  const regionKey = region?.toLowerCase() || "";
+  const regionDisplayName = regionNames[regionKey] || region;
+  const currentRegionData = regionHierarchy[regionKey];
+  
+  // Get available divisions for current region
+  const availableDivisions = currentRegionData ? Object.keys(currentRegionData.divisions) : [];
+  
+  // Get available subdivisions for selected division
+  const availableSubdivisions = selectedDivision && currentRegionData 
+    ? Object.keys(currentRegionData.divisions[selectedDivision]?.subdivisions || {})
+    : [];
+  
+  // Get available phenotypes for selected subdivision
+  const availablePhenotypes = selectedSubdivision && selectedDivision && currentRegionData
+    ? currentRegionData.divisions[selectedDivision]?.subdivisions[selectedSubdivision] || []
+    : [];
+
+  // Reset dependent selections when parent changes
+  const handleDivisionChange = (division: string) => {
+    setSelectedDivision(division);
+    setSelectedSubdivision(null);
+    setSelectedPhenotype(null);
+  };
+
+  const handleSubdivisionChange = (subdivision: string) => {
+    setSelectedSubdivision(subdivision);
+    setSelectedPhenotype(null);
   };
 
   // Dados mockados dos perfis (mesmo dados da página principal)
@@ -108,21 +339,19 @@ const RegionPage = () => {
     }
   ]);
 
-  const regionKey = region?.toLowerCase() || "";
-  const regionDisplayName = regionNames[regionKey] || region;
-  const phenotypes = regionPhenotypes[regionKey] || [];
-
-  // Filtrar perfis baseado no fenótipo selecionado e região
+  // Filtrar perfis baseado na hierarquia selecionada
   const filteredProfiles = profiles.filter(profile => {
-    // Filtrar por fenótipos da região
-    const hasRegionPhenotype = profile.phenotypes.some(phenotype => 
-      phenotypes.some(regionPhenotype => 
-        phenotype.toLowerCase().includes(regionPhenotype.toLowerCase()) ||
-        regionPhenotype.toLowerCase().includes(phenotype.toLowerCase())
-      )
-    );
-    
-    if (!hasRegionPhenotype) return false;
+    // Se há uma subdivisão selecionada, filtrar pelos fenótipos dela
+    if (selectedSubdivision && availablePhenotypes.length > 0) {
+      const hasSubdivisionPhenotype = profile.phenotypes.some(phenotype => 
+        availablePhenotypes.some(regionPhenotype => 
+          phenotype.toLowerCase().includes(regionPhenotype.toLowerCase()) ||
+          regionPhenotype.toLowerCase().includes(phenotype.toLowerCase())
+        )
+      );
+      
+      if (!hasSubdivisionPhenotype) return false;
+    }
     
     // Se um fenótipo específico está selecionado, filtrar por ele
     if (selectedPhenotype) {
@@ -155,7 +384,7 @@ const RegionPage = () => {
 
   const selectedProfileData = profiles.find(p => p.id === selectedProfile);
 
-  if (!regionKey || !phenotypes.length) {
+  if (!regionKey || !currentRegionData) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -198,29 +427,84 @@ const RegionPage = () => {
               <p className="text-muted-foreground">Explore the phenotypes of {regionDisplayName}</p>
             </div>
 
-            {/* Filter bar */}
+            {/* Hierarchical Filter Section */}
             <div className="mb-8">
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={!selectedPhenotype ? "default" : "outline"}
-                  size="sm"
-                  className="rounded-full"
-                  onClick={() => setSelectedPhenotype(null)}
-                >
-                  All
-                </Button>
-                {phenotypes.map((phenotype) => (
-                  <Button
-                    key={phenotype}
-                    variant={selectedPhenotype === phenotype ? "default" : "outline"}
-                    size="sm"
-                    className="rounded-full"
-                    onClick={() => setSelectedPhenotype(phenotype)}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {/* Division Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Division</label>
+                  <Select value={selectedDivision || ""} onValueChange={handleDivisionChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Please select..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border shadow-lg z-50">
+                      {availableDivisions.map((division) => (
+                        <SelectItem key={division} value={division} className="hover:bg-muted">
+                          {division}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Subdivision Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Subdivision</label>
+                  <Select 
+                    value={selectedSubdivision || ""} 
+                    onValueChange={handleSubdivisionChange}
+                    disabled={!selectedDivision}
                   >
-                    {phenotype}
-                  </Button>
-                ))}
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Please select..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border shadow-lg z-50">
+                      {availableSubdivisions.map((subdivision) => (
+                        <SelectItem key={subdivision} value={subdivision} className="hover:bg-muted">
+                          {subdivision}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Phenotype Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Phenotype</label>
+                  <Select 
+                    value={selectedPhenotype || ""} 
+                    onValueChange={setSelectedPhenotype}
+                    disabled={!selectedSubdivision}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Please select..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border shadow-lg z-50">
+                      {availablePhenotypes.map((phenotype) => (
+                        <SelectItem key={phenotype} value={phenotype} className="hover:bg-muted">
+                          {phenotype}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
+
+              {/* Quick Reset Button */}
+              {(selectedDivision || selectedSubdivision || selectedPhenotype) && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedDivision(null);
+                    setSelectedSubdivision(null);
+                    setSelectedPhenotype(null);
+                  }}
+                  className="mb-4"
+                >
+                  Clear Filters
+                </Button>
+              )}
             </div>
 
             <div className="flex flex-col lg:flex-row gap-8">
