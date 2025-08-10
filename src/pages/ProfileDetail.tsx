@@ -477,29 +477,29 @@ export default function ProfileDetail() {
               <CardHeader>
                 <CardTitle className="text-phindex-teal">Physical Characteristics</CardTitle>
               </CardHeader>
-               <CardContent className="h-96 overflow-y-auto">
-                 <div className="grid gap-6">
-                   {profile.physicalCharacteristics.map((characteristic, index) => (
-                     <div key={index} className="space-y-3">
-                       <h4 className="font-semibold text-phindex-teal">{characteristic.name}</h4>
-                       <div className="space-y-2">
-                         {characteristic.votes.map((vote, voteIndex) => (
-                           <div key={voteIndex} className="space-y-1">
-                             <div className="flex items-center justify-between">
-                               <span className="text-sm">{vote.option}</span>
-                               <div className="flex items-center gap-2">
-                                 <span className="text-sm font-medium">{vote.percentage}%</span>
-                                 <span className="text-xs text-muted-foreground">({vote.count})</span>
-                               </div>
-                             </div>
-                             <Progress value={vote.percentage} className="h-2" />
-                           </div>
-                         ))}
-                       </div>
-                     </div>
-                   ))}
-                 </div>
-               </CardContent>
+              <CardContent className="h-96 overflow-y-auto">
+                <div className="grid gap-6">
+                  {profile.physicalCharacteristics.map((characteristic, index) => (
+                    <div key={index} className="space-y-3">
+                      <h4 className="font-semibold text-phindex-teal">{characteristic.name}</h4>
+                      <div className="space-y-2">
+                        {characteristic.votes.map((vote, voteIndex) => (
+                          <div key={voteIndex} className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm">{vote.option}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium">{vote.percentage}%</span>
+                                <span className="text-xs text-muted-foreground">({vote.count})</span>
+                              </div>
+                            </div>
+                            <Progress value={vote.percentage} className="h-2" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
             </Card>
 
             {/* Comments Section */}
