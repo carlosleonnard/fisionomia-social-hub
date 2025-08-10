@@ -8,11 +8,13 @@ interface Comment {
   content: string;
   created_at: string;
   likes_count: number;
+  parent_comment_id?: string | null;
   user: {
     name: string;
     email: string;
   };
   isLiked?: boolean;
+  replies?: Comment[];
 }
 
 export const useComments = (profileId: string) => {
@@ -31,6 +33,7 @@ export const useComments = (profileId: string) => {
           created_at,
           likes_count,
           user_id,
+          parent_comment_id,
           profiles!comments_user_id_fkey (
             name,
             email
@@ -51,17 +54,34 @@ export const useComments = (profileId: string) => {
           userLikes = likesData?.map(like => like.comment_id) || [];
         }
 
-        const formattedComments: Comment[] = commentsData.map(comment => ({
-          id: comment.id,
-          content: comment.content,
-          created_at: comment.created_at,
-          likes_count: comment.likes_count,
-          user: {
-            name: (comment.profiles as any)?.name || 'Usuário',
-            email: (comment.profiles as any)?.email || ''
-          },
-          isLiked: userLikes.includes(comment.id)
-        }));
+        const formattedComments: Comment[] = commentsData
+          .filter(comment => !comment.parent_comment_id) // Only get top-level comments
+          .map(comment => ({
+            id: comment.id,
+            content: comment.content,
+            created_at: comment.created_at,
+            likes_count: comment.likes_count,
+            parent_comment_id: comment.parent_comment_id,
+            user: {
+              name: (comment.profiles as any)?.name || 'Usuário',
+              email: (comment.profiles as any)?.email || ''
+            },
+            isLiked: userLikes.includes(comment.id),
+            replies: commentsData
+              .filter(reply => reply.parent_comment_id === comment.id)
+              .map(reply => ({
+                id: reply.id,
+                content: reply.content,
+                created_at: reply.created_at,
+                likes_count: reply.likes_count,
+                parent_comment_id: reply.parent_comment_id,
+                user: {
+                  name: (reply.profiles as any)?.name || 'Usuário',
+                  email: (reply.profiles as any)?.email || ''
+                },
+                isLiked: userLikes.includes(reply.id)
+              }))
+          }));
 
         setComments(formattedComments);
       }
@@ -72,7 +92,7 @@ export const useComments = (profileId: string) => {
     }
   };
 
-  const addComment = async (content: string) => {
+  const addComment = async (content: string, parentCommentId?: string) => {
     if (!user) {
       toast({
         title: "Login necessário",
@@ -90,7 +110,8 @@ export const useComments = (profileId: string) => {
         .insert({
           user_id: user.id,
           profile_id: profileId,
-          content: content.trim()
+          content: content.trim(),
+          parent_comment_id: parentCommentId || null
         });
 
       if (error) throw error;
