@@ -360,7 +360,7 @@ const RegionPage = () => {
                     <CommentsSection
                       profileId={selectedProfile}
                       comments={selectedProfileData.comments}
-                      onAddComment={() => {}}
+                      onAddComment={async () => false}
                       onLikeComment={() => {}}
                     />
                   </div>

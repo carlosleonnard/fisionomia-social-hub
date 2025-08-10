@@ -11,6 +11,9 @@ import { CommentsSection } from "@/components/CommentsSection";
 
 import { VoteModal } from "@/components/VoteModal";
 import { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { useVoting } from "@/hooks/use-voting";
+import { useComments } from "@/hooks/use-comments";
 
 interface Vote {
   classification: string;
@@ -175,9 +178,11 @@ export default function ProfileDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [showComments, setShowComments] = useState(false);
-  
   const [showVoteModal, setShowVoteModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Para Supabase integration
+  
+  const { user } = useAuth();
+  const { votes: realVotes, castVote, hasUserVoted } = useVoting(id || '');
+  const { comments: realComments, addComment, likeComment } = useComments(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
 
@@ -364,23 +369,25 @@ export default function ProfileDetail() {
                   </div>
 
                    <div className="space-y-2">
-                     {isLoggedIn ? (
+                     {user ? (
                        <Button 
                          onClick={() => setShowVoteModal(true)}
                          className="w-full"
                          variant="default"
+                         disabled={hasUserVoted}
                        >
                          <Users className="mr-2 h-4 w-4" />
-                         Vote
+                         {hasUserVoted ? "Você já votou" : "Votar"}
                        </Button>
                      ) : (
                       <Button 
                         onClick={() => setShowVoteModal(true)}
                         className="w-full"
                         variant="outline"
+                        disabled
                       >
                         <Users className="mr-2 h-4 w-4" />
-                        Vote
+                        Login para votar
                       </Button>
                      )}
                    </div>
@@ -565,73 +572,22 @@ export default function ProfileDetail() {
             <div data-comments-section>
               <CommentsSection 
                 profileId={profile.id}
-                onAddComment={(profileId, content) => {
-                  console.log("Adding comment:", profileId, content);
-                }}
-                onLikeComment={(commentId) => {
-                  console.log("Liking comment:", commentId);
-                }}
-                comments={[
-                  {
-                    id: "1",
-                    user: {
-                      name: "Carlos Silva",
-                      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
-                    },
-                    content: "Claramente mediterrâneo, com fortes influências ibéricas. As características faciais e a estrutura óssea são muito típicas dessa região.",
-                    timestamp: "2024-01-15T10:30:00Z",
-                    likes: 12,
-                    isLiked: false,
-                    userVotes: { primary: "Mediterrâneo", secondary: "Ibérico" }
-                  },
-                  {
-                    id: "2",
-                    user: {
-                      name: "Ana Rodriguez",
-                      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face"
-                    },
-                    content: "Concordo com a classificação mediterrânea. A pigmentação da pele e a estrutura do cabelo são característicos dessa ancestralidade.",
-                    timestamp: "2024-01-15T09:15:00Z",
-                    likes: 8,
-                    isLiked: true,
-                    userVotes: { primary: "Ibérico", secondary: "Mediterrâneo", tertiary: "Ameríndio" }
-                  },
-                  {
-                    id: "3",
-                    user: {
-                      name: "Pedro Costa",
-                      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face"
-                    },
-                    content: "Interessante ver como as características indígenas se misturam com as europeias no Brasil.",
-                    timestamp: "2024-01-15T08:20:00Z",
-                    likes: 8,
-                    isLiked: false,
-                    userVotes: { primary: "Ameríndio" }
-                  },
-                  {
-                    id: "4",
-                    user: {
-                      name: "Maria Santos",
-                      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=32&h=32&fit=crop&crop=face"
-                    },
-                    content: "A estrutura nasal e a forma dos olhos sugerem uma mistura interessante de ancestralidades.",
-                    timestamp: "2024-01-15T07:45:00Z",
-                    likes: 6,
-                    isLiked: false,
-                    userVotes: { primary: "Mediterrâneo", secondary: "Alpino" }
-                  }
-                ]}
+                onAddComment={addComment}
+                onLikeComment={likeComment}
+                comments={realComments}
               />
             </div>
 
             {/* Vote Modal */}
-            {showVoteModal && (
+            {showVoteModal && user && (
               <VoteModal
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
-                onSubmit={(votes) => {
-                  console.log("Submitting votes:", votes);
-                  setShowVoteModal(false);
+                onSubmit={async (votes) => {
+                  const success = await castVote(votes.primary);
+                  if (success) {
+                    setShowVoteModal(false);
+                  }
                 }}
               />
             )}

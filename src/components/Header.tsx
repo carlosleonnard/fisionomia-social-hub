@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { AddProfileModal } from "./AddProfileModal";
 import { LoginModal } from "./LoginModal";
+import { NotificationBell } from "./NotificationBell";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useState } from "react";
@@ -57,9 +58,7 @@ export const Header = () => {
           <Button variant="outline" size="icon">
             <HelpCircle className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="hover:bg-muted/50">
-            <Bell className="h-5 w-5" />
-          </Button>
+          <NotificationBell />
           
           {user ? (
             <Popover>

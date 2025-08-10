@@ -20,25 +20,20 @@ import {
 
 interface Comment {
   id: string;
+  content: string;
+  created_at: string;
+  likes_count: number;
   user: {
     name: string;
-    avatar: string;
+    email: string;
   };
-  content: string;
-  timestamp: string;
-  likes: number;
-  isLiked: boolean;
-  userVotes?: {
-    primary?: string;
-    secondary?: string;
-    tertiary?: string;
-  };
+  isLiked?: boolean;
 }
 
 interface CommentsSectionProps {
   profileId: string;
   comments: Comment[];
-  onAddComment: (profileId: string, content: string) => void;
+  onAddComment: (content: string) => Promise<boolean>;
   onLikeComment: (commentId: string) => void;
 }
 
@@ -53,17 +48,18 @@ export const CommentsSection = ({
 
   const sortedComments = [...comments].sort((a, b) => {
     if (sortBy === "top") {
-      return b.likes - a.likes;
+      return b.likes_count - a.likes_count;
     }
-    // Para recent, assumindo que o timestamp é uma string de data
-    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
-  const handleSubmitComment = (e: React.FormEvent) => {
+  const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim()) {
-      onAddComment(profileId, newComment.trim());
-      setNewComment("");
+      const success = await onAddComment(newComment.trim());
+      if (success) {
+        setNewComment("");
+      }
     }
   };
 
@@ -112,7 +108,6 @@ export const CommentsSection = ({
         {sortedComments.map((comment) => (
           <div key={comment.id} className="flex gap-3 p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={comment.user.avatar} />
               <AvatarFallback>{comment.user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             
@@ -121,39 +116,16 @@ export const CommentsSection = ({
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm">{comment.user.name}</span>
-                    <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(comment.created_at).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </span>
                   </div>
-                  {comment.userVotes && (comment.userVotes.primary || comment.userVotes.secondary || comment.userVotes.tertiary) && (
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs text-muted-foreground">Classificação:</span>
-                      <div className="flex gap-1.5">
-                        {comment.userVotes.primary && (
-                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded-full">
-                            <span className="text-[10px] font-bold text-primary">1.</span>
-                            <span className="text-[10px] font-medium text-primary">
-                              {comment.userVotes.primary}
-                            </span>
-                          </div>
-                        )}
-                        {comment.userVotes.secondary && (
-                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded-full">
-                            <span className="text-[10px] font-bold text-primary">2.</span>
-                            <span className="text-[10px] font-medium text-primary">
-                              {comment.userVotes.secondary}
-                            </span>
-                          </div>
-                        )}
-                        {comment.userVotes.tertiary && (
-                          <div className="flex items-center gap-0.5 bg-primary/20 border border-primary/30 px-1.5 py-0.5 rounded-full">
-                            <span className="text-[10px] font-bold text-primary">3.</span>
-                            <span className="text-[10px] font-medium text-primary">
-                              {comment.userVotes.tertiary}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
                 </div>
                 
                 <DropdownMenu>
@@ -185,7 +157,7 @@ export const CommentsSection = ({
                   onClick={() => onLikeComment(comment.id)}
                 >
                   <Heart className={`h-3 w-3 ${comment.isLiked ? 'fill-current' : ''}`} />
-                  {comment.likes}
+                  {comment.likes_count}
                 </Button>
                 
                 <Button
