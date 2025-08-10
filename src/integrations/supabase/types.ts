@@ -10,61 +10,17 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
-      profiles: {
-        Row: {
-          ancestry: string
-          country: string
-          created_at: string
-          created_by: string
-          front_image_url: string
-          gender: string
-          height: number
-          id: string
-          name: string
-          profile_image_url: string | null
-          updated_at: string
-        }
-        Insert: {
-          ancestry: string
-          country: string
-          created_at?: string
-          created_by: string
-          front_image_url: string
-          gender: string
-          height: number
-          id?: string
-          name: string
-          profile_image_url?: string | null
-          updated_at?: string
-        }
-        Update: {
-          ancestry?: string
-          country?: string
-          created_at?: string
-          created_by?: string
-          front_image_url?: string
-          gender?: string
-          height?: number
-          id?: string
-          name?: string
-          profile_image_url?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      get_user_display_name: {
-        Args: { user_id: string }
-        Returns: string
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
