@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Send, Heart, MoreHorizontal } from "lucide-react";
+import { Send, Heart, MoreHorizontal, Trash2 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,10 +26,12 @@ interface Comment {
   created_at: string;
   likes_count: number;
   parent_comment_id?: string | null;
+  user_id: string;
   user: {
     name: string;
     email: string;
   };
+  userVotes?: { [key: string]: string };
   isLiked?: boolean;
   replies?: Comment[];
 }
@@ -37,13 +41,17 @@ interface CommentsSectionProps {
   comments: Comment[];
   onAddComment: (content: string, parentCommentId?: string) => Promise<boolean>;
   onLikeComment: (commentId: string) => void;
+  onDeleteComment: (commentId: string) => void;
+  currentUserId?: string;
 }
 
 export const CommentsSection = ({ 
   profileId, 
   comments, 
   onAddComment, 
-  onLikeComment 
+  onLikeComment,
+  onDeleteComment,
+  currentUserId
  }: CommentsSectionProps) => {
   const [newComment, setNewComment] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -124,21 +132,23 @@ export const CommentsSection = ({
               </Avatar>
               
               <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm">{comment.user.name}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(comment.created_at).toLocaleDateString('pt-BR', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-medium text-sm">{comment.user.name}</span>
+                        {comment.userVotes?.phenotype && (
+                          <span className="text-xs px-2 py-1 bg-phindex-teal/10 text-phindex-teal rounded-full font-medium">
+                            {comment.userVotes.phenotype}
+                          </span>
+                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(comment.created_at), { 
+                            addSuffix: true, 
+                            locale: ptBR 
+                          })}
+                        </span>
+                      </div>
                     </div>
-                  </div>
                   
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -147,6 +157,15 @@ export const CommentsSection = ({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur border-border/50">
+                      {currentUserId === comment.user_id && (
+                        <DropdownMenuItem 
+                          className="cursor-pointer text-destructive"
+                          onClick={() => onDeleteComment(comment.id)}
+                        >
+                          <Trash2 className="h-3 w-3 mr-2" />
+                          Excluir comentário
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem className="cursor-pointer">
                         Reportar
                       </DropdownMenuItem>
@@ -215,14 +234,17 @@ export const CommentsSection = ({
                     </Avatar>
                     
                     <div className="flex-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-medium text-xs">{reply.user.name}</span>
+                        {reply.userVotes?.phenotype && (
+                          <span className="text-xs px-1.5 py-0.5 bg-phindex-teal/10 text-phindex-teal rounded-full font-medium">
+                            {reply.userVotes.phenotype}
+                          </span>
+                        )}
                         <span className="text-xs text-muted-foreground">
-                          {new Date(reply.created_at).toLocaleDateString('pt-BR', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit'
+                          {formatDistanceToNow(new Date(reply.created_at), { 
+                            addSuffix: true, 
+                            locale: ptBR 
                           })}
                         </span>
                       </div>

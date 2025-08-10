@@ -106,11 +106,54 @@ export const useVoting = (profileId: string) => {
     fetchVotes();
   }, [profileId, user]);
 
+  const changeVote = async (newClassification: string) => {
+    if (!user) {
+      toast({
+        title: "Login necessário",
+        description: "Você precisa estar logado para votar",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    try {
+      // Update existing vote
+      const { error } = await supabase
+        .from('votes')
+        .update({
+          classification: newClassification,
+        })
+        .eq('user_id', user.id)
+        .eq('profile_id', profileId)
+        .eq('characteristic_type', 'phenotype');
+
+      if (error) throw error;
+
+      setUserVote(newClassification);
+      await fetchVotes(); // Refresh vote counts
+
+      toast({
+        title: "Voto atualizado!",
+        description: `Você mudou seu voto para ${newClassification}`,
+      });
+
+      return true;
+    } catch (error: any) {
+      toast({
+        title: "Erro ao atualizar voto",
+        description: error.message,
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
   return {
     votes,
     userVote,
     loading,
     castVote,
+    changeVote,
     hasUserVoted: !!userVote
   };
 };

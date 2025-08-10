@@ -362,6 +362,8 @@ const RegionPage = () => {
                       comments={selectedProfileData.comments}
                       onAddComment={async () => false}
                       onLikeComment={() => {}}
+                      onDeleteComment={() => {}}
+                      currentUserId={undefined}
                     />
                   </div>
                 </div>

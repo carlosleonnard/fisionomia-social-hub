@@ -181,8 +181,8 @@ export default function ProfileDetail() {
   const [showVoteModal, setShowVoteModal] = useState(false);
   
   const { user } = useAuth();
-  const { votes: realVotes, castVote, hasUserVoted } = useVoting(id || '');
-  const { comments: realComments, addComment, likeComment } = useComments(id || '');
+  const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(id || '');
+  const { comments: realComments, addComment, likeComment, deleteComment } = useComments(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
 
@@ -262,60 +262,37 @@ export default function ProfileDetail() {
                     </Badge>
                   </div>
                   
-                  {/* General Phenotypes */}
+                  {/* General Phenotypes - Real Data */}
                   <div className="flex justify-center gap-2 mb-3 flex-wrap">
-                    <Badge 
-                      variant="default" 
-                      className="bg-phindex-teal text-white font-medium shadow-md"
-                    >
-                      1º Sul Europa
-                    </Badge>
-                    <Badge 
-                      variant="secondary" 
-                      className="bg-phindex-teal/60 text-white font-medium"
-                    >
-                      2º Norte Europa
-                    </Badge>
-                    <Badge 
-                      variant="outline" 
-                      className="bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
-                    >
-                      3º Ásia Central
-                    </Badge>
+                    {realVotes.slice(0, 3).map((vote, index) => (
+                      <Badge 
+                        key={vote.classification}
+                        variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"}
+                        className={
+                          index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
+                          index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
+                          "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
+                        }
+                      >
+                        {index + 1}º {vote.classification} ({vote.percentage.toFixed(1)}%)
+                      </Badge>
+                    ))}
                   </div>
                   
-                  {/* Phenotype Badges */}
+                  {/* Phenotype Badges - Real Data */}
                   <div className="flex justify-center gap-2 mb-4 flex-wrap">
-                    {(() => {
-                      const primaryPhenotype = profile.votes
-                        .filter(vote => vote.category === 'primary')
-                        .sort((a, b) => b.percentage - a.percentage)[0];
-                      
-                      const secondaryPhenotype = profile.votes
-                        .filter(vote => vote.category === 'secondary')
-                        .sort((a, b) => b.percentage - a.percentage)[0];
-                      
-                      return (
-                        <>
-                          {primaryPhenotype && (
-                            <Badge 
-                              variant="default" 
-                              className="bg-phindex-teal text-white font-medium shadow-md"
-                            >
-                              1º {primaryPhenotype.classification}
-                            </Badge>
-                          )}
-                          {secondaryPhenotype && (
-                            <Badge 
-                              variant="secondary" 
-                              className="bg-phindex-teal/60 text-white font-medium"
-                            >
-                              2º {secondaryPhenotype.classification}
-                            </Badge>
-                          )}
-                        </>
-                      );
-                    })()}
+                    {realVotes.slice(0, 2).map((vote, index) => (
+                      <Badge 
+                        key={vote.classification}
+                        variant={index === 0 ? "default" : "secondary"}
+                        className={
+                          index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
+                          "bg-phindex-teal/60 text-white font-medium"
+                        }
+                      >
+                        {index + 1}º {vote.classification}
+                      </Badge>
+                    ))}
                   </div>
                   
                   <p className="text-muted-foreground mb-2">
@@ -352,7 +329,7 @@ export default function ProfileDetail() {
                       }}
                     >
                       <Vote className="h-4 w-4 text-phindex-teal" />
-                      <span>{profile.likes} votos</span>
+                      <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
                     </div>
                     <div 
                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
@@ -364,21 +341,38 @@ export default function ProfileDetail() {
                       }}
                     >
                       <MessageSquare className="h-4 w-4 text-blue-500" />
-                      <span>{profile.comments}</span>
+                      <span>{realComments.length} comentários</span>
                     </div>
                   </div>
 
                    <div className="space-y-2">
                      {user ? (
-                       <Button 
-                         onClick={() => setShowVoteModal(true)}
-                         className="w-full"
-                         variant="default"
-                         disabled={hasUserVoted}
-                       >
-                         <Users className="mr-2 h-4 w-4" />
-                         {hasUserVoted ? "Você já votou" : "Votar"}
-                       </Button>
+                       hasUserVoted ? (
+                         <div className="space-y-2">
+                           <div className="text-center p-3 bg-muted/30 rounded-lg">
+                             <p className="text-sm text-muted-foreground">
+                               Você votou em: <span className="font-medium text-phindex-teal">{userVote}</span>
+                             </p>
+                           </div>
+                           <Button 
+                             onClick={() => setShowVoteModal(true)}
+                             className="w-full"
+                             variant="outline"
+                           >
+                             <Users className="mr-2 h-4 w-4" />
+                             Alterar voto
+                           </Button>
+                         </div>
+                       ) : (
+                         <Button 
+                           onClick={() => setShowVoteModal(true)}
+                           className="w-full"
+                           variant="default"
+                         >
+                           <Users className="mr-2 h-4 w-4" />
+                           Votar
+                         </Button>
+                       )
                      ) : (
                       <Button 
                         onClick={() => setShowVoteModal(true)}
@@ -404,70 +398,32 @@ export default function ProfileDetail() {
                 </CardHeader>
                 <CardContent className="h-52 overflow-y-auto">
                   <div className="space-y-4">
-                    {/* Primary Geographic Region */}
+                    {/* Real Vote Data */}
                     <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary Geographic Classification</h4>
-                      <div className="space-y-3">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                              Sul Europa
-                            </Badge>
-                            <span className="text-sm font-medium">65%</span>
-                          </div>
-                          <Progress value={65} className="h-2" />
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Classificação por Votos</h4>
+                      {realVotes.length > 0 ? (
+                        <div className="space-y-3">
+                          {realVotes.slice(0, 5).map((vote, index) => (
+                            <div key={vote.classification} className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge 
+                                  variant={index < 2 ? "secondary" : "outline"} 
+                                  className={index < 2 ? "text-sm bg-phindex-teal/10 text-phindex-teal" : "text-sm"}
+                                >
+                                  {vote.classification}
+                                </Badge>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-medium">{vote.percentage.toFixed(1)}%</span>
+                                  <span className="text-xs text-muted-foreground">({vote.count} votos)</span>
+                                </div>
+                              </div>
+                              <Progress value={vote.percentage} className="h-2" />
+                            </div>
+                          ))}
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="secondary" className="text-sm bg-phindex-teal/10 text-phindex-teal">
-                              América do Sul
-                            </Badge>
-                            <span className="text-sm font-medium">25%</span>
-                          </div>
-                          <Progress value={25} className="h-2" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Secondary Geographic Region */}
-                    <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary Geographic Classification</h4>
-                      <div className="space-y-3">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="outline" className="text-sm">
-                              Norte Europa
-                            </Badge>
-                            <span className="text-sm font-medium">8%</span>
-                          </div>
-                          <Progress value={8} className="h-2" />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="outline" className="text-sm">
-                              Oriente Médio
-                            </Badge>
-                            <span className="text-sm font-medium">2%</span>
-                          </div>
-                          <Progress value={2} className="h-2" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tertiary Geographic Region */}
-                    <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary Geographic Classification</h4>
-                      <div className="space-y-3">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="outline" className="text-sm">
-                              Ásia Central
-                            </Badge>
-                            <span className="text-sm font-medium">2%</span>
-                          </div>
-                          <Progress value={2} className="h-2" />
-                        </div>
-                      </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">Nenhum voto ainda</p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -480,58 +436,36 @@ export default function ProfileDetail() {
                 </CardHeader>
                 <CardContent className="h-52 overflow-y-auto">
                   <div className="space-y-4">
-                    {/* Primary Phenotypes */}
+                    {/* Real Vote Data */}
                     <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary</h4>
-                      <div className="space-y-3">
-                        {profile.votes.filter(vote => vote.category === 'primary').map((vote, index) => (
-                          <div key={index} className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="default" className="bg-primary text-primary-foreground text-sm">
-                                {vote.classification}
-                              </Badge>
-                              <span className="text-sm font-medium">{vote.percentage}%</span>
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Classificações Específicas</h4>
+                      {realVotes.length > 0 ? (
+                        <div className="space-y-3">
+                          {realVotes.map((vote, index) => (
+                            <div key={vote.classification} className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Badge 
+                                  variant={index === 0 ? "default" : index < 3 ? "secondary" : "outline"} 
+                                  className={
+                                    index === 0 ? "bg-primary text-primary-foreground text-sm" :
+                                    index < 3 ? "bg-secondary text-secondary-foreground text-sm" :
+                                    "bg-muted text-muted-foreground text-sm"
+                                  }
+                                >
+                                  {vote.classification}
+                                </Badge>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-medium">{vote.percentage.toFixed(1)}%</span>
+                                  <span className="text-xs text-muted-foreground">({vote.count})</span>
+                                </div>
+                              </div>
+                              <Progress value={vote.percentage} className="h-2" />
                             </div>
-                            <Progress value={vote.percentage} className="h-2" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Secondary Phenotypes */}
-                    <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary</h4>
-                      <div className="space-y-3">
-                        {profile.votes.filter(vote => vote.category === 'secondary').map((vote, index) => (
-                          <div key={index} className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="secondary" className="bg-secondary text-secondary-foreground text-sm">
-                                {vote.classification}
-                              </Badge>
-                              <span className="text-sm font-medium">{vote.percentage}%</span>
-                            </div>
-                            <Progress value={vote.percentage} className="h-2" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Tertiary Phenotypes */}
-                    <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary</h4>
-                      <div className="space-y-3">
-                        {profile.votes.filter(vote => vote.category === 'tertiary').map((vote, index) => (
-                          <div key={index} className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="outline" className="bg-muted text-muted-foreground text-sm">
-                                {vote.classification}
-                              </Badge>
-                              <span className="text-sm font-medium">{vote.percentage}%</span>
-                            </div>
-                            <Progress value={vote.percentage} className="h-2" />
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">Nenhum voto ainda</p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -574,6 +508,8 @@ export default function ProfileDetail() {
                 profileId={profile.id}
                 onAddComment={addComment}
                 onLikeComment={likeComment}
+                onDeleteComment={deleteComment}
+                currentUserId={user?.id}
                 comments={realComments}
               />
             </div>
@@ -584,7 +520,9 @@ export default function ProfileDetail() {
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
                 onSubmit={async (votes) => {
-                  const success = await castVote(votes["Primary Phenotype"]);
+                  const success = hasUserVoted 
+                    ? await changeVote(votes["Primary Phenotype"])
+                    : await castVote(votes["Primary Phenotype"]);
                   if (success) {
                     setShowVoteModal(false);
                   }

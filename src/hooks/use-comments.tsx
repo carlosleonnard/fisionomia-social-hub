@@ -9,10 +9,12 @@ interface Comment {
   created_at: string;
   likes_count: number;
   parent_comment_id?: string | null;
+  user_id: string;
   user: {
     name: string;
     email: string;
   };
+  userVotes?: { [key: string]: string };
   isLiked?: boolean;
   replies?: Comment[];
 }
@@ -54,6 +56,20 @@ export const useComments = (profileId: string) => {
           userLikes = likesData?.map(like => like.comment_id) || [];
         }
 
+        // Get user votes for this profile to show next to names
+        const { data: userVotesData } = await supabase
+          .from('votes')
+          .select('user_id, classification, characteristic_type')
+          .eq('profile_id', profileId);
+
+        const userVotesMap = new Map();
+        userVotesData?.forEach(vote => {
+          if (!userVotesMap.has(vote.user_id)) {
+            userVotesMap.set(vote.user_id, {});
+          }
+          userVotesMap.get(vote.user_id)[vote.characteristic_type] = vote.classification;
+        });
+
         const formattedComments: Comment[] = commentsData
           .filter(comment => !comment.parent_comment_id) // Only get top-level comments
           .map(comment => ({
@@ -62,10 +78,12 @@ export const useComments = (profileId: string) => {
             created_at: comment.created_at,
             likes_count: comment.likes_count,
             parent_comment_id: comment.parent_comment_id,
+            user_id: comment.user_id,
             user: {
               name: (comment.profiles as any)?.name || 'Usuário',
               email: (comment.profiles as any)?.email || ''
             },
+            userVotes: userVotesMap.get(comment.user_id) || {},
             isLiked: userLikes.includes(comment.id),
             replies: commentsData
               .filter(reply => reply.parent_comment_id === comment.id)
@@ -75,10 +93,12 @@ export const useComments = (profileId: string) => {
                 created_at: reply.created_at,
                 likes_count: reply.likes_count,
                 parent_comment_id: reply.parent_comment_id,
+                user_id: reply.user_id,
                 user: {
                   name: (reply.profiles as any)?.name || 'Usuário',
                   email: (reply.profiles as any)?.email || ''
                 },
+                userVotes: userVotesMap.get(reply.user_id) || {},
                 isLiked: userLikes.includes(reply.id)
               }))
           }));
@@ -145,7 +165,8 @@ export const useComments = (profileId: string) => {
     }
 
     try {
-      const comment = comments.find(c => c.id === commentId);
+      const comment = comments.find(c => c.id === commentId) || 
+                     comments.find(c => c.replies?.find(r => r.id === commentId))?.replies?.find(r => r.id === commentId);
       if (!comment) return;
 
       if (comment.isLiked) {
@@ -208,6 +229,40 @@ export const useComments = (profileId: string) => {
     }
   };
 
+  const deleteComment = async (commentId: string) => {
+    if (!user) {
+      toast({
+        title: "Login necessário",
+        description: "Você precisa estar logado para excluir",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', commentId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      await fetchComments(); // Refresh comments
+
+      toast({
+        title: "Comentário excluído!",
+        description: "Seu comentário foi removido com sucesso",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro ao excluir",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchComments();
   }, [profileId, user]);
@@ -216,6 +271,7 @@ export const useComments = (profileId: string) => {
     comments,
     loading,
     addComment,
-    likeComment
+    likeComment,
+    deleteComment
   };
 };
