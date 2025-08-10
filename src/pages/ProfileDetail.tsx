@@ -584,7 +584,7 @@ export default function ProfileDetail() {
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
                 onSubmit={async (votes) => {
-                  const success = await castVote(votes.primary);
+                  const success = await castVote(votes["Primary Phenotype"]);
                   if (success) {
                     setShowVoteModal(false);
                   }
