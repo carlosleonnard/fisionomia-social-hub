@@ -510,10 +510,25 @@ export default function ProfileDetail() {
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
                 onSubmit={async (votes) => {
-                  const success = hasUserVoted 
+                  // Cast the main phenotype vote first
+                  const mainVoteSuccess = hasUserVoted 
                     ? await changeVote(votes["Primary Phenotype"])
                     : await castVote(votes["Primary Phenotype"]);
-                  if (success) {
+                  
+                  // Cast physical characteristics votes
+                  const physicalCharacteristics = [
+                    'Hair Color', 'Hair Texture', 'Eye Color', 'Skin Tone',
+                    'Nasal Breadth', 'Facial Breadth', 'Body Type', 'Jaw Type',
+                    'Head Breadth', 'Face Shape'
+                  ];
+                  
+                  for (const characteristic of physicalCharacteristics) {
+                    if (votes[characteristic]) {
+                      await castPhysicalVote(characteristic, votes[characteristic]);
+                    }
+                  }
+                  
+                  if (mainVoteSuccess) {
                     setShowVoteModal(false);
                   }
                 }}
