@@ -509,6 +509,10 @@ export default function ProfileDetail() {
               <VoteModal
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
+                existingVotes={{
+                  "Primary Phenotype": userVote || "",
+                  ...physicalUserVotes
+                }}
                 onSubmit={async (votes) => {
                   // Cast the main phenotype vote first
                   const mainVoteSuccess = hasUserVoted 

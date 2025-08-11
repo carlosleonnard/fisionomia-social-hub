@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,6 +9,7 @@ interface VoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (votes: Record<string, string>) => void;
+  existingVotes?: Record<string, string>;
 }
 
 const specificPhenotypeOptions = ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"];
@@ -58,8 +59,12 @@ const characteristics = [
   }
 ];
 
-export const VoteModal = ({ isOpen, onClose, onSubmit }: VoteModalProps) => {
-  const [votes, setVotes] = useState<Record<string, string>>({});
+export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: VoteModalProps) => {
+  const [votes, setVotes] = useState<Record<string, string>>(existingVotes);
+
+  useEffect(() => {
+    setVotes(existingVotes);
+  }, [existingVotes]);
 
   const handleVoteChange = (category: string, value: string) => {
     setVotes(prev => ({ ...prev, [category]: value }));
