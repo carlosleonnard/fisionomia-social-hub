@@ -67,13 +67,57 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
   }, [existingVotes]);
 
   const handleVoteChange = (category: string, value: string) => {
-    setVotes(prev => ({ ...prev, [category]: value }));
+    setVotes(prev => {
+      const newVotes = { ...prev, [category]: value };
+      
+      // Se mudou um primário, limpa os secundários e terciários correspondentes
+      if (category === "Primary Geographic") {
+        delete newVotes["Secondary Geographic"];
+        delete newVotes["Tertiary Geographic"];
+      } else if (category === "Primary Phenotype") {
+        delete newVotes["Secondary Phenotype"];
+        delete newVotes["Tertiary Phenotype"];
+      } else if (category === "Secondary Geographic") {
+        delete newVotes["Tertiary Geographic"];
+      } else if (category === "Secondary Phenotype") {
+        delete newVotes["Tertiary Phenotype"];
+      }
+      
+      return newVotes;
+    });
   };
 
   const handleSubmit = () => {
     onSubmit(votes);
     setVotes({});
     onClose();
+  };
+
+  // Função para filtrar opções disponíveis
+  const getAvailableGeographicOptions = (level: 'secondary' | 'tertiary') => {
+    const selectedPrimary = votes["Primary Geographic"];
+    const selectedSecondary = votes["Secondary Geographic"];
+    
+    return geographicOptions.filter(option => {
+      if (level === 'secondary') {
+        return option !== selectedPrimary;
+      } else { // tertiary
+        return option !== selectedPrimary && option !== selectedSecondary;
+      }
+    });
+  };
+
+  const getAvailablePhenotypeOptions = (level: 'secondary' | 'tertiary') => {
+    const selectedPrimary = votes["Primary Phenotype"];
+    const selectedSecondary = votes["Secondary Phenotype"];
+    
+    return specificPhenotypeOptions.filter(option => {
+      if (level === 'secondary') {
+        return option !== selectedPrimary;
+      } else { // tertiary
+        return option !== selectedPrimary && option !== selectedSecondary;
+      }
+    });
   };
 
   const isComplete = votes["Primary Geographic"] !== undefined && votes["Primary Phenotype"] !== undefined;
@@ -120,59 +164,63 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                   </Select>
                 </div>
 
-                {/* Secondary Geographic */}
-                <div className="space-y-3">
-                  <Label className="font-semibold text-foreground">
-                    Secondary Geographic
-                  </Label>
-                  <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica secundária, se aplicável</p>
-                  <Select
-                    value={votes["Secondary Geographic"] || ""}
-                    onValueChange={(value) => handleVoteChange("Secondary Geographic", value)}
-                  >
-                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                      <SelectValue placeholder="Selecione Secondary Geographic" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-border/50 z-50">
-                      {geographicOptions.map((option) => (
-                        <SelectItem 
-                          key={option} 
-                          value={option}
-                          className="hover:bg-muted focus:bg-muted text-foreground"
-                        >
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Secondary Geographic - only show if primary is selected */}
+                {votes["Primary Geographic"] && (
+                  <div className="space-y-3">
+                    <Label className="font-semibold text-foreground">
+                      Secondary Geographic
+                    </Label>
+                    <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica secundária, se aplicável</p>
+                    <Select
+                      value={votes["Secondary Geographic"] || ""}
+                      onValueChange={(value) => handleVoteChange("Secondary Geographic", value)}
+                    >
+                      <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                        <SelectValue placeholder="Selecione Secondary Geographic" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border/50 z-50">
+                        {getAvailableGeographicOptions('secondary').map((option) => (
+                          <SelectItem 
+                            key={option} 
+                            value={option}
+                            className="hover:bg-muted focus:bg-muted text-foreground"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
-                {/* Tertiary Geographic */}
-                <div className="space-y-3">
-                  <Label className="font-semibold text-foreground">
-                    Tertiary Geographic
-                  </Label>
-                  <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica terciária, se aplicável</p>
-                  <Select
-                    value={votes["Tertiary Geographic"] || ""}
-                    onValueChange={(value) => handleVoteChange("Tertiary Geographic", value)}
-                  >
-                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                      <SelectValue placeholder="Selecione Tertiary Geographic" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-border/50 z-50">
-                      {geographicOptions.map((option) => (
-                        <SelectItem 
-                          key={option} 
-                          value={option}
-                          className="hover:bg-muted focus:bg-muted text-foreground"
-                        >
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Tertiary Geographic - only show if secondary is selected */}
+                {votes["Secondary Geographic"] && (
+                  <div className="space-y-3">
+                    <Label className="font-semibold text-foreground">
+                      Tertiary Geographic
+                    </Label>
+                    <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica terciária, se aplicável</p>
+                    <Select
+                      value={votes["Tertiary Geographic"] || ""}
+                      onValueChange={(value) => handleVoteChange("Tertiary Geographic", value)}
+                    >
+                      <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                        <SelectValue placeholder="Selecione Tertiary Geographic" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border/50 z-50">
+                        {getAvailableGeographicOptions('tertiary').map((option) => (
+                          <SelectItem 
+                            key={option} 
+                            value={option}
+                            className="hover:bg-muted focus:bg-muted text-foreground"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
             </Card>
 
@@ -209,59 +257,63 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                   </Select>
                 </div>
 
-                {/* Secondary Phenotype */}
-                <div className="space-y-3">
-                  <Label className="font-semibold text-foreground">
-                    Secondary Phenotype
-                  </Label>
-                  <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo secundário, se aplicável</p>
-                  <Select
-                    value={votes["Secondary Phenotype"] || ""}
-                    onValueChange={(value) => handleVoteChange("Secondary Phenotype", value)}
-                  >
-                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                      <SelectValue placeholder="Selecione Secondary Phenotype" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-border/50 z-50">
-                      {specificPhenotypeOptions.map((option) => (
-                        <SelectItem 
-                          key={option} 
-                          value={option}
-                          className="hover:bg-muted focus:bg-muted text-foreground"
-                        >
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Secondary Phenotype - only show if primary is selected */}
+                {votes["Primary Phenotype"] && (
+                  <div className="space-y-3">
+                    <Label className="font-semibold text-foreground">
+                      Secondary Phenotype
+                    </Label>
+                    <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo secundário, se aplicável</p>
+                    <Select
+                      value={votes["Secondary Phenotype"] || ""}
+                      onValueChange={(value) => handleVoteChange("Secondary Phenotype", value)}
+                    >
+                      <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                        <SelectValue placeholder="Selecione Secondary Phenotype" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border/50 z-50">
+                        {getAvailablePhenotypeOptions('secondary').map((option) => (
+                          <SelectItem 
+                            key={option} 
+                            value={option}
+                            className="hover:bg-muted focus:bg-muted text-foreground"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
-                {/* Tertiary Phenotype */}
-                <div className="space-y-3">
-                  <Label className="font-semibold text-foreground">
-                    Tertiary Phenotype
-                  </Label>
-                  <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo terciário, se aplicável</p>
-                  <Select
-                    value={votes["Tertiary Phenotype"] || ""}
-                    onValueChange={(value) => handleVoteChange("Tertiary Phenotype", value)}
-                  >
-                    <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                      <SelectValue placeholder="Selecione Tertiary Phenotype" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-border/50 z-50">
-                      {specificPhenotypeOptions.map((option) => (
-                        <SelectItem 
-                          key={option} 
-                          value={option}
-                          className="hover:bg-muted focus:bg-muted text-foreground"
-                        >
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Tertiary Phenotype - only show if secondary is selected */}
+                {votes["Secondary Phenotype"] && (
+                  <div className="space-y-3">
+                    <Label className="font-semibold text-foreground">
+                      Tertiary Phenotype
+                    </Label>
+                    <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo terciário, se aplicável</p>
+                    <Select
+                      value={votes["Tertiary Phenotype"] || ""}
+                      onValueChange={(value) => handleVoteChange("Tertiary Phenotype", value)}
+                    >
+                      <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
+                        <SelectValue placeholder="Selecione Tertiary Phenotype" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border/50 z-50">
+                        {getAvailablePhenotypeOptions('tertiary').map((option) => (
+                          <SelectItem 
+                            key={option} 
+                            value={option}
+                            className="hover:bg-muted focus:bg-muted text-foreground"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
             </Card>
 
