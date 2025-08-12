@@ -291,9 +291,9 @@ export default function ProfileDetail() {
                           index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
                           "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
                         }
-                      >
-                        {index + 1}º {vote.classification} ({vote.percentage.toFixed(1)}%)
-                      </Badge>
+                       >
+                         {index + 1}º {vote.classification}
+                       </Badge>
                     ))}
                   </div>
                   
