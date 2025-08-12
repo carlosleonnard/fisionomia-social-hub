@@ -19,6 +19,7 @@ import { usePhysicalVoting } from "@/hooks/use-physical-voting";
 import { useGeographicVoting } from "@/hooks/use-geographic-voting";
 import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
 import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
+import { useProfileCreator } from "@/hooks/use-profile-creator";
 
 interface Vote {
   classification: string;
@@ -191,6 +192,7 @@ export default function ProfileDetail() {
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(id || '');
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(id || '');
+  const { data: profileCreator } = useProfileCreator(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
   
@@ -390,7 +392,7 @@ export default function ProfileDetail() {
 
                   {/* Created By Information */}
                   <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
-                    Criado por <span className="font-medium text-phindex-teal">Admin User</span> em 4 de agosto de 2025
+                    Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : 'Data não disponível'}
                   </p>
                   
                   <div className="flex justify-center gap-4 mb-6">
