@@ -251,7 +251,7 @@ export const CommentsSection = ({
                       
                       <p className="text-xs mt-1">{reply.content}</p>
                       
-                      <div className="flex items-center gap-1 mt-1">
+                     <div className="flex items-center justify-between mt-1">
                         <Button
                           variant="ghost"
                           size="sm"
@@ -263,6 +263,25 @@ export const CommentsSection = ({
                           <Heart className={`h-2 w-2 ${reply.isLiked ? 'fill-current' : ''}`} />
                           {reply.likes_count}
                         </Button>
+                        
+                        {currentUserId === reply.user_id && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-5 w-5">
+                                <MoreHorizontal className="h-2 w-2" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur border-border/50">
+                              <DropdownMenuItem 
+                                className="cursor-pointer text-destructive"
+                                onClick={() => onDeleteComment(reply.id)}
+                              >
+                                <Trash2 className="h-3 w-3 mr-2" />
+                                Excluir resposta
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, MessageSquare, Vote, BarChart, MapPin } from "lucide-react";
+import { ArrowLeft, Users, MessageSquare, Vote, BarChart, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -246,24 +247,34 @@ export default function ProfileDetail() {
             <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardContent className="p-6">
                 <div className="text-center">
-                  {/* Duas fotos lado a lado */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="text-center">
-                      <img 
-                        src={sanitizedProfile.frontImage} 
-                        alt={`${sanitizedProfile.name} - frente`}
-                        className="w-full max-w-xs mx-auto rounded-lg"
-                      />
-                      <p className="text-xs text-muted-foreground mt-2">Frente</p>
-                    </div>
-                    <div className="text-center">
-                      <img 
-                        src={sanitizedProfile.sideImage} 
-                        alt={`${sanitizedProfile.name} - lado`}
-                        className="w-full max-w-xs mx-auto rounded-lg"
-                      />
-                      <p className="text-xs text-muted-foreground mt-2">Perfil</p>
-                    </div>
+                  {/* Carrossel de fotos */}
+                  <div className="max-w-md mx-auto mb-4">
+                    <Carousel className="w-full">
+                      <CarouselContent>
+                        <CarouselItem>
+                          <div className="text-center">
+                            <img 
+                              src={sanitizedProfile.frontImage} 
+                              alt={`${sanitizedProfile.name} - frente`}
+                              className="w-full max-w-sm mx-auto rounded-lg"
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">Frente</p>
+                          </div>
+                        </CarouselItem>
+                        <CarouselItem>
+                          <div className="text-center">
+                            <img 
+                              src={sanitizedProfile.sideImage} 
+                              alt={`${sanitizedProfile.name} - perfil`}
+                              className="w-full max-w-sm mx-auto rounded-lg"
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">Perfil</p>
+                          </div>
+                        </CarouselItem>
+                      </CarouselContent>
+                      <CarouselPrevious className="left-2" />
+                      <CarouselNext className="right-2" />
+                    </Carousel>
                   </div>
                   <h1 className="text-2xl font-bold text-phindex-teal mb-2">
                     {sanitizedProfile.name}
@@ -344,13 +355,25 @@ export default function ProfileDetail() {
                     </div>
                   )}
                   
-                  {/* Ancestry Description - Only show to profile owner */}
+                  {/* Ancestry Description - Show to everyone now */}
                   {sanitizedProfile.description && (
                     <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
                       <div className="p-4 bg-muted/30 rounded-lg text-left">
                         <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
                         <p className="text-sm text-foreground leading-relaxed">
                           {sanitizedProfile.description}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Show ancestry for all users from the mock profile description */}
+                  {!sanitizedProfile.description && profile?.description && (
+                    <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
+                      <div className="p-4 bg-muted/30 rounded-lg text-left">
+                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                        <p className="text-sm text-foreground leading-relaxed">
+                          {profile.description}
                         </p>
                       </div>
                     </div>

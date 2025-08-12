@@ -283,6 +283,10 @@ export type Database = {
         }
         Returns: string
       }
+      delete_comment_and_children: {
+        Args: { comment_id_param: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

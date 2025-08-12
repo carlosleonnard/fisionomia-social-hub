@@ -240,11 +240,10 @@ export const useComments = (profileId: string) => {
     }
 
     try {
-      const { error } = await supabase
-        .from('comments')
-        .delete()
-        .eq('id', commentId)
-        .eq('user_id', user.id);
+      // Use the new function to delete comment and its children
+      const { error } = await supabase.rpc('delete_comment_and_children', {
+        comment_id_param: commentId
+      });
 
       if (error) throw error;
 
