@@ -117,11 +117,6 @@ export const usePhysicalVoting = (profileId: string) => {
       setUserVotes(prev => ({ ...prev, [characteristicType]: classification }));
       await fetchPhysicalVotes();
 
-      toast({
-        title: "Voto registrado!",
-        description: `Você votou em ${classification} para ${characteristicType}`,
-      });
-
       return true;
     } catch (error: any) {
       toast({

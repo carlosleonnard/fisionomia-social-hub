@@ -68,11 +68,6 @@ export const useGeographicVoting = (profileId: string) => {
 
       setUserGeographicVotes(prev => ({ ...prev, [characteristicType]: classification }));
 
-      toast({
-        title: "Voto registrado!",
-        description: `Você votou em ${classification} para ${characteristicType}`,
-      });
-
       return true;
     } catch (error: any) {
       toast({

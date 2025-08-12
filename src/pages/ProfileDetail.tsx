@@ -578,6 +578,8 @@ export default function ProfileDetail() {
                   
                   if (mainVoteSuccess) {
                     setShowVoteModal(false);
+                    // Refresh the page to show updated results
+                    window.location.reload();
                   }
                 }}
               />
