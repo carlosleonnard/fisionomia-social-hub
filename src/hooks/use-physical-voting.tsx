@@ -108,6 +108,8 @@ export const usePhysicalVoting = (profileId: string) => {
           profile_id: profileId,
           classification,
           characteristic_type: characteristicType
+        }, {
+          onConflict: 'user_id,profile_id,characteristic_type'
         });
 
       if (error) throw error;
