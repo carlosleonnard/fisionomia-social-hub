@@ -41,8 +41,8 @@ interface Profile {
   age: number;
   gender: string;
   height: string;
-  location: string;
-  description: string;
+  location?: string; // Made optional for privacy - only shown to profile owner
+  description?: string; // Made optional for privacy - only shown to profile owner
   frontImage: string;
   sideImage: string;
   phenotype: string;
@@ -188,8 +188,19 @@ export default function ProfileDetail() {
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
+  
+  // Check if current user is the profile owner (for future database integration)
+  // For now, using mock logic - in real app this would check against profiles_data.user_id
+  const isProfileOwner = user && profile && user.id === `user_${profile.id}`;
+  
+  // Filter sensitive data for non-owners
+  const sanitizedProfile = profile ? {
+    ...profile,
+    location: isProfileOwner ? profile.location : undefined,
+    description: isProfileOwner ? profile.description : undefined
+  } : null;
 
-  if (!profile) {
+  if (!sanitizedProfile) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-phindex-dark/20">
         <Header />
@@ -235,23 +246,23 @@ export default function ProfileDetail() {
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="text-center">
                       <img 
-                        src={profile.frontImage} 
-                        alt={`${profile.name} - frente`}
+                        src={sanitizedProfile.frontImage} 
+                        alt={`${sanitizedProfile.name} - frente`}
                         className="w-full max-w-xs mx-auto rounded-lg"
                       />
                       <p className="text-xs text-muted-foreground mt-2">Frente</p>
                     </div>
                     <div className="text-center">
                       <img 
-                        src={profile.sideImage} 
-                        alt={`${profile.name} - lado`}
+                        src={sanitizedProfile.sideImage} 
+                        alt={`${sanitizedProfile.name} - lado`}
                         className="w-full max-w-xs mx-auto rounded-lg"
                       />
                       <p className="text-xs text-muted-foreground mt-2">Perfil</p>
                     </div>
                   </div>
                   <h1 className="text-2xl font-bold text-phindex-teal mb-2">
-                    {profile.name}
+                    {sanitizedProfile.name}
                   </h1>
                   
                   {/* Pop Culture Badge */}
@@ -259,9 +270,9 @@ export default function ProfileDetail() {
                     <Badge 
                       variant="secondary" 
                       className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
-                      onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
+                      onClick={() => navigate(`/category/${sanitizedProfile.category.toLowerCase().replace(' ', '-')}`)}
                     >
-                      {profile.category}
+                      {sanitizedProfile.category}
                     </Badge>
                   </div>
                   
@@ -299,22 +310,37 @@ export default function ProfileDetail() {
                   </div>
                   
                   <p className="text-muted-foreground mb-2">
-                    {profile.age} anos • {profile.gender} • {profile.height}
+                    {sanitizedProfile.age} anos • {sanitizedProfile.gender} • {sanitizedProfile.height}
                   </p>
-                  <div className="flex items-center justify-center gap-1 mb-4">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">{profile.location}</span>
-                  </div>
                   
-                  {/* Ancestry Description */}
-                  <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
-                    <div className="p-4 bg-muted/30 rounded-lg text-left">
-                      <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
-                      <p className="text-sm text-foreground leading-relaxed">
-                        {profile.description}
+                  {/* Location - Only show to profile owner */}
+                  {sanitizedProfile.location && (
+                    <div className="flex items-center justify-center gap-1 mb-4">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">{sanitizedProfile.location}</span>
+                    </div>
+                  )}
+                  
+                  {/* Ancestry Description - Only show to profile owner */}
+                  {sanitizedProfile.description && (
+                    <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
+                      <div className="p-4 bg-muted/30 rounded-lg text-left">
+                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                        <p className="text-sm text-foreground leading-relaxed">
+                          {sanitizedProfile.description}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Privacy notice for non-owners */}
+                  {!isProfileOwner && (
+                    <div className="mb-6 p-3 bg-muted/20 border border-border/40 rounded-xl">
+                      <p className="text-xs text-muted-foreground text-center">
+                        Algumas informações pessoais estão ocultas por motivos de privacidade
                       </p>
                     </div>
-                  </div>
+                  )}
 
                   {/* Created By Information */}
                   <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
@@ -495,7 +521,7 @@ export default function ProfileDetail() {
             {/* Comments Section */}
             <div data-comments-section>
               <CommentsSection 
-                profileId={profile.id}
+                profileId={sanitizedProfile.id}
                 onAddComment={addComment}
                 onLikeComment={likeComment}
                 onDeleteComment={deleteComment}

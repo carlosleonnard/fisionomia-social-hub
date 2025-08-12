@@ -269,6 +269,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_sensitive_profile_data: {
+        Args: { target_user_id: string; target_profile_id: string }
+        Returns: boolean
+      }
       create_notification: {
         Args: {
           target_user_id: string
