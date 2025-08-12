@@ -308,19 +308,28 @@ export default function ProfileDetail() {
                   
                   {/* Phenotype Badges - Real Data */}
                   <div className="flex justify-center gap-2 mb-4 flex-wrap">
-                    {realVotes.slice(0, 3).map((vote, index) => (
-                      <Badge 
-                        key={vote.classification}
-                        variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"}
-                        className={
-                          index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
-                          index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
-                          "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
-                        }
-                      >
-                        {index + 1}º {vote.classification}
-                      </Badge>
-                    ))}
+                    {[
+                      { label: '1º', votes: phenotypeVotes['Primary Phenotype'] },
+                      { label: '2º', votes: phenotypeVotes['Secondary Phenotype'] },
+                      { label: '3º', votes: phenotypeVotes['Tertiary Phenotype'] }
+                    ].map((category, index) => {
+                      const topVote = category.votes?.[0];
+                      if (!topVote) return null;
+                      
+                      return (
+                        <Badge 
+                          key={`${category.label}-${topVote.classification}`}
+                          variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"}
+                          className={
+                            index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
+                            index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
+                            "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
+                          }
+                        >
+                          {category.label} {topVote.classification}
+                        </Badge>
+                      );
+                    }).filter(Boolean)}
                   </div>
                   
                   <p className="text-muted-foreground mb-2">
