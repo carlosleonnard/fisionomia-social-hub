@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useVoting } from "@/hooks/use-voting";
 import { useComments } from "@/hooks/use-comments";
 import { usePhysicalVoting } from "@/hooks/use-physical-voting";
+import { useGeographicVoting } from "@/hooks/use-geographic-voting";
 import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
 
 interface Vote {
@@ -186,6 +187,7 @@ export default function ProfileDetail() {
   const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(id || '');
   const { comments: realComments, addComment, likeComment, deleteComment } = useComments(id || '');
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
+  const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
   
@@ -537,7 +539,8 @@ export default function ProfileDetail() {
                 onClose={() => setShowVoteModal(false)}
                 existingVotes={{
                   "Primary Phenotype": userVote || "",
-                  ...physicalUserVotes
+                  ...physicalUserVotes,
+                  ...userGeographicVotes
                 }}
                 onSubmit={async (votes) => {
                   // Cast the main phenotype vote first
