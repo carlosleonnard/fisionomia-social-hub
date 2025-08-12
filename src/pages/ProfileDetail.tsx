@@ -548,6 +548,18 @@ export default function ProfileDetail() {
                     ? await changeVote(votes["Primary Phenotype"])
                     : await castVote(votes["Primary Phenotype"]);
                   
+                  // Cast geographic classification votes
+                  const geographicCharacteristics = [
+                    'Primary Geographic', 'Secondary Geographic', 'Tertiary Geographic',
+                    'Secondary Phenotype', 'Tertiary Phenotype'
+                  ];
+                  
+                  for (const characteristic of geographicCharacteristics) {
+                    if (votes[characteristic]) {
+                      await castGeographicVote(characteristic, votes[characteristic]);
+                    }
+                  }
+                  
                   // Cast physical characteristics votes
                   const physicalCharacteristics = [
                     'Hair Color', 'Hair Texture', 'Eye Color', 'Skin Tone',
@@ -560,6 +572,9 @@ export default function ProfileDetail() {
                       await castPhysicalVote(characteristic, votes[characteristic]);
                     }
                   }
+                  
+                  // Refresh geographic votes to update any charts
+                  await refetchGeographicVotes();
                   
                   if (mainVoteSuccess) {
                     setShowVoteModal(false);

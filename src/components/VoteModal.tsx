@@ -155,7 +155,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectItem 
                           key={option} 
                           value={option}
-                          className="hover:bg-muted focus:bg-muted text-foreground"
+                          className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                         >
                           {option}
                         </SelectItem>
@@ -183,7 +183,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                           <SelectItem 
                             key={option} 
                             value={option}
-                            className="hover:bg-muted focus:bg-muted text-foreground"
+                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                           >
                             {option}
                           </SelectItem>
@@ -212,7 +212,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                           <SelectItem 
                             key={option} 
                             value={option}
-                            className="hover:bg-muted focus:bg-muted text-foreground"
+                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                           >
                             {option}
                           </SelectItem>
@@ -248,7 +248,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectItem 
                           key={option} 
                           value={option}
-                          className="hover:bg-muted focus:bg-muted text-foreground"
+                          className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                         >
                           {option}
                         </SelectItem>
@@ -276,7 +276,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                           <SelectItem 
                             key={option} 
                             value={option}
-                            className="hover:bg-muted focus:bg-muted text-foreground"
+                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                           >
                             {option}
                           </SelectItem>
@@ -305,7 +305,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                           <SelectItem 
                             key={option} 
                             value={option}
-                            className="hover:bg-muted focus:bg-muted text-foreground"
+                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                           >
                             {option}
                           </SelectItem>
@@ -338,7 +338,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                           <SelectItem 
                             key={option} 
                             value={option}
-                            className="hover:bg-muted focus:bg-muted text-foreground"
+                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
                           >
                             {option}
                           </SelectItem>
