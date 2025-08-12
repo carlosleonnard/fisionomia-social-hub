@@ -384,9 +384,9 @@ export default function ProfileDetail() {
                        hasUserVoted ? (
                          <div className="space-y-2">
                            <div className="text-center p-3 bg-muted/30 rounded-lg">
-                             <p className="text-sm text-muted-foreground">
-                               Você votou em: <span className="font-medium text-phindex-teal">{userVote}</span>
-                             </p>
+                              <p className="text-sm text-muted-foreground">
+                                <span className="font-medium text-phindex-teal">{userVote}</span>
+                              </p>
                            </div>
                            <Button 
                              onClick={() => setShowVoteModal(true)}
