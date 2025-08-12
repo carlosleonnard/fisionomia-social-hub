@@ -382,12 +382,7 @@ export default function ProfileDetail() {
                    <div className="space-y-2">
                      {user ? (
                        hasUserVoted ? (
-                         <div className="space-y-2">
-                           <div className="text-center p-3 bg-muted/30 rounded-lg">
-                              <p className="text-sm text-muted-foreground">
-                                <span className="font-medium text-phindex-teal">{userVote}</span>
-                              </p>
-                           </div>
+                          <div className="space-y-2">
                            <Button 
                              onClick={() => setShowVoteModal(true)}
                              className="w-full"
