@@ -616,23 +616,22 @@ export default function ProfileDetail() {
                   ...physicalUserVotes,
                   ...userGeographicVotes
                 }}
-                onSubmit={async (votes) => {
-                  // Cast the main phenotype vote first
-                  const mainVoteSuccess = hasUserVoted 
-                    ? await changeVote(votes["Primary Phenotype"])
-                    : await castVote(votes["Primary Phenotype"]);
-                  
-                  // Cast geographic classification votes
-                  const geographicCharacteristics = [
-                    'Primary Geographic', 'Secondary Geographic', 'Tertiary Geographic',
-                    'Secondary Phenotype', 'Tertiary Phenotype'
-                  ];
-                  
-                  for (const characteristic of geographicCharacteristics) {
-                    if (votes[characteristic]) {
-                      await castGeographicVote(characteristic, votes[characteristic]);
-                    }
-                  }
+                 onSubmit={async (votes) => {
+                   // Cast geographic and phenotype classification votes
+                   const geographicCharacteristics = [
+                     'Primary Geographic', 'Secondary Geographic', 'Tertiary Geographic',
+                     'Primary Phenotype', 'Secondary Phenotype', 'Tertiary Phenotype'
+                   ];
+                   
+                   let mainVoteSuccess = true;
+                   for (const characteristic of geographicCharacteristics) {
+                     if (votes[characteristic]) {
+                       const success = await castGeographicVote(characteristic, votes[characteristic]);
+                       if (characteristic === 'Primary Phenotype') {
+                         mainVoteSuccess = success;
+                       }
+                     }
+                   }
                   
                   // Cast physical characteristics votes
                   const physicalCharacteristics = [
