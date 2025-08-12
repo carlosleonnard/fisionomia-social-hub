@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, MessageSquare, Vote, BarChart, MapPin, Heart } from "lucide-react";
+import { ArrowLeft, Users, MessageSquare, Vote, BarChart, MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,6 @@ import { useComments } from "@/hooks/use-comments";
 import { usePhysicalVoting } from "@/hooks/use-physical-voting";
 import { useGeographicVoting } from "@/hooks/use-geographic-voting";
 import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
-import { useLikes } from "@/hooks/use-likes";
 import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
 
 interface Vote {
@@ -191,7 +190,6 @@ export default function ProfileDetail() {
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(id || '');
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(id || '');
-  const { likes, hasLiked, loading: likesLoading, toggleLike } = useLikes(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
   
@@ -294,6 +292,22 @@ export default function ProfileDetail() {
                           "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
                         }
                       >
+                        {index + 1}º {vote.classification} ({vote.percentage.toFixed(1)}%)
+                      </Badge>
+                    ))}
+                  </div>
+                  
+                  {/* Phenotype Badges - Real Data */}
+                  <div className="flex justify-center gap-2 mb-4 flex-wrap">
+                    {realVotes.slice(0, 2).map((vote, index) => (
+                      <Badge 
+                        key={vote.classification}
+                        variant={index === 0 ? "default" : "secondary"}
+                        className={
+                          index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
+                          "bg-phindex-teal/60 text-white font-medium"
+                        }
+                      >
                         {index + 1}º {vote.classification}
                       </Badge>
                     ))}
@@ -339,15 +353,6 @@ export default function ProfileDetail() {
                   
                   <div className="flex justify-center gap-4 mb-6">
                     <div 
-                      className={`flex items-center gap-2 cursor-pointer transition-colors ${
-                        hasLiked ? 'text-red-500 hover:text-red-600' : 'hover:text-phindex-teal'
-                      }`}
-                      onClick={toggleLike}
-                    >
-                      <Heart className={`h-4 w-4 ${hasLiked ? 'fill-current text-red-500' : 'text-red-500'}`} />
-                      <span>{likes} curtidas</span>
-                    </div>
-                    <div 
                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
                       onClick={() => {
                         const votingSection = document.querySelector('[data-voting-section]');
@@ -377,11 +382,11 @@ export default function ProfileDetail() {
                      {user ? (
                        hasUserVoted ? (
                          <div className="space-y-2">
-                            <div className="text-center p-3 bg-muted/30 rounded-lg">
-                              <p className="text-sm text-muted-foreground">
-                                <span className="font-medium text-phindex-teal">{userVote}</span>
-                              </p>
-                            </div>
+                           <div className="text-center p-3 bg-muted/30 rounded-lg">
+                             <p className="text-sm text-muted-foreground">
+                               Você votou em: <span className="font-medium text-phindex-teal">{userVote}</span>
+                             </p>
+                           </div>
                            <Button 
                              onClick={() => setShowVoteModal(true)}
                              className="w-full"
