@@ -299,13 +299,14 @@ export default function ProfileDetail() {
                   
                   {/* Phenotype Badges - Real Data */}
                   <div className="flex justify-center gap-2 mb-4 flex-wrap">
-                    {realVotes.slice(0, 2).map((vote, index) => (
+                    {realVotes.slice(0, 3).map((vote, index) => (
                       <Badge 
                         key={vote.classification}
-                        variant={index === 0 ? "default" : "secondary"}
+                        variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"}
                         className={
                           index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
-                          "bg-phindex-teal/60 text-white font-medium"
+                          index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
+                          "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
                         }
                       >
                         {index + 1}º {vote.classification}
