@@ -381,14 +381,6 @@ export default function ProfileDetail() {
                     </div>
                   )}
                   
-                  {/* Privacy notice for non-owners */}
-                  {!isProfileOwner && (
-                    <div className="mb-6 p-3 bg-muted/20 border border-border/40 rounded-xl">
-                      <p className="text-xs text-muted-foreground text-center">
-                        Algumas informações pessoais estão ocultas por motivos de privacidade
-                      </p>
-                    </div>
-                  )}
 
                   {/* Created By Information */}
                   <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
