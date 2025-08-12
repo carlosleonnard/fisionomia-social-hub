@@ -16,6 +16,7 @@ import { useVoting } from "@/hooks/use-voting";
 import { useComments } from "@/hooks/use-comments";
 import { usePhysicalVoting } from "@/hooks/use-physical-voting";
 import { useGeographicVoting } from "@/hooks/use-geographic-voting";
+import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
 import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
 
 interface Vote {
@@ -188,6 +189,7 @@ export default function ProfileDetail() {
   const { comments: realComments, addComment, likeComment, deleteComment } = useComments(id || '');
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(id || '');
+  const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(id || '');
 
   const profile = mockProfiles.find(p => p.id === id);
   
@@ -427,37 +429,75 @@ export default function ProfileDetail() {
                 <CardHeader>
                   <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
                 </CardHeader>
-                <CardContent className="h-52 overflow-y-auto">
-                  <div className="space-y-4">
-                    {/* Real Vote Data */}
-                    <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Classificação por Votos</h4>
-                      {realVotes.length > 0 ? (
-                        <div className="space-y-3">
-                          {realVotes.slice(0, 5).map((vote, index) => (
-                            <div key={vote.classification} className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge 
-                                  variant={index < 2 ? "secondary" : "outline"} 
-                                  className={index < 2 ? "text-sm bg-phindex-teal/10 text-phindex-teal" : "text-sm"}
-                                >
-                                  {vote.classification}
-                                </Badge>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-medium">{vote.percentage.toFixed(1)}%</span>
-                                  <span className="text-xs text-muted-foreground">({vote.count} votos)</span>
-                                </div>
-                              </div>
-                              <Progress value={vote.percentage} className="h-2" />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-muted-foreground">Nenhum voto ainda</p>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
+                 <CardContent className="h-52 overflow-y-auto">
+                   <div className="space-y-4">
+                     {/* Primary Geographic Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary</h4>
+                       {geographicVotes['Primary Geographic']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {geographicVotes['Primary Geographic'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Secondary Geographic Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary</h4>
+                       {geographicVotes['Secondary Geographic']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {geographicVotes['Secondary Geographic'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Tertiary Geographic Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary</h4>
+                       {geographicVotes['Tertiary Geographic']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {geographicVotes['Tertiary Geographic'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+                   </div>
+                 </CardContent>
               </Card>
 
               {/* Specific Phenotype Classification */}
@@ -465,41 +505,75 @@ export default function ProfileDetail() {
                 <CardHeader>
                   <CardTitle className="text-phindex-teal">Specific Phenotype Classification</CardTitle>
                 </CardHeader>
-                <CardContent className="h-52 overflow-y-auto">
-                  <div className="space-y-4">
-                    {/* Real Vote Data */}
-                    <div className="bg-muted/30 p-3 rounded-lg">
-                      <h4 className="text-sm font-semibold text-phindex-teal mb-3">Classificações Específicas</h4>
-                      {realVotes.length > 0 ? (
-                        <div className="space-y-3">
-                          {realVotes.map((vote, index) => (
-                            <div key={vote.classification} className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <Badge 
-                                  variant={index === 0 ? "default" : index < 3 ? "secondary" : "outline"} 
-                                  className={
-                                    index === 0 ? "bg-primary text-primary-foreground text-sm" :
-                                    index < 3 ? "bg-secondary text-secondary-foreground text-sm" :
-                                    "bg-muted text-muted-foreground text-sm"
-                                  }
-                                >
-                                  {vote.classification}
-                                </Badge>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-medium">{vote.percentage.toFixed(1)}%</span>
-                                  <span className="text-xs text-muted-foreground">({vote.count})</span>
-                                </div>
-                              </div>
-                              <Progress value={vote.percentage} className="h-2" />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-muted-foreground">Nenhum voto ainda</p>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
+                 <CardContent className="h-52 overflow-y-auto">
+                   <div className="space-y-4">
+                     {/* Primary Phenotype Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary</h4>
+                       {phenotypeVotes['Primary Phenotype']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {phenotypeVotes['Primary Phenotype'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Secondary Phenotype Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary</h4>
+                       {phenotypeVotes['Secondary Phenotype']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {phenotypeVotes['Secondary Phenotype'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Tertiary Phenotype Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary</h4>
+                       {phenotypeVotes['Tertiary Phenotype']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {phenotypeVotes['Tertiary Phenotype'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+                   </div>
+                 </CardContent>
               </Card>
             </div>
 
@@ -573,14 +647,15 @@ export default function ProfileDetail() {
                     }
                   }
                   
-                  // Refresh geographic votes to update any charts
-                  await refetchGeographicVotes();
-                  
-                  if (mainVoteSuccess) {
-                    setShowVoteModal(false);
-                    // Refresh the page to show updated results
-                    window.location.reload();
-                  }
+                   // Refresh geographic votes to update any charts
+                   await refetchGeographicVotes();
+                   await refetchVoteCounts();
+                   
+                   if (mainVoteSuccess) {
+                     setShowVoteModal(false);
+                     // Refresh the page to show updated results
+                     window.location.reload();
+                   }
                 }}
               />
             )}
