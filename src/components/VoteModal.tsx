@@ -12,7 +12,98 @@ interface VoteModalProps {
   existingVotes?: Record<string, string>;
 }
 
-const specificPhenotypeOptions = ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"];
+const specificPhenotypeOptions = {
+  "Northern America": [
+    "Eskimid",
+    "Margid", 
+    "Pacificid",
+    "Silvid"
+  ],
+  "Central America": [
+    "Centralid"
+  ],
+  "Southern America": [
+    "Amazonid",
+    "Andid",
+    "Lagid",
+    "Patagonid"
+  ],
+  "North Africa": [
+    "Mediterranid",
+    "Orientalid"
+  ],
+  "East Africa": [
+    "Ethiopid",
+    "Nilotid",
+    "Sudanid"
+  ],
+  "Sub-Saharan Africa": [
+    "Bambutid",
+    "Bantuid",
+    "Congoid",
+    "Khoid",
+    "Sanid"
+  ],
+  "Central Asia": [
+    "Tungid",
+    "Turanid"
+  ],
+  "Southern Asia": [
+    "Indid",
+    "Indo Melanin",
+    "Veddid"
+  ],
+  "East Asia": [
+    "Ainuid",
+    "Sibirid",
+    "Sinid"
+  ],
+  "Southeastern Asia": [
+    "Negritid",
+    "South Mongoloid"
+  ],
+  "Eastern Europe": [
+    "Dinarid",
+    "East Europid",
+    "Turanid"
+  ],
+  "Southern Europe": [
+    "Mediterranid"
+  ],
+  "Central Europe": [
+    "Alpinid"
+  ],
+  "Northern Europe": [
+    "Lappid",
+    "Nordid"
+  ],
+  "Anatolia": [
+    "Alpinid",
+    "Armenoid",
+    "Mediterranid",
+    "Turanid"
+  ],
+  "Levant": [
+    "Armenoid",
+    "Mediterranid"
+  ],
+  "Arabian Peninsula": [
+    "Orientalid",
+    "Veddid"
+  ],
+  "Persian Plateau": [
+    "Orientalid"
+  ],
+  "Australia and New Zealand": [
+    "Australid"
+  ],
+  "Melanesia": [
+    "Melanesid"
+  ],
+  "Polynesia": [
+    "Polynesid"
+  ]
+};
 
 const geographicOptions = {
   "Europe": [
@@ -151,11 +242,21 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
     });
   };
 
+  // Função para obter todas as opções de fenótipo
+  const getAllPhenotypeOptions = () => {
+    const allOptions: string[] = [];
+    Object.entries(specificPhenotypeOptions).forEach(([region, phenotypes]) => {
+      allOptions.push(...phenotypes);
+    });
+    return allOptions;
+  };
+
   const getAvailablePhenotypeOptions = (level: 'secondary' | 'tertiary') => {
     const selectedPrimary = votes["Primary Phenotype"];
     const selectedSecondary = votes["Secondary Phenotype"];
+    const allOptions = getAllPhenotypeOptions();
     
-    return specificPhenotypeOptions.filter(option => {
+    return allOptions.filter(option => {
       if (level === 'secondary') {
         return option !== selectedPrimary;
       } else { // tertiary
@@ -313,14 +414,21 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                       <SelectValue placeholder="Selecione Primary Phenotype" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border/50 z-50">
-                      {specificPhenotypeOptions.map((option) => (
-                        <SelectItem 
-                          key={option} 
-                          value={option}
-                          className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
-                        >
-                          {option}
-                        </SelectItem>
+                      {Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => (
+                        <div key={region}>
+                          <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                            {region}
+                          </div>
+                          {phenotypes.map((phenotype) => (
+                            <SelectItem 
+                              key={phenotype} 
+                              value={phenotype}
+                              className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                            >
+                              {phenotype}
+                            </SelectItem>
+                          ))}
+                        </div>
                       ))}
                     </SelectContent>
                   </Select>
@@ -341,14 +449,23 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectValue placeholder="Selecione Secondary Phenotype" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
-                        {getAvailablePhenotypeOptions('secondary').map((option) => (
-                          <SelectItem 
-                            key={option} 
-                            value={option}
-                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
-                          >
-                            {option}
-                          </SelectItem>
+                        {Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => (
+                          <div key={region}>
+                            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                              {region}
+                            </div>
+                            {phenotypes
+                              .filter(phenotype => getAvailablePhenotypeOptions('secondary').includes(phenotype))
+                              .map((phenotype) => (
+                                <SelectItem 
+                                  key={phenotype} 
+                                  value={phenotype}
+                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                >
+                                  {phenotype}
+                                </SelectItem>
+                              ))}
+                          </div>
                         ))}
                       </SelectContent>
                     </Select>
@@ -370,14 +487,23 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectValue placeholder="Selecione Tertiary Phenotype" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
-                        {getAvailablePhenotypeOptions('tertiary').map((option) => (
-                          <SelectItem 
-                            key={option} 
-                            value={option}
-                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
-                          >
-                            {option}
-                          </SelectItem>
+                        {Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => (
+                          <div key={region}>
+                            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                              {region}
+                            </div>
+                            {phenotypes
+                              .filter(phenotype => getAvailablePhenotypeOptions('tertiary').includes(phenotype))
+                              .map((phenotype) => (
+                                <SelectItem 
+                                  key={phenotype} 
+                                  value={phenotype}
+                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                >
+                                  {phenotype}
+                                </SelectItem>
+                              ))}
+                          </div>
                         ))}
                       </SelectContent>
                     </Select>
