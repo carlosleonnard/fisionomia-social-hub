@@ -14,7 +14,41 @@ interface VoteModalProps {
 
 const specificPhenotypeOptions = ["Mediterrâneo", "Nórdico", "Alpino", "Dinárico", "Báltico", "Armenóide", "Iranid"];
 
-const geographicOptions = ["Sul Europa", "Norte Europa", "América do Sul", "Oriente Médio", "Ásia Central", "África", "Oceania"];
+const geographicOptions = {
+  "Europe": [
+    "Eastern Europe",
+    "Central Europe", 
+    "Southern Europe",
+    "Northern Europe"
+  ],
+  "Africa": [
+    "North Africa",
+    "East Africa",
+    "Sub-Saharan Africa"
+  ],
+  "Middle East": [
+    "Levant",
+    "Anatolia", 
+    "Arabian Peninsula",
+    "Persian Plateau"
+  ],
+  "Asia": [
+    "Central Asia",
+    "Eastern Asia",
+    "Southern Asia",
+    "Southeastern Asia"
+  ],
+  "Americas": [
+    "Northern America",
+    "Central America",
+    "Southern América"
+  ],
+  "Oceania": [
+    "Australia and New Zealand",
+    "Melanesia",
+    "Polynesia"
+  ]
+};
 
 const characteristics = [
   {
@@ -93,12 +127,22 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
     onClose();
   };
 
+  // Função para obter todas as opções geográficas
+  const getAllGeographicOptions = () => {
+    const allOptions: string[] = [];
+    Object.entries(geographicOptions).forEach(([region, subregions]) => {
+      allOptions.push(...subregions);
+    });
+    return allOptions;
+  };
+
   // Função para filtrar opções disponíveis
   const getAvailableGeographicOptions = (level: 'secondary' | 'tertiary') => {
     const selectedPrimary = votes["Primary Geographic"];
     const selectedSecondary = votes["Secondary Geographic"];
+    const allOptions = getAllGeographicOptions();
     
-    return geographicOptions.filter(option => {
+    return allOptions.filter(option => {
       if (level === 'secondary') {
         return option !== selectedPrimary;
       } else { // tertiary
@@ -151,14 +195,21 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                       <SelectValue placeholder="Selecione Primary Geographic" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border/50 z-50">
-                      {geographicOptions.map((option) => (
-                        <SelectItem 
-                          key={option} 
-                          value={option}
-                          className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
-                        >
-                          {option}
-                        </SelectItem>
+                      {Object.entries(geographicOptions).map(([region, subregions]) => (
+                        <div key={region}>
+                          <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                            {region}
+                          </div>
+                          {subregions.map((subregion) => (
+                            <SelectItem 
+                              key={subregion} 
+                              value={subregion}
+                              className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                            >
+                              {subregion}
+                            </SelectItem>
+                          ))}
+                        </div>
                       ))}
                     </SelectContent>
                   </Select>
