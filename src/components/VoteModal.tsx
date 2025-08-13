@@ -230,14 +230,23 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectValue placeholder="Selecione Secondary Geographic" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
-                        {getAvailableGeographicOptions('secondary').map((option) => (
-                          <SelectItem 
-                            key={option} 
-                            value={option}
-                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
-                          >
-                            {option}
-                          </SelectItem>
+                        {Object.entries(geographicOptions).map(([region, subregions]) => (
+                          <div key={region}>
+                            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                              {region}
+                            </div>
+                            {subregions
+                              .filter(subregion => getAvailableGeographicOptions('secondary').includes(subregion))
+                              .map((subregion) => (
+                                <SelectItem 
+                                  key={subregion} 
+                                  value={subregion}
+                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                >
+                                  {subregion}
+                                </SelectItem>
+                              ))}
+                          </div>
                         ))}
                       </SelectContent>
                     </Select>
@@ -259,14 +268,23 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectValue placeholder="Selecione Tertiary Geographic" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
-                        {getAvailableGeographicOptions('tertiary').map((option) => (
-                          <SelectItem 
-                            key={option} 
-                            value={option}
-                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black"
-                          >
-                            {option}
-                          </SelectItem>
+                        {Object.entries(geographicOptions).map(([region, subregions]) => (
+                          <div key={region}>
+                            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                              {region}
+                            </div>
+                            {subregions
+                              .filter(subregion => getAvailableGeographicOptions('tertiary').includes(subregion))
+                              .map((subregion) => (
+                                <SelectItem 
+                                  key={subregion} 
+                                  value={subregion}
+                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                >
+                                  {subregion}
+                                </SelectItem>
+                              ))}
+                          </div>
                         ))}
                       </SelectContent>
                     </Select>
