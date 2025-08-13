@@ -236,7 +236,7 @@ export default function ProfileDetail() {
           className="mb-6"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Voltar ao menu
+          Back
         </Button>
 
         <div className="lg:ml-80 pt-20">

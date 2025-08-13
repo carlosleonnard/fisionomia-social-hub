@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Chrome } from "lucide-react";
 
 interface LoginModalProps {
   open: boolean;
@@ -110,13 +110,10 @@ export const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
             onClick={handleGoogleLogin}
             disabled={loading}
             variant="outline"
-            className="w-full h-12 bg-background hover:bg-muted/50 border-border p-0"
+            className="w-full h-12 bg-background hover:bg-muted/50 border-border"
           >
-            <img 
-              src="/lovable-uploads/311f1cfb-4930-4751-aef2-94547fe77732.png" 
-              alt="Continue with Google" 
-              className="w-full h-full object-contain rounded-md"
-            />
+            <Chrome className="mr-2 h-5 w-5 text-blue-500" />
+            {loading ? "Carregando..." : "Entrar com Google"}
           </Button>
 
           <div className="text-center text-sm text-muted-foreground">
