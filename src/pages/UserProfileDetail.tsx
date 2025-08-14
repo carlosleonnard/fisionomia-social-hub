@@ -293,41 +293,39 @@ export default function UserProfileDetail() {
                      </div>
                    </div>
 
-                   <div className="space-y-2">
-                     {user ? (
-                       hasUserVoted ? (
-                          <div className="space-y-2">
-                           <Button 
-                             onClick={() => setShowVoteModal(true)}
-                             className="w-full"
-                             variant="outline"
-                           >
-                             <Users className="mr-2 h-4 w-4" />
-                             Alterar voto
-                           </Button>
-                         </div>
-                       ) : (
-                         <Button 
-                           onClick={() => setShowVoteModal(true)}
-                           className="w-full"
-                           variant="default"
-                         >
-                           <Users className="mr-2 h-4 w-4" />
-                           Votar
-                         </Button>
-                       )
-                     ) : (
-                      <Button 
-                        onClick={() => setShowVoteModal(true)}
-                        className="w-full"
-                        variant="outline"
-                        disabled
-                      >
-                        <Users className="mr-2 h-4 w-4" />
-                        Login para votar
-                      </Button>
-                     )}
-                   </div>
+                    <div className="space-y-2">
+                      {user ? (
+                        hasUserVoted ? (
+                          <Button 
+                            onClick={() => setShowVoteModal(true)}
+                            className="w-full"
+                            variant="outline"
+                          >
+                            <Users className="mr-2 h-4 w-4" />
+                            Alterar voto
+                          </Button>
+                        ) : (
+                          <Button 
+                            onClick={() => setShowVoteModal(true)}
+                            className="w-full"
+                            variant="default"
+                          >
+                            <Users className="mr-2 h-4 w-4" />
+                            Votar
+                          </Button>
+                        )
+                      ) : (
+                       <Button 
+                         onClick={() => setShowVoteModal(true)}
+                         className="w-full"
+                         variant="outline"
+                         disabled
+                       >
+                         <Users className="mr-2 h-4 w-4" />
+                         Login para votar
+                       </Button>
+                      )}
+                    </div>
                 </div>
               </CardContent>
             </Card>
