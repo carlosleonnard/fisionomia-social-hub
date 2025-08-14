@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { Plus, Upload, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useUserProfiles } from "@/hooks/use-user-profiles";
+import { useAuth } from "@/hooks/use-auth";
 
 interface AddProfileModalProps {
-  onAddProfile: (profile: {
-    name: string;
-    country: string;
-    gender: string;
-    category: string;
-    height: number;
-    ancestry: string;
-    frontImageUrl: string;
-    profileImageUrl?: string;
-  }) => void;
+  // Remove onAddProfile prop as we'll handle it internally
 }
 
-export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
+export const AddProfileModal = ({}: AddProfileModalProps) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { createProfile } = useUserProfiles();
   const [open, setOpen] = useState(false);
   const [showGuidelines, setShowGuidelines] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,17 +52,37 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!user) {
+      alert('Você precisa estar logado para criar um perfil.');
+      return;
+    }
+    
     if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry && formData.frontImageUrl && formData.isAnonymous !== null) {
-      onAddProfile({
-        ...formData,
-        height: parseFloat(formData.height),
-        frontImageUrl: formData.frontImageUrl,
-        profileImageUrl: formData.profileImageUrl
-      });
-      setFormData({ name: "", country: "", gender: "", category: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "", isAnonymous: null });
-      setOpen(false);
+      try {
+        const newProfile = await createProfile.mutateAsync({
+          name: formData.name,
+          country: formData.country,
+          gender: formData.gender,
+          category: formData.category,
+          height: parseFloat(formData.height),
+          ancestry: formData.ancestry,
+          frontImageUrl: formData.frontImageUrl,
+          profileImageUrl: formData.profileImageUrl,
+          isAnonymous: formData.isAnonymous
+        });
+
+        // Reset form and close modal
+        setFormData({ name: "", country: "", gender: "", category: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "", isAnonymous: null });
+        setOpen(false);
+        
+        // Navigate to the new profile page
+        navigate(`/user-profile/${newProfile.slug}`);
+      } catch (error) {
+        console.error('Erro ao criar perfil:', error);
+      }
     }
   };
 
@@ -423,8 +439,9 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
               <Button
                 type="submit"
                 className="flex-1 bg-gradient-primary hover:shadow-button transition-all duration-300"
+                disabled={createProfile.isPending}
               >
-                Adicionar
+                {createProfile.isPending ? 'Criando...' : 'Adicionar'}
               </Button>
             </div>
           </form>

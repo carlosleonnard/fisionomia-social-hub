@@ -229,6 +229,57 @@ export type Database = {
           },
         ]
       }
+      user_profiles: {
+        Row: {
+          ancestry: string
+          category: string
+          country: string
+          created_at: string
+          front_image_url: string
+          gender: string
+          height: number
+          id: string
+          is_anonymous: boolean
+          name: string
+          profile_image_url: string | null
+          slug: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ancestry: string
+          category: string
+          country: string
+          created_at?: string
+          front_image_url: string
+          gender: string
+          height: number
+          id?: string
+          is_anonymous?: boolean
+          name: string
+          profile_image_url?: string | null
+          slug: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ancestry?: string
+          category?: string
+          country?: string
+          created_at?: string
+          front_image_url?: string
+          gender?: string
+          height?: number
+          id?: string
+          is_anonymous?: boolean
+          name?: string
+          profile_image_url?: string | null
+          slug?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       votes: {
         Row: {
           characteristic_type: string | null
@@ -286,6 +337,10 @@ export type Database = {
       delete_comment_and_children: {
         Args: { comment_id_param: string }
         Returns: undefined
+      }
+      generate_unique_slug: {
+        Args: { profile_name: string; profile_id?: string }
+        Returns: string
       }
     }
     Enums: {

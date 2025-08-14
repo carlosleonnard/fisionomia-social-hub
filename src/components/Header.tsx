@@ -14,10 +14,6 @@ export const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { user, signOut, loading } = useAuth();
   
-  const handleAddProfile = (profile: any) => {
-    console.log('Novo perfil adicionado:', profile);
-    // Aqui você pode adicionar a lógica para salvar o perfil
-  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -54,7 +50,7 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <AddProfileModal onAddProfile={handleAddProfile} />
+          <AddProfileModal />
           <Button variant="outline" size="icon">
             <HelpCircle className="h-4 w-4" />
           </Button>

@@ -6,6 +6,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileCard } from "@/components/ProfileCard";
 import { AddProfileModal } from "@/components/AddProfileModal";
 import { CommentsSection } from "@/components/CommentsSection";
+import { UserProfilesList } from "@/components/UserProfilesList";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -602,6 +603,18 @@ const Index = () => {
                  </div>
                </Carousel>
                 </div>
+              </div>
+            </div>
+
+            {/* Separator */}
+            <div className="px-6 mb-8">
+              <Separator className="bg-border" />
+            </div>
+
+            {/* User-Created Profiles Section */}
+            <div className="mb-12">
+              <div className="p-6">
+                <UserProfilesList />
               </div>
             </div>
           </div>
