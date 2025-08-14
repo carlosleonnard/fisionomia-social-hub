@@ -159,7 +159,7 @@ export const AddProfileModal = ({ onAddProfile }: AddProfileModalProps) => {
 
       {/* Profile Creation Modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-gradient-card border-border/50 max-w-md">
+        <DialogContent className="bg-gradient-card border-border/50 max-w-sm">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               Novo Perfil
