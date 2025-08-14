@@ -97,29 +97,6 @@ export default function UserProfileDetail() {
           Voltar ao menu
         </Button>
 
-        {isOwner && (
-          <div className="flex gap-2 mb-6">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowEditModal(true)}
-              className="flex items-center gap-2"
-            >
-              <Edit className="h-4 w-4" />
-              Editar
-            </Button>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={handleDelete}
-              disabled={deleteProfile.isPending}
-              className="flex items-center gap-2"
-            >
-              <Trash2 className="h-4 w-4" />
-              {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
-            </Button>
-          </div>
-        )}
 
         <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
@@ -264,32 +241,57 @@ export default function UserProfileDetail() {
                     Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : new Date(profile.created_at).toLocaleDateString('pt-BR')}
                   </p>
                   
-                  <div className="flex justify-center gap-4 mb-6">
-                    <div 
-                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                      onClick={() => {
-                        const votingSection = document.querySelector('[data-voting-section]');
-                        if (votingSection) {
-                          votingSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      <Vote className="h-4 w-4 text-phindex-teal" />
-                      <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
-                    </div>
-                    <div 
-                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                      onClick={() => {
-                        const commentsSection = document.querySelector('[data-comments-section]');
-                        if (commentsSection) {
-                          commentsSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      <MessageSquare className="h-4 w-4 text-blue-500" />
-                      <span>{realComments.length} comentários</span>
-                    </div>
-                  </div>
+                   {/* Owner Actions */}
+                   {isOwner && (
+                     <div className="flex justify-center gap-2 mb-4">
+                       <Button
+                         variant="outline"
+                         size="sm"
+                         onClick={() => setShowEditModal(true)}
+                         className="flex items-center gap-2"
+                       >
+                         <Edit className="h-4 w-4" />
+                         Editar
+                       </Button>
+                       <Button
+                         variant="destructive"
+                         size="sm"
+                         onClick={handleDelete}
+                         disabled={deleteProfile.isPending}
+                         className="flex items-center gap-2"
+                       >
+                         <Trash2 className="h-4 w-4" />
+                         {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
+                       </Button>
+                     </div>
+                   )}
+
+                   <div className="flex justify-center gap-4 mb-6">
+                     <div 
+                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                       onClick={() => {
+                         const votingSection = document.querySelector('[data-voting-section]');
+                         if (votingSection) {
+                           votingSection.scrollIntoView({ behavior: 'smooth' });
+                         }
+                       }}
+                     >
+                       <Vote className="h-4 w-4 text-phindex-teal" />
+                       <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
+                     </div>
+                     <div 
+                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                       onClick={() => {
+                         const commentsSection = document.querySelector('[data-comments-section]');
+                         if (commentsSection) {
+                           commentsSection.scrollIntoView({ behavior: 'smooth' });
+                         }
+                       }}
+                     >
+                       <MessageSquare className="h-4 w-4 text-blue-500" />
+                       <span>{realComments.length} comentários</span>
+                     </div>
+                   </div>
 
                    <div className="space-y-2">
                      {user ? (
