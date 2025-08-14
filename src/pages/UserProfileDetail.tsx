@@ -1,10 +1,13 @@
-import { useParams, Navigate, useNavigate, Link } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Edit, Trash2, Vote, MessageCircle, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { AppSidebar } from "@/components/AppSidebar";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
@@ -62,78 +65,49 @@ export default function UserProfileDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      {/* Header */}
-      <header className="fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-        <div className="px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
-            <ArrowLeft className="h-5 w-5" />
-            Voltar ao menu
-          </Link>
+    <div className="min-h-screen bg-gradient-to-br from-background to-phindex-dark/20 flex flex-col">
+      <Header />
+      
+      <div className="container mx-auto px-4 py-8 flex-1">
+        <Button 
+          onClick={() => navigate("/")} 
+          variant="outline" 
+          className="mb-6"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Voltar ao menu
+        </Button>
 
-          {isOwner && (
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowEditModal(true)}
-                className="flex items-center gap-2"
-              >
-                <Edit className="h-4 w-4" />
-                Editar
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDelete}
-                disabled={deleteProfile.isPending}
-                className="flex items-center gap-2"
-              >
-                <Trash2 className="h-4 w-4" />
-                {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
-              </Button>
-            </div>
-          )}
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 pt-20 max-w-6xl">
-        <div className="flex gap-8">
-          {/* Sidebar - Filtros (placeholder) */}
-          <div className="w-80 space-y-6">
-            <Card className="bg-gradient-card border-border/50">
-              <CardHeader>
-                <CardTitle className="text-sm font-bold">PHENOTYPE REGION</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <Badge variant="outline">Africa</Badge>
-                  <Badge variant="outline">Asia</Badge>
-                  <Badge variant="outline">Europe</Badge>
-                  <Badge variant="outline">Americas</Badge>
-                  <Badge variant="outline">Middle East</Badge>
-                  <Badge variant="outline">Oceania</Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-card border-border/50">
-              <CardHeader>
-                <CardTitle className="text-sm font-bold">CATEGORIES</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 p-2 rounded hover:bg-muted/50 cursor-pointer">
-                    <User className="h-4 w-4 text-primary" />
-                    <span className="text-sm">Community</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {isOwner && (
+          <div className="flex gap-2 mb-6">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowEditModal(true)}
+              className="flex items-center gap-2"
+            >
+              <Edit className="h-4 w-4" />
+              Editar
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDelete}
+              disabled={deleteProfile.isPending}
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
+            </Button>
           </div>
+        )}
+
+        <div className="lg:ml-80 pt-20">
+          {/* Sidebar */}
+          <AppSidebar />
 
           {/* Main Content */}
-          <div className="flex-1 space-y-8">
+          <div>
             {/* Image Carousel */}
             <div className="flex justify-center">
               <div className="w-full max-w-md">
@@ -303,6 +277,8 @@ export default function UserProfileDetail() {
           </div>
         </div>
       </div>
+
+      <Footer />
 
       {/* Edit Modal */}
       {showEditModal && (
