@@ -20,7 +20,7 @@ import { usePhysicalVoting } from "@/hooks/use-physical-voting";
 import { useGeographicVoting } from "@/hooks/use-geographic-voting";
 import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
 import { useProfileCreator } from "@/hooks/use-profile-creator";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
 
 export default function UserProfileDetail() {
@@ -44,6 +44,23 @@ export default function UserProfileDetail() {
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(profile?.id || '');
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(profile?.id || '');
   const { data: profileCreator } = useProfileCreator(profile?.id || '');
+
+  // Prepare existing votes for the modal
+  const existingVotes = useMemo(() => {
+    const votes: Record<string, string> = {};
+    
+    // Add geographic votes
+    Object.entries(userGeographicVotes).forEach(([type, classification]) => {
+      votes[type] = classification;
+    });
+    
+    // Add physical characteristic votes  
+    Object.entries(physicalUserVotes).forEach(([type, classification]) => {
+      votes[type] = classification;
+    });
+    
+    return votes;
+  }, [userGeographicVotes, physicalUserVotes]);
 
   if (isLoading) {
     return (
@@ -554,15 +571,13 @@ export default function UserProfileDetail() {
                     }
                   }
                   
-                   // Refresh geographic votes to update any charts
-                   await refetchGeographicVotes();
-                   await refetchVoteCounts();
-                   
-                   if (mainVoteSuccess) {
-                     setShowVoteModal(false);
-                     // Refresh the page to show updated results
-                     window.location.reload();
-                   }
+                    // Refresh geographic votes to update any charts
+                    await refetchGeographicVotes();
+                    await refetchVoteCounts();
+                    
+                    if (mainVoteSuccess) {
+                      setShowVoteModal(false);
+                    }
                 }}
               />
             )}
