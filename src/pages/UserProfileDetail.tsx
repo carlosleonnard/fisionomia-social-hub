@@ -1,15 +1,25 @@
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Edit, Trash2, Vote, MessageCircle, User } from "lucide-react";
+import { ArrowLeft, Edit, Trash2, Vote, MessageCircle, Users, MessageSquare, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
+import { CommentsSection } from "@/components/CommentsSection";
+import { VoteModal } from "@/components/VoteModal";
+import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
+import { useVoting } from "@/hooks/use-voting";
+import { useComments } from "@/hooks/use-comments";
+import { usePhysicalVoting } from "@/hooks/use-physical-voting";
+import { useGeographicVoting } from "@/hooks/use-geographic-voting";
+import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
+import { useProfileCreator } from "@/hooks/use-profile-creator";
 import { useState } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
 
@@ -19,12 +29,21 @@ export default function UserProfileDetail() {
   const { user } = useAuth();
   const { getProfileBySlug, deleteProfile } = useUserProfiles();
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showVoteModal, setShowVoteModal] = useState(false);
 
   const { data: profile, isLoading, error } = useQuery({
     queryKey: ['user-profile', slug],
     queryFn: () => getProfileBySlug(slug!),
     enabled: !!slug,
   });
+
+  // Initialize voting and comments hooks
+  const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(profile?.id || '');
+  const { comments: realComments, addComment, likeComment, deleteComment } = useComments(profile?.id || '');
+  const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(profile?.id || '');
+  const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(profile?.id || '');
+  const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(profile?.id || '');
+  const { data: profileCreator } = useProfileCreator(profile?.id || '');
 
   if (isLoading) {
     return (
@@ -108,172 +127,445 @@ export default function UserProfileDetail() {
 
           {/* Main Content */}
           <div>
-            {/* Image Carousel */}
-            <div className="flex justify-center">
-              <div className="w-full max-w-md">
-                <Carousel className="w-full">
-                  <CarouselContent>
-                    {images.map((image, index) => (
-                      <CarouselItem key={index}>
-                        <div className="flex flex-col items-center space-y-2">
-                          <img
-                            src={image.src}
-                            alt={image.alt}
-                            className="w-80 h-80 object-cover rounded-lg border-2 border-border"
-                          />
-                          <span className="text-sm text-muted-foreground">{image.label}</span>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  {images.length > 1 && (
-                    <>
-                      <CarouselPrevious />
-                      <CarouselNext />
-                    </>
+            {/* Profile Images and Basic Info - Full width */}
+            <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  {/* Carrossel de fotos */}
+                  <div className="max-w-md mx-auto mb-4">
+                    <Carousel className="w-full">
+                      <CarouselContent>
+                        {images.map((image, index) => (
+                          <CarouselItem key={index}>
+                            <div className="text-center">
+                              <img 
+                                src={image.src} 
+                                alt={image.alt}
+                                className="w-full max-w-sm mx-auto rounded-lg"
+                              />
+                              <p className="text-xs text-muted-foreground mt-2">{image.label}</p>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      {images.length > 1 && (
+                        <>
+                          <CarouselPrevious className="left-2" />
+                          <CarouselNext className="right-2" />
+                        </>
+                      )}
+                    </Carousel>
+                  </div>
+                  <h1 className="text-2xl font-bold text-phindex-teal mb-2">
+                    {profile.name}
+                  </h1>
+                  
+                  {/* Category Badge */}
+                  <div className="flex justify-center mb-3">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
+                      onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
+                    >
+                      {profile.category}
+                    </Badge>
+                  </div>
+                  
+                  {/* General Phenotypes - Real Data */}
+                  <div className="flex justify-center gap-2 mb-3 flex-wrap">
+                    {[
+                      { label: '1º', votes: geographicVotes['Primary Geographic'] },
+                      { label: '2º', votes: geographicVotes['Secondary Geographic'] },
+                      { label: '3º', votes: geographicVotes['Tertiary Geographic'] }
+                    ].map((category, index) => {
+                      const topVote = category.votes?.[0];
+                      if (!topVote) {
+                        return (
+                          <Badge 
+                            key={category.label}
+                            variant="outline"
+                            className="bg-muted/10 text-muted-foreground"
+                          >
+                            {category.label} Indefinido
+                          </Badge>
+                        );
+                      }
+                      
+                      return (
+                        <Badge 
+                          key={`${category.label}-${topVote.classification}`}
+                          variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"}
+                          className={
+                            index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
+                            index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
+                            "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
+                          }
+                        >
+                          {category.label} {topVote.classification}
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Phenotype Badges - Real Data */}
+                  <div className="flex justify-center gap-2 mb-4 flex-wrap">
+                    {[
+                      { label: '1º', votes: phenotypeVotes['Primary Phenotype'] },
+                      { label: '2º', votes: phenotypeVotes['Secondary Phenotype'] },
+                      { label: '3º', votes: phenotypeVotes['Tertiary Phenotype'] }
+                    ].map((category, index) => {
+                      const topVote = category.votes?.[0];
+                      if (!topVote) {
+                        return (
+                          <Badge 
+                            key={category.label}
+                            variant="outline"
+                            className="bg-muted/10 text-muted-foreground"
+                          >
+                            {category.label} Indefinido
+                          </Badge>
+                        );
+                      }
+                      
+                      return (
+                        <Badge 
+                          key={`${category.label}-${topVote.classification}`}
+                          variant={index === 0 ? "default" : index === 1 ? "secondary" : "outline"}
+                          className={
+                            index === 0 ? "bg-phindex-teal text-white font-medium shadow-md" :
+                            index === 1 ? "bg-phindex-teal/60 text-white font-medium" :
+                            "bg-phindex-teal/30 text-phindex-teal border-phindex-teal/40 font-medium"
+                          }
+                        >
+                          {category.label} {topVote.classification}
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                  
+                  <p className="text-muted-foreground mb-2">
+                    {profile.gender} • {profile.height}m • {profile.country}
+                  </p>
+                  
+                  {/* Ancestry Description - Show to everyone */}
+                  {profile.ancestry && (
+                    <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
+                      <div className="p-4 bg-muted/30 rounded-lg text-left">
+                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                        <p className="text-sm text-foreground leading-relaxed">
+                          {profile.ancestry}
+                        </p>
+                      </div>
+                    </div>
                   )}
-                </Carousel>
-              </div>
-            </div>
+                  
+                  {/* Created By Information */}
+                  <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
+                    Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : new Date(profile.created_at).toLocaleDateString('pt-BR')}
+                  </p>
+                  
+                  <div className="flex justify-center gap-4 mb-6">
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                      onClick={() => {
+                        const votingSection = document.querySelector('[data-voting-section]');
+                        if (votingSection) {
+                          votingSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <Vote className="h-4 w-4 text-phindex-teal" />
+                      <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
+                    </div>
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                      onClick={() => {
+                        const commentsSection = document.querySelector('[data-comments-section]');
+                        if (commentsSection) {
+                          commentsSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <MessageSquare className="h-4 w-4 text-blue-500" />
+                      <span>{realComments.length} comentários</span>
+                    </div>
+                  </div>
 
-            {/* Profile Info */}
-            <div className="text-center space-y-4">
-              <h1 className="text-3xl font-bold text-primary">{profile.name}</h1>
-              
-              <Badge variant="secondary" className="text-sm">
-                {profile.category}
-              </Badge>
-
-              {/* Placeholder for classification badges */}
-              <div className="flex flex-wrap justify-center gap-2">
-                <Badge className="bg-primary/10 text-primary">1º Indefinido</Badge>
-                <Badge className="bg-secondary/10 text-secondary">2º Indefinido</Badge>
-                <Badge className="bg-muted/10 text-muted-foreground">3º Indefinido</Badge>
-              </div>
-
-              <div className="text-muted-foreground">
-                Altura: {profile.height}m • {profile.gender} • {profile.country}
-              </div>
-            </div>
-
-            {/* Known Ancestry */}
-            <Card className="bg-gradient-card border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg">Ancestralidade Conhecida</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  {profile.ancestry}
-                </p>
+                   <div className="space-y-2">
+                     {user ? (
+                       hasUserVoted ? (
+                          <div className="space-y-2">
+                           <Button 
+                             onClick={() => setShowVoteModal(true)}
+                             className="w-full"
+                             variant="outline"
+                           >
+                             <Users className="mr-2 h-4 w-4" />
+                             Alterar voto
+                           </Button>
+                         </div>
+                       ) : (
+                         <Button 
+                           onClick={() => setShowVoteModal(true)}
+                           className="w-full"
+                           variant="default"
+                         >
+                           <Users className="mr-2 h-4 w-4" />
+                           Votar
+                         </Button>
+                       )
+                     ) : (
+                      <Button 
+                        onClick={() => setShowVoteModal(true)}
+                        className="w-full"
+                        variant="outline"
+                        disabled
+                      >
+                        <Users className="mr-2 h-4 w-4" />
+                        Login para votar
+                      </Button>
+                     )}
+                   </div>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Profile Metadata */}
-            <div className="text-center text-sm text-muted-foreground space-y-1">
-              <p>Criado por Usuário em {new Date(profile.created_at).toLocaleDateString('pt-BR')}</p>
-              
-              <div className="flex justify-center gap-4">
-                <div className="flex items-center gap-1">
-                  <Vote className="h-4 w-4" />
-                  <span>0 votos</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <MessageCircle className="h-4 w-4" />
-                  <span>0 comentários</span>
-                </div>
-              </div>
-
-              {!user && (
-                <Button variant="outline" className="mt-2">
-                  Login para votar
-                </Button>
-              )}
-            </div>
-
-            {/* Classification Sections */}
-            <div className="space-y-6">
+            {/* Two-column layout for classifications - Each 50% width */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6" data-voting-section>
               {/* General Phenotype Classification */}
-              <Card className="bg-gradient-card border-border/50">
+              <Card className="bg-gradient-card border-phindex-teal/20">
                 <CardHeader>
-                  <CardTitle className="text-lg">General Phenotype Classification</CardTitle>
+                  <CardTitle className="text-phindex-teal">General Phenotype Classification</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <h4 className="font-semibold text-primary mb-2">Primary</h4>
-                      <p className="text-sm text-muted-foreground">Nenhuma classificação ainda</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-secondary mb-2">Secondary</h4>
-                      <p className="text-sm text-muted-foreground">Nenhuma classificação ainda</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-muted-foreground mb-2">Tertiary</h4>
-                      <p className="text-sm text-muted-foreground">Nenhuma classificação ainda</p>
-                    </div>
-                  </div>
-                </CardContent>
+                 <CardContent className="h-52 overflow-y-auto">
+                   <div className="space-y-4">
+                     {/* Primary Geographic Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary</h4>
+                       {geographicVotes['Primary Geographic']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {geographicVotes['Primary Geographic'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Secondary Geographic Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary</h4>
+                       {geographicVotes['Secondary Geographic']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {geographicVotes['Secondary Geographic'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Tertiary Geographic Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary</h4>
+                       {geographicVotes['Tertiary Geographic']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {geographicVotes['Tertiary Geographic'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+                   </div>
+                 </CardContent>
               </Card>
 
               {/* Specific Phenotype Classification */}
-              <Card className="bg-gradient-card border-border/50">
+              <Card className="bg-gradient-card border-phindex-teal/20">
                 <CardHeader>
-                  <CardTitle className="text-lg">Specific Phenotype Classification</CardTitle>
+                  <CardTitle className="text-phindex-teal">Specific Phenotype Classification</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <h4 className="font-semibold text-primary mb-2">Primary</h4>
-                      <p className="text-sm text-muted-foreground">Nenhuma classificação ainda</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-secondary mb-2">Secondary</h4>
-                      <p className="text-sm text-muted-foreground">Nenhuma classificação ainda</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-muted-foreground mb-2">Tertiary</h4>
-                      <p className="text-sm text-muted-foreground">Nenhuma classificação ainda</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                 <CardContent className="h-52 overflow-y-auto">
+                   <div className="space-y-4">
+                     {/* Primary Phenotype Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Primary</h4>
+                       {phenotypeVotes['Primary Phenotype']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {phenotypeVotes['Primary Phenotype'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
 
-              {/* Physical Characteristics */}
-              <Card className="bg-gradient-card border-border/50">
-                <CardHeader>
-                  <CardTitle className="text-lg">Physical Characteristics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[
-                      "Hair Color", "Hair Texture", "Eye Color", "Skin Tone",
-                      "Nasal Breadth", "Facial Breadth", "Body Type", "Jaw Type",
-                      "Head Breadth", "Face Shape"
-                    ].map((characteristic) => (
-                      <div key={characteristic} className="space-y-2">
-                        <h4 className="font-semibold text-sm">{characteristic}</h4>
-                        <p className="text-xs text-muted-foreground">Nenhuma classificação ainda</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
+                     {/* Secondary Phenotype Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Secondary</h4>
+                       {phenotypeVotes['Secondary Phenotype']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {phenotypeVotes['Secondary Phenotype'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+
+                     {/* Tertiary Phenotype Classification */}
+                     <div className="bg-muted/30 p-3 rounded-lg">
+                       <h4 className="text-sm font-semibold text-phindex-teal mb-3">Tertiary</h4>
+                       {phenotypeVotes['Tertiary Phenotype']?.length > 0 ? (
+                         <div className="space-y-2">
+                           {phenotypeVotes['Tertiary Phenotype'].slice(0, 3).map((vote, index) => (
+                             <div key={vote.classification} className="space-y-1">
+                               <div className="flex items-center justify-between">
+                                 <Badge variant={index === 0 ? "default" : "outline"} className="text-xs">
+                                   {vote.classification}
+                                 </Badge>
+                                 <span className="text-xs">{vote.percentage.toFixed(1)}% ({vote.count})</span>
+                               </div>
+                               <Progress value={vote.percentage} className="h-1" />
+                             </div>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                       )}
+                     </div>
+                   </div>
+                 </CardContent>
               </Card>
             </div>
 
-            {/* Comments Section Placeholder */}
-            <Card className="bg-gradient-card border-border/50">
+            {/* Physical Characteristics - Full width */}
+            <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
-                  Comentários
-                </CardTitle>
+                <CardTitle className="text-phindex-teal">Physical Characteristics</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-center py-4">
-                  Nenhum comentário ainda. {user ? 'Seja o primeiro a comentar!' : 'Faça login para comentar.'}
-                </p>
+              <CardContent className="h-96 overflow-y-auto">
+                <div className="grid gap-6">
+                  {physicalCharacteristics.map((characteristic, index) => (
+                    <PhysicalCharacteristicVoting
+                      key={index}
+                      characteristic={characteristic}
+                    />
+                  ))}
+                </div>
               </CardContent>
             </Card>
+
+            {/* Comments Section */}
+            <div data-comments-section>
+              <CommentsSection 
+                profileId={profile.id}
+                onAddComment={addComment}
+                onLikeComment={likeComment}
+                onDeleteComment={deleteComment}
+                currentUserId={user?.id}
+                comments={realComments}
+              />
+            </div>
+
+            {/* Vote Modal */}
+            {showVoteModal && user && (
+              <VoteModal
+                isOpen={showVoteModal}
+                onClose={() => setShowVoteModal(false)}
+                existingVotes={{
+                  "Primary Phenotype": userVote || "",
+                  ...physicalUserVotes,
+                  ...userGeographicVotes
+                }}
+                 onSubmit={async (votes) => {
+                   // Cast geographic and phenotype classification votes
+                   const geographicCharacteristics = [
+                     'Primary Geographic', 'Secondary Geographic', 'Tertiary Geographic',
+                     'Primary Phenotype', 'Secondary Phenotype', 'Tertiary Phenotype'
+                   ];
+                   
+                   let mainVoteSuccess = true;
+                   for (const characteristic of geographicCharacteristics) {
+                     if (votes[characteristic]) {
+                       const success = await castGeographicVote(characteristic, votes[characteristic]);
+                       if (characteristic === 'Primary Phenotype') {
+                         mainVoteSuccess = success;
+                       }
+                     }
+                   }
+                  
+                  // Cast physical characteristics votes
+                  const physicalCharacteristics = [
+                    'Hair Color', 'Hair Texture', 'Eye Color', 'Skin Tone',
+                    'Nasal Breadth', 'Facial Breadth', 'Body Type', 'Jaw Type',
+                    'Head Breadth', 'Face Shape'
+                  ];
+                  
+                  for (const characteristic of physicalCharacteristics) {
+                    if (votes[characteristic]) {
+                      await castPhysicalVote(characteristic, votes[characteristic]);
+                    }
+                  }
+                  
+                   // Refresh geographic votes to update any charts
+                   await refetchGeographicVotes();
+                   await refetchVoteCounts();
+                   
+                   if (mainVoteSuccess) {
+                     setShowVoteModal(false);
+                     // Refresh the page to show updated results
+                     window.location.reload();
+                   }
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
