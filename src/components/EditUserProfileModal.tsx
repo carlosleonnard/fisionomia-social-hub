@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { useUserProfiles, UserProfile } from "@/hooks/use-user-profiles";
+import { useImageUpload } from "@/hooks/use-image-upload";
 
 interface EditUserProfileModalProps {
   profile: UserProfile;
@@ -16,6 +17,7 @@ interface EditUserProfileModalProps {
 
 export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfileModalProps) => {
   const { updateProfile } = useUserProfiles();
+  const { uploadImage, isUploading } = useImageUpload();
   const [formData, setFormData] = useState({
     name: profile.name,
     country: profile.country,
@@ -73,19 +75,38 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
     }
   };
 
-  const handleDrop = (e: React.DragEvent, imageType: 'front' | 'profile') => {
+  const handleDrop = async (e: React.DragEvent, imageType: 'front' | 'profile') => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setFormData(prev => ({ 
-        ...prev, 
-        [imageType === 'front' ? 'frontImageUrl' : 'profileImageUrl']: imageUrl 
-      }));
+      const uploadedUrl = await uploadImage(file, imageType);
+      
+      if (uploadedUrl) {
+        setFormData(prev => ({ 
+          ...prev, 
+          [imageType === 'front' ? 'frontImageUrl' : 'profileImageUrl']: uploadedUrl 
+        }));
+      }
     }
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>, imageType: 'front' | 'profile') => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const uploadedUrl = await uploadImage(file, imageType);
+      
+      if (uploadedUrl) {
+        setFormData(prev => ({ 
+          ...prev, 
+          [imageType === 'front' ? 'frontImageUrl' : 'profileImageUrl']: uploadedUrl 
+        }));
+      }
+    }
+    // Reset input value to allow selecting the same file again
+    e.target.value = '';
   };
 
   return (
@@ -110,12 +131,20 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                 <Card
                   className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
                     dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
-                  }`}
+                  } ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
                   onDrop={(e) => handleDrop(e, 'front')}
+                  onClick={() => document.getElementById('edit-front-image-input')?.click()}
                 >
+                  <input
+                    id="edit-front-image-input"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleFileSelect(e, 'front')}
+                  />
                   {formData.frontImageUrl ? (
                     <div className="relative inline-block">
                       <img 
@@ -128,7 +157,10 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                         variant="ghost"
                         size="icon"
                         className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
-                        onClick={() => setFormData(prev => ({ ...prev, frontImageUrl: "" }))}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setFormData(prev => ({ ...prev, frontImageUrl: "" }));
+                        }}
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -136,7 +168,9 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                   ) : (
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Foto de frente *</p>
+                      <p className="text-xs text-muted-foreground">
+                        {isUploading ? 'Enviando...' : 'Clique ou arraste a foto de frente *'}
+                      </p>
                     </div>
                   )}
                 </Card>
@@ -148,12 +182,20 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                 <Card
                   className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
                     dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
-                  }`}
+                  } ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
                   onDrop={(e) => handleDrop(e, 'profile')}
+                  onClick={() => document.getElementById('edit-profile-image-input')?.click()}
                 >
+                  <input
+                    id="edit-profile-image-input"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleFileSelect(e, 'profile')}
+                  />
                   {formData.profileImageUrl ? (
                     <div className="relative inline-block">
                       <img 
@@ -166,7 +208,10 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                         variant="ghost"
                         size="icon"
                         className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive hover:bg-destructive/80"
-                        onClick={() => setFormData(prev => ({ ...prev, profileImageUrl: "" }))}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setFormData(prev => ({ ...prev, profileImageUrl: "" }));
+                        }}
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -174,7 +219,9 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                   ) : (
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Foto de perfil</p>
+                      <p className="text-xs text-muted-foreground">
+                        {isUploading ? 'Enviando...' : 'Clique ou arraste a foto de perfil'}
+                      </p>
                     </div>
                   )}
                 </Card>
@@ -327,9 +374,9 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
             <Button
               type="submit"
               className="flex-1 bg-gradient-primary hover:shadow-button transition-all duration-300"
-              disabled={updateProfile.isPending}
+              disabled={updateProfile.isPending || isUploading}
             >
-              {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
+              {updateProfile.isPending || isUploading ? 'Salvando...' : 'Salvar'}
             </Button>
           </div>
         </form>
