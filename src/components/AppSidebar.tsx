@@ -1,7 +1,17 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users } from "lucide-react";
+import { 
+  Users, 
+  Film, 
+  Music, 
+  Palette, 
+  Brain, 
+  Microscope, 
+  Trophy, 
+  Briefcase, 
+  Building 
+} from "lucide-react";
 
 export const AppSidebar = () => {
   const navigate = useNavigate();
@@ -119,28 +129,34 @@ export const AppSidebar = () => {
               
               {/* Other Categories */}
               {[
-                { icon: "🎭", name: "Pop Culture" },
-                { icon: "🎵", name: "Music and Entertainment" },
-                { icon: "🎨", name: "Arts" },
-                { icon: "🤔", name: "Philosophy" },
-                { icon: "🧪", name: "Sciences" },
-                { icon: "⚽", name: "Sports" },
-                { icon: "💼", name: "Business" },
-                { icon: "🏛️", name: "Politics" }
-               ].map((category) => (
-                <button
-                  key={category.name}
-                  className={`flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors ${
-                    isCategoryActive(category.name) 
-                      ? "bg-phindex-teal/10 text-phindex-teal border border-phindex-teal/20" 
-                      : "hover:bg-muted/50"
-                  }`}
-                  onClick={() => handleCategoryClick(category.name)}
-                >
-                  <span className="text-xl" style={{ color: 'hsl(var(--category-primary))' }}>{category.icon}</span>
-                  <span className="text-base">{category.name}</span>
-                </button>
-               ))}
+                { Icon: Film, name: "Pop Culture" },
+                { Icon: Music, name: "Music and Entertainment" },
+                { Icon: Palette, name: "Arts" },
+                { Icon: Brain, name: "Philosophy" },
+                { Icon: Microscope, name: "Sciences" },
+                { Icon: Trophy, name: "Sports" },
+                { Icon: Briefcase, name: "Business" },
+                { Icon: Building, name: "Politics" }
+               ].map((category) => {
+                const isActive = isCategoryActive(category.name);
+                return (
+                  <button
+                    key={category.name}
+                    className={`flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors ${
+                      isActive 
+                        ? "bg-white text-[#007a75] border border-[#007a75]/20" 
+                        : "hover:bg-muted/50 text-[#007a75]"
+                    }`}
+                    onClick={() => handleCategoryClick(category.name)}
+                  >
+                    <category.Icon 
+                      className="h-5 w-5" 
+                      color="#007a75" 
+                    />
+                    <span className="text-base">{category.name}</span>
+                  </button>
+                );
+               })}
             </div>
           </div>
         </div>
