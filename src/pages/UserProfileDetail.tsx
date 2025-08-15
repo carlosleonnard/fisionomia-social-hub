@@ -20,9 +20,8 @@ import { usePhysicalVoting } from "@/hooks/use-physical-voting";
 import { useGeographicVoting } from "@/hooks/use-geographic-voting";
 import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
 import { useProfileCreator } from "@/hooks/use-profile-creator";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UserProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -40,28 +39,11 @@ export default function UserProfileDetail() {
 
   // Initialize voting and comments hooks
   const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(profile?.id || '');
-  const { comments: realComments, loading: commentsLoading, addComment, likeComment, deleteComment } = useComments(profile?.id || '');
-  const { characteristics: physicalCharacteristics, loading: physicalLoading, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(profile?.id || '');
+  const { comments: realComments, addComment, likeComment, deleteComment } = useComments(profile?.id || '');
+  const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(profile?.id || '');
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(profile?.id || '');
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(profile?.id || '');
   const { data: profileCreator } = useProfileCreator(profile?.id || '');
-
-  // Prepare existing votes for the modal
-  const existingVotes = useMemo(() => {
-    const votes: Record<string, string> = {};
-    
-    // Add geographic votes
-    Object.entries(userGeographicVotes).forEach(([type, classification]) => {
-      votes[type] = classification;
-    });
-    
-    // Add physical characteristic votes  
-    Object.entries(physicalUserVotes).forEach(([type, classification]) => {
-      votes[type] = classification;
-    });
-    
-    return votes;
-  }, [userGeographicVotes, physicalUserVotes]);
 
   if (isLoading) {
     return (
@@ -115,6 +97,29 @@ export default function UserProfileDetail() {
           Voltar ao menu
         </Button>
 
+        {isOwner && (
+          <div className="flex gap-2 mb-6">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowEditModal(true)}
+              className="flex items-center gap-2"
+            >
+              <Edit className="h-4 w-4" />
+              Editar
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDelete}
+              disabled={deleteProfile.isPending}
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
+            </Button>
+          </div>
+        )}
 
         <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
@@ -259,91 +264,68 @@ export default function UserProfileDetail() {
                     Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : new Date(profile.created_at).toLocaleDateString('pt-BR')}
                   </p>
                   
-                   {/* Owner Actions */}
-                   {isOwner && (
-                     <div className="flex justify-center gap-2 mb-4">
-                       <Button
-                         variant="outline"
-                         size="sm"
-                         onClick={() => setShowEditModal(true)}
-                         className="flex items-center gap-2"
-                       >
-                         <Edit className="h-4 w-4" />
-                         Editar
-                       </Button>
-                       <Button
-                         variant="destructive"
-                         size="sm"
-                         onClick={handleDelete}
-                         disabled={deleteProfile.isPending}
-                         className="flex items-center gap-2"
-                       >
-                         <Trash2 className="h-4 w-4" />
-                         {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
-                       </Button>
-                     </div>
-                   )}
-
-                   <div className="flex justify-center gap-4 mb-6">
-                     <div 
-                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                       onClick={() => {
-                         const votingSection = document.querySelector('[data-voting-section]');
-                         if (votingSection) {
-                           votingSection.scrollIntoView({ behavior: 'smooth' });
-                         }
-                       }}
-                     >
-                       <Vote className="h-4 w-4 text-phindex-teal" />
-                       <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
-                     </div>
-                     <div 
-                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                       onClick={() => {
-                         const commentsSection = document.querySelector('[data-comments-section]');
-                         if (commentsSection) {
-                           commentsSection.scrollIntoView({ behavior: 'smooth' });
-                         }
-                       }}
-                     >
-                       <MessageSquare className="h-4 w-4 text-blue-500" />
-                       <span>{realComments.length} comentários</span>
-                     </div>
-                   </div>
-
-                    <div className="space-y-2">
-                      {user ? (
-                        hasUserVoted ? (
-                          <Button 
-                            onClick={() => setShowVoteModal(true)}
-                            className="w-full"
-                            variant="outline"
-                          >
-                            <Users className="mr-2 h-4 w-4" />
-                            Alterar voto
-                          </Button>
-                        ) : (
-                          <Button 
-                            onClick={() => setShowVoteModal(true)}
-                            className="w-full"
-                            variant="default"
-                          >
-                            <Users className="mr-2 h-4 w-4" />
-                            Votar
-                          </Button>
-                        )
-                      ) : (
-                       <Button 
-                         onClick={() => setShowVoteModal(true)}
-                         className="w-full"
-                         variant="outline"
-                         disabled
-                       >
-                         <Users className="mr-2 h-4 w-4" />
-                         Login para votar
-                       </Button>
-                      )}
+                  <div className="flex justify-center gap-4 mb-6">
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                      onClick={() => {
+                        const votingSection = document.querySelector('[data-voting-section]');
+                        if (votingSection) {
+                          votingSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <Vote className="h-4 w-4 text-phindex-teal" />
+                      <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
                     </div>
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                      onClick={() => {
+                        const commentsSection = document.querySelector('[data-comments-section]');
+                        if (commentsSection) {
+                          commentsSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <MessageSquare className="h-4 w-4 text-blue-500" />
+                      <span>{realComments.length} comentários</span>
+                    </div>
+                  </div>
+
+                   <div className="space-y-2">
+                     {user ? (
+                       hasUserVoted ? (
+                          <div className="space-y-2">
+                           <Button 
+                             onClick={() => setShowVoteModal(true)}
+                             className="w-full"
+                             variant="outline"
+                           >
+                             <Users className="mr-2 h-4 w-4" />
+                             Alterar voto
+                           </Button>
+                         </div>
+                       ) : (
+                         <Button 
+                           onClick={() => setShowVoteModal(true)}
+                           className="w-full"
+                           variant="default"
+                         >
+                           <Users className="mr-2 h-4 w-4" />
+                           Votar
+                         </Button>
+                       )
+                     ) : (
+                      <Button 
+                        onClick={() => setShowVoteModal(true)}
+                        className="w-full"
+                        variant="outline"
+                        disabled
+                      >
+                        <Users className="mr-2 h-4 w-4" />
+                        Login para votar
+                      </Button>
+                     )}
+                   </div>
                 </div>
               </CardContent>
             </Card>
@@ -509,60 +491,27 @@ export default function UserProfileDetail() {
                 <CardTitle className="text-phindex-teal">Physical Characteristics</CardTitle>
               </CardHeader>
               <CardContent className="h-96 overflow-y-auto">
-                {physicalLoading ? (
-                  <div className="grid gap-6">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <div key={index} className="space-y-3">
-                        <Skeleton className="h-5 w-32" />
-                        <div className="space-y-2">
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-2 w-full" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid gap-6">
-                    {physicalCharacteristics.map((characteristic, index) => (
-                      <PhysicalCharacteristicVoting
-                        key={index}
-                        characteristic={characteristic}
-                      />
-                    ))}
-                  </div>
-                )}
+                <div className="grid gap-6">
+                  {physicalCharacteristics.map((characteristic, index) => (
+                    <PhysicalCharacteristicVoting
+                      key={index}
+                      characteristic={characteristic}
+                    />
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
             {/* Comments Section */}
             <div data-comments-section>
-              {commentsLoading ? (
-                <Card className="bg-gradient-card border-phindex-teal/20">
-                  <CardHeader>
-                    <Skeleton className="h-6 w-32" />
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {Array.from({ length: 3 }).map((_, index) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex items-center space-x-2">
-                          <Skeleton className="h-8 w-8 rounded-full" />
-                          <Skeleton className="h-4 w-24" />
-                        </div>
-                        <Skeleton className="h-16 w-full" />
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              ) : (
-                <CommentsSection 
-                  profileId={profile.id}
-                  onAddComment={addComment}
-                  onLikeComment={likeComment}
-                  onDeleteComment={deleteComment}
-                  currentUserId={user?.id}
-                  comments={realComments}
-                />
-              )}
+              <CommentsSection 
+                profileId={profile.id}
+                onAddComment={addComment}
+                onLikeComment={likeComment}
+                onDeleteComment={deleteComment}
+                currentUserId={user?.id}
+                comments={realComments}
+              />
             </div>
 
             {/* Vote Modal */}
@@ -605,13 +554,15 @@ export default function UserProfileDetail() {
                     }
                   }
                   
-                    // Refresh geographic votes to update any charts
-                    await refetchGeographicVotes();
-                    await refetchVoteCounts();
-                    
-                    if (mainVoteSuccess) {
-                      setShowVoteModal(false);
-                    }
+                   // Refresh geographic votes to update any charts
+                   await refetchGeographicVotes();
+                   await refetchVoteCounts();
+                   
+                   if (mainVoteSuccess) {
+                     setShowVoteModal(false);
+                     // Refresh the page to show updated results
+                     window.location.reload();
+                   }
                 }}
               />
             )}
