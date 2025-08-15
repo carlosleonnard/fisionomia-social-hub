@@ -523,12 +523,12 @@ export default function UserProfileDetail() {
                      }
                    }
                   
-                  // Cast physical characteristics votes
-                  const physicalCharacteristics = [
-                    'Hair Color', 'Hair Texture', 'Eye Color', 'Skin Tone',
-                    'Nasal Breadth', 'Facial Breadth', 'Body Type', 'Jaw Type',
-                    'Head Breadth', 'Face Shape'
-                  ];
+                   // Cast physical characteristics votes
+                   const physicalCharacteristics = [
+                     'Skin Color', 'Hair Color', 'Hair Texture', 'Head Breadth',
+                     'Body Type', 'Nasal Breadth', 'Facial Breadth', 'Jaw Type',
+                     'Eye Color'
+                   ];
                   
                   for (const characteristic of physicalCharacteristics) {
                     if (votes[characteristic]) {

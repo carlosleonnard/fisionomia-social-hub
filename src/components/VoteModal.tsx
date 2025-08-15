@@ -143,44 +143,44 @@ const geographicOptions = {
 
 const characteristics = [
   {
+    category: "Skin Color",
+    options: ["pale", "fair", "light brown", "medium brown", "dark brown", "black"]
+  },
+  {
     category: "Hair Color",
-    options: ["Black", "Dark Brown", "Brown"]
+    options: ["blonde", "red", "brown", "black"]
   },
   {
     category: "Hair Texture", 
-    options: ["Ondulado", "Liso", "Cacheado"]
-  },
-  {
-    category: "Eye Color",
-    options: ["Brown", "Hazel", "Green"]
-  },
-  {
-    category: "Skin Tone",
-    options: ["Light Brown", "Medium Brown", "Olive"]
-  },
-  {
-    category: "Nasal Breadth",
-    options: ["Médio", "Estreito", "Largo"]
-  },
-  {
-    category: "Facial Breadth",
-    options: ["Médio", "Largo", "Estreito"]
-  },
-  {
-    category: "Body Type",
-    options: ["Mesomorfo", "Ectomorfo", "Endomorfo"]
-  },
-  {
-    category: "Jaw Type",
-    options: ["Angular", "Quadrado", "Arredondado"]
+    options: ["Straight (Fine/Thin)", "Straight (Medium)", "Straight (Coarse)", "Wavy (Fine/Thin)", "Wavy (Medium)", "Wavy (Coarse)", "Curly (Loose)", "Curly (Tight)", "Kinky (Soft)", "Kinky (Wiry)"]
   },
   {
     category: "Head Breadth",
-    options: ["Médio", "Largo", "Estreito"]
+    options: ["hyperdolichocephalic", "dolichocephalic", "mesocephalic", "brachycephalic", "hyperbrachycephalic"]
   },
   {
-    category: "Face Shape",
-    options: ["Oval", "Round", "Square"]
+    category: "Body Type",
+    options: ["ectomorph", "mesomorph", "endomorph"]
+  },
+  {
+    category: "Nasal Breadth",
+    options: ["hyperleptorrhine (very narrow)", "leptorrhine (narrow)", "mesorrhine (medium-wide)", "platyrrhine (wide)", "hyperplatyrrhine (very wide)"]
+  },
+  {
+    category: "Facial Breadth",
+    options: ["leptoprosop", "mesoprosop", "euryprosop"]
+  },
+  {
+    category: "Jaw Type",
+    options: ["orthognathous", "prognathous"]
+  },
+  {
+    category: "Eye Color",
+    options: ["pale-blue iris", "light-blue iris", "sky-blue iris", "blue iris", "dark-blue iris", "blue-gray iris", "light-gray iris", "dark-gray iris", "blue-gray iris with yellow/brown spots", "gray-green iris with yellow/brown spots", "green iris", "green iris with yellow/brown spots", "amber iris", "hazel iris", "light-brown iris", "medium-brown iris", "dark-brown iris", "mahogany iris", "black-brown iris", "black iris"]
+  },
+  {
+    category: "Head Breadth",
+    options: ["small-headed", "large-headed"]
   }
 ];
 
