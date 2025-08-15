@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { useImageUpload } from "@/hooks/use-image-upload";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AddProfileModalProps {
   // Remove onAddProfile prop as we'll handle it internally
@@ -75,6 +76,28 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
           profileImageUrl: formData.profileImageUrl,
           isAnonymous: formData.isAnonymous
         });
+
+        // Create complete profile record with all form data
+        const { data: completeProfileData, error: completeProfileError } = await supabase
+          .from('complete_profiles')
+          .insert({
+            user_id: user.id,
+            profile_id: newProfile.id,
+            name: formData.name,
+            country: formData.country,
+            gender: formData.gender,
+            category: formData.category,
+            height: parseFloat(formData.height),
+            ancestry: formData.ancestry,
+            is_anonymous: formData.isAnonymous,
+            front_image_url: formData.frontImageUrl,
+            profile_image_url: formData.profileImageUrl || null,
+            description: formData.ancestry
+          });
+
+        if (completeProfileError) {
+          console.error('Erro ao criar registro completo do perfil:', completeProfileError);
+        }
 
         // Reset form and close modal
         setFormData({ name: "", country: "", gender: "", category: "", height: "", ancestry: "", frontImageUrl: "", profileImageUrl: "", isAnonymous: null });

@@ -59,6 +59,11 @@ export default function UserProfileDetail() {
 
   const isOwner = user?.id === profile.user_id;
 
+  // Check if user has voted on any characteristic (geographic, phenotype, or physical)
+  const hasUserVotedAny = hasUserVoted || 
+    Object.keys(userGeographicVotes).length > 0 || 
+    Object.keys(physicalUserVotes).length > 0;
+
   const handleDelete = async () => {
     if (window.confirm('Tem certeza que deseja excluir este perfil?')) {
       try {
@@ -270,7 +275,7 @@ export default function UserProfileDetail() {
 
                    <div className="space-y-2">
                      {user ? (
-                       hasUserVoted ? (
+                       hasUserVotedAny ? (
                           <div className="space-y-2">
                            <Button 
                              onClick={() => setShowVoteModal(true)}

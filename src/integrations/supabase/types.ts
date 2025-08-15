@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
@@ -94,6 +94,116 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      complete_profiles: {
+        Row: {
+          ancestry: string
+          body_type: string | null
+          category: string
+          country: string
+          created_at: string
+          description: string | null
+          eye_color: string | null
+          face_shape: string | null
+          facial_breadth: string | null
+          front_image_url: string
+          gender: string
+          general_phenotype_primary: string | null
+          general_phenotype_secondary: string | null
+          general_phenotype_tertiary: string | null
+          hair_color: string | null
+          hair_texture: string | null
+          head_breadth: string | null
+          height: number
+          id: string
+          is_anonymous: boolean
+          jaw_type: string | null
+          name: string
+          nasal_breadth: string | null
+          profile_id: string
+          profile_image_url: string | null
+          skin_tone: string | null
+          specific_phenotype_primary: string | null
+          specific_phenotype_secondary: string | null
+          specific_phenotype_tertiary: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ancestry: string
+          body_type?: string | null
+          category: string
+          country: string
+          created_at?: string
+          description?: string | null
+          eye_color?: string | null
+          face_shape?: string | null
+          facial_breadth?: string | null
+          front_image_url: string
+          gender: string
+          general_phenotype_primary?: string | null
+          general_phenotype_secondary?: string | null
+          general_phenotype_tertiary?: string | null
+          hair_color?: string | null
+          hair_texture?: string | null
+          head_breadth?: string | null
+          height: number
+          id?: string
+          is_anonymous?: boolean
+          jaw_type?: string | null
+          name: string
+          nasal_breadth?: string | null
+          profile_id: string
+          profile_image_url?: string | null
+          skin_tone?: string | null
+          specific_phenotype_primary?: string | null
+          specific_phenotype_secondary?: string | null
+          specific_phenotype_tertiary?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ancestry?: string
+          body_type?: string | null
+          category?: string
+          country?: string
+          created_at?: string
+          description?: string | null
+          eye_color?: string | null
+          face_shape?: string | null
+          facial_breadth?: string | null
+          front_image_url?: string
+          gender?: string
+          general_phenotype_primary?: string | null
+          general_phenotype_secondary?: string | null
+          general_phenotype_tertiary?: string | null
+          hair_color?: string | null
+          hair_texture?: string | null
+          head_breadth?: string | null
+          height?: number
+          id?: string
+          is_anonymous?: boolean
+          jaw_type?: string | null
+          name?: string
+          nasal_breadth?: string | null
+          profile_id?: string
+          profile_image_url?: string | null
+          skin_tone?: string | null
+          specific_phenotype_primary?: string | null
+          specific_phenotype_secondary?: string | null
+          specific_phenotype_tertiary?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "complete_profiles_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -321,16 +431,16 @@ export type Database = {
     }
     Functions: {
       can_view_sensitive_profile_data: {
-        Args: { target_user_id: string; target_profile_id: string }
+        Args: { target_profile_id: string; target_user_id: string }
         Returns: boolean
       }
       create_notification: {
         Args: {
-          target_user_id: string
-          notification_type: string
           notification_message: string
-          target_profile_id?: string
+          notification_type: string
           target_comment_id?: string
+          target_profile_id?: string
+          target_user_id: string
         }
         Returns: string
       }
@@ -339,7 +449,7 @@ export type Database = {
         Returns: undefined
       }
       generate_unique_slug: {
-        Args: { profile_name: string; profile_id?: string }
+        Args: { profile_id?: string; profile_name: string }
         Returns: string
       }
     }
