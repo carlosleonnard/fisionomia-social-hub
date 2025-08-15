@@ -22,15 +22,15 @@ export const usePhysicalVoting = (profileId: string) => {
   const { toast } = useToast();
 
   const physicalCharacteristicTypes = [
-    'Skin Tone',
     'Hair Color',
     'Hair Texture', 
-    'Head Breadth',
-    'Body Type',
+    'Eye Color',
+    'Skin Tone',
     'Nasal Breadth',
     'Facial Breadth',
+    'Body Type',
     'Jaw Type',
-    'Eye Color',
+    'Head Breadth',
     'Face Shape'
   ];
 

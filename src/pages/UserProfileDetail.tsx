@@ -12,7 +12,6 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { CommentsSection } from "@/components/CommentsSection";
 import { VoteModal } from "@/components/VoteModal";
 import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
-import { PhysicalCharacteristicVotingForm } from "@/components/PhysicalCharacteristicVotingForm";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { useVoting } from "@/hooks/use-voting";
@@ -468,15 +467,10 @@ export default function UserProfileDetail() {
               </Card>
             </div>
 
-            {/* Physical Characteristics Voting Form - Full width */}
-            <div className="mb-6">
-              <PhysicalCharacteristicVotingForm profileId={profile.id} />
-            </div>
-
-            {/* Physical Characteristics Results - Full width */}
+            {/* Physical Characteristics - Full width */}
             <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardHeader>
-                <CardTitle className="text-phindex-teal">Physical Characteristics Results</CardTitle>
+                <CardTitle className="text-phindex-teal">Physical Characteristics</CardTitle>
               </CardHeader>
               <CardContent className="h-96 overflow-y-auto">
                 <div className="grid gap-6">
