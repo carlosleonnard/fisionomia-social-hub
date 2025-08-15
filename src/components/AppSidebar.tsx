@@ -144,8 +144,8 @@ export const AppSidebar = () => {
                     key={category.name}
                     className={`flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors ${
                       isActive 
-                        ? "bg-white text-[#007a75] border border-[#007a75]/20" 
-                        : "hover:bg-muted/50 text-[#007a75]"
+                        ? "bg-phindex-teal/10 text-phindex-teal border border-phindex-teal/20" 
+                        : "hover:bg-muted/50"
                     }`}
                     onClick={() => handleCategoryClick(category.name)}
                   >
