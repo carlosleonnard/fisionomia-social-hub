@@ -1,23 +1,16 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useUserProfiles, UserProfile } from "@/hooks/use-user-profiles";
+import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthPrompt } from "./AuthPrompt";
 import { Calendar, User } from "lucide-react";
 
-interface UserProfilesListProps {
-  profiles?: UserProfile[];
-}
-
-export const UserProfilesList = ({ profiles: propProfiles }: UserProfilesListProps) => {
+export const UserProfilesList = () => {
   const { user } = useAuth();
-  const { profiles: hookProfiles, profilesLoading } = useUserProfiles();
-  
-  // Use profiles from props if provided, otherwise use from hook
-  const profiles = propProfiles || hookProfiles;
+  const { profiles, profilesLoading } = useUserProfiles();
 
-  if (profilesLoading && !propProfiles) {
+  if (profilesLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {[...Array(8)].map((_, i) => (
