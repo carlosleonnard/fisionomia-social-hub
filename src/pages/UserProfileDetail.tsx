@@ -38,7 +38,7 @@ export default function UserProfileDetail() {
   });
 
   // Initialize voting and comments hooks
-  const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(profile?.id || '');
+  const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote, uniqueVoters } = useVoting(profile?.id || '');
   const { comments: realComments, addComment, likeComment, deleteComment } = useComments(profile?.id || '');
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(profile?.id || '');
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(profile?.id || '');
@@ -257,7 +257,7 @@ export default function UserProfileDetail() {
                       }}
                     >
                       <Vote className="h-4 w-4 text-phindex-teal" />
-                      <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
+                      <span>{uniqueVoters} usuários votaram</span>
                     </div>
                     <div 
                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"

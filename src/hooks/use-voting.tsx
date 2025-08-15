@@ -12,6 +12,7 @@ interface Vote {
 export const useVoting = (profileId: string) => {
   const [votes, setVotes] = useState<Vote[]>([]);
   const [userVote, setUserVote] = useState<string | null>(null);
+  const [uniqueVoters, setUniqueVoters] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { toast } = useToast();
@@ -40,6 +41,7 @@ export const useVoting = (profileId: string) => {
       })).sort((a, b) => b.count - a.count);
 
       setVotes(voteData);
+      setUniqueVoters(total);
 
       // Check if current user has voted
       if (user) {
@@ -151,6 +153,7 @@ export const useVoting = (profileId: string) => {
   return {
     votes,
     userVote,
+    uniqueVoters,
     loading,
     castVote,
     changeVote,
