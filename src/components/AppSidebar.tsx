@@ -23,7 +23,18 @@ export const AppSidebar = () => {
   };
 
   const handleCategoryClick = (category: string) => {
-    const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+    const categoryMapping: Record<string, string> = {
+      "Community": "community",
+      "Pop Culture": "pop-culture",
+      "Music and Entertainment": "music-and-entertainment",
+      "Arts": "arts",
+      "Philosophy": "philosophy",
+      "Sciences": "sciences",
+      "Sports": "sports",
+      "Business": "business",
+      "Politics": "politics"
+    };
+    const categorySlug = categoryMapping[category] || category.toLowerCase().replace(/\s+/g, '-');
     navigate(`/category/${categorySlug}`);
   };
 
@@ -43,7 +54,18 @@ export const AppSidebar = () => {
   };
 
   const isCategoryActive = (category: string) => {
-    const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+    const categoryMapping: Record<string, string> = {
+      "Community": "community",
+      "Pop Culture": "pop-culture",
+      "Music and Entertainment": "music-and-entertainment",
+      "Arts": "arts",
+      "Philosophy": "philosophy",
+      "Sciences": "sciences",
+      "Sports": "sports",
+      "Business": "business",
+      "Politics": "politics"
+    };
+    const categorySlug = categoryMapping[category] || category.toLowerCase().replace(/\s+/g, '-');
     return location.pathname === `/category/${categorySlug}`;
   };
 

@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileCard } from "@/components/ProfileCard";
+import { useUserProfiles } from "@/hooks/use-user-profiles";
 
 interface Profile {
   id: string;
@@ -24,68 +25,9 @@ interface Profile {
   country: string;
 }
 
-// Mock data - in a real app this would come from your database
-const mockProfiles: Profile[] = [
-  {
-    id: "1",
-    name: "Sofia Martinez",
-    age: 24,
-    location: "São Paulo, Brazil",
-    imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-    phenotypes: ["Mediterranean", "Latino"],
-    likes: 42,
-    comments: [],
-    votes: [],
-    hasUserVoted: false,
-    category: "Pop Culture",
-    country: "BR"
-  },
-  {
-    id: "2",
-    name: "John Smith",
-    age: 28,
-    location: "New York, USA",
-    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-    phenotypes: ["Nordic", "Alpine"],
-    likes: 35,
-    comments: [],
-    votes: [],
-    hasUserVoted: false,
-    category: "User Profiles",
-    country: "US"
-  },
-  {
-    id: "3",
-    name: "Maria Silva",
-    age: 30,
-    location: "Rio de Janeiro, Brazil",
-    imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-    phenotypes: ["Mediterranean", "Latino"],
-    likes: 67,
-    comments: [],
-    votes: [],
-    hasUserVoted: false,
-    category: "Pop Culture",
-    country: "BR"
-  },
-  {
-    id: "4",
-    name: "Anonymous User",
-    age: 25,
-    location: "São Paulo, Brazil",
-    imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
-    phenotypes: ["Mediterranean"],
-    likes: 18,
-    comments: [],
-    votes: [],
-    hasUserVoted: false,
-    category: "User Profiles",
-    country: "BR"
-  }
-];
 
 const categoryDescriptions: Record<string, string> = {
-  "user-profiles": "Perfis de pessoas anônimas e usuários comuns da plataforma",
+  "community": "Perfis de pessoas anônimas e usuários comuns da plataforma",
   "pop-culture": "Celebridades, influenciadores e personalidades da cultura pop",
   "music-and-entertainment": "Artistas, músicos, atores e profissionais do entretenimento",
   "arts": "Artistas visuais, escritores e profissionais das artes",
@@ -97,7 +39,7 @@ const categoryDescriptions: Record<string, string> = {
 };
 
 const categoryNames: Record<string, string> = {
-  "user-profiles": "User Profiles",
+  "community": "User Profiles",
   "pop-culture": "Pop Culture",
   "music-and-entertainment": "Music and Entertainment",
   "arts": "Arts",
@@ -111,14 +53,29 @@ const categoryNames: Record<string, string> = {
 export default function CategoryPage() {
   const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
+  const { profiles, profilesLoading } = useUserProfiles();
 
   const categoryName = category ? categoryNames[category] : "Unknown Category";
   const categoryDescription = category ? categoryDescriptions[category] : "Categoria não encontrada";
   
+  // Map URL category to database category names
+  const categoryMapping: Record<string, string> = {
+    "community": "User Profiles",
+    "pop-culture": "Pop Culture",
+    "music-and-entertainment": "Music and Entertainment",
+    "arts": "Arts",
+    "philosophy": "Philosophy",
+    "sciences": "Sciences",
+    "sports": "Sports",
+    "business": "Business",
+    "politics": "Politics"
+  };
+  
   // Filter profiles by category
-  const filteredProfiles = mockProfiles.filter(profile => 
-    profile.category.toLowerCase().replace(' ', '-') === category
-  );
+  const filteredProfiles = profiles?.filter(profile => {
+    const dbCategoryName = categoryMapping[category || ""];
+    return profile.category === dbCategoryName;
+  }) || [];
 
   if (!category || !categoryNames[category]) {
     return (
@@ -182,26 +139,49 @@ export default function CategoryPage() {
             </Card>
 
             {/* Profiles Grid */}
-            {filteredProfiles.length > 0 ? (
+            {profilesLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <Card key={index} className="bg-gradient-card border-phindex-teal/20">
+                    <CardContent className="p-4">
+                      <div className="animate-pulse">
+                        <div className="w-full h-48 bg-muted rounded-lg mb-4"></div>
+                        <div className="h-4 bg-muted rounded mb-2"></div>
+                        <div className="h-3 bg-muted rounded w-2/3"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : filteredProfiles.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProfiles.map((profile) => (
-                  <ProfileCard 
+                  <div
                     key={profile.id}
-                    id={profile.id}
-                    name={profile.name}
-                    age={profile.age}
-                    location={profile.location}
-                    imageUrl={profile.imageUrl}
-                    phenotypes={profile.phenotypes}
-                    likes={profile.likes}
-                    comments={profile.comments.length}
-                    votes={profile.votes}
-                    hasUserVoted={profile.hasUserVoted}
-                    onLike={() => {}}
-                    onComment={() => {}}
-                    onVote={() => {}}
-                    country={profile.country || "BR"}
-                  />
+                    className="cursor-pointer transition-transform hover:scale-105"
+                    onClick={() => navigate(`/user-profile/${profile.slug}`)}
+                  >
+                    <Card className="bg-gradient-card border-phindex-teal/20 overflow-hidden">
+                      <div className="relative">
+                        <img 
+                          src={profile.front_image_url} 
+                          alt={profile.name}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1">
+                          <span className="text-xs font-medium">{profile.country}</span>
+                        </div>
+                      </div>
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-foreground mb-1">{profile.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">{profile.ancestry}</p>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>Altura: {profile.height}m</span>
+                          <span>{profile.gender}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
                 ))}
               </div>
             ) : (

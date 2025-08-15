@@ -449,15 +449,21 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   required
                 >
                   <option value="">Selecionar categoria</option>
-                  <option value="User Profiles">User Profiles</option>
-                  <option value="Pop Culture">Pop Culture</option>
-                  <option value="Music and Entertainment">Music and Entertainment</option>
-                  <option value="Arts">Arts</option>
-                  <option value="Philosophy">Philosophy</option>
-                  <option value="Sciences">Sciences</option>
-                  <option value="Sports">Sports</option>
-                  <option value="Business">Business</option>
-                  <option value="Politics">Politics</option>
+                  {formData.isAnonymous !== true && (
+                    <>
+                      <option value="Pop Culture">Pop Culture</option>
+                      <option value="Music and Entertainment">Music and Entertainment</option>
+                      <option value="Arts">Arts</option>
+                      <option value="Philosophy">Philosophy</option>
+                      <option value="Sciences">Sciences</option>
+                      <option value="Sports">Sports</option>
+                      <option value="Business">Business</option>
+                      <option value="Politics">Politics</option>
+                    </>
+                  )}
+                  {formData.isAnonymous === true && (
+                    <option value="User Profiles">User Profiles</option>
+                  )}
                 </select>
               </div>
             </div>
