@@ -97,29 +97,6 @@ export default function UserProfileDetail() {
           Voltar ao menu
         </Button>
 
-        {isOwner && (
-          <div className="flex gap-2 mb-6">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowEditModal(true)}
-              className="flex items-center gap-2"
-            >
-              <Edit className="h-4 w-4" />
-              Editar
-            </Button>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={handleDelete}
-              disabled={deleteProfile.isPending}
-              className="flex items-center gap-2"
-            >
-              <Trash2 className="h-4 w-4" />
-              {deleteProfile.isPending ? 'Excluindo...' : 'Excluir'}
-            </Button>
-          </div>
-        )}
 
         <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
