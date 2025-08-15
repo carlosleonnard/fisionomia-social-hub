@@ -22,6 +22,7 @@ import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
 import { useProfileCreator } from "@/hooks/use-profile-creator";
 import { useState, useMemo } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UserProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -39,8 +40,8 @@ export default function UserProfileDetail() {
 
   // Initialize voting and comments hooks
   const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(profile?.id || '');
-  const { comments: realComments, addComment, likeComment, deleteComment } = useComments(profile?.id || '');
-  const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(profile?.id || '');
+  const { comments: realComments, loading: commentsLoading, addComment, likeComment, deleteComment } = useComments(profile?.id || '');
+  const { characteristics: physicalCharacteristics, loading: physicalLoading, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(profile?.id || '');
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(profile?.id || '');
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(profile?.id || '');
   const { data: profileCreator } = useProfileCreator(profile?.id || '');
@@ -508,27 +509,60 @@ export default function UserProfileDetail() {
                 <CardTitle className="text-phindex-teal">Physical Characteristics</CardTitle>
               </CardHeader>
               <CardContent className="h-96 overflow-y-auto">
-                <div className="grid gap-6">
-                  {physicalCharacteristics.map((characteristic, index) => (
-                    <PhysicalCharacteristicVoting
-                      key={index}
-                      characteristic={characteristic}
-                    />
-                  ))}
-                </div>
+                {physicalLoading ? (
+                  <div className="grid gap-6">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <div key={index} className="space-y-3">
+                        <Skeleton className="h-5 w-32" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-2 w-full" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid gap-6">
+                    {physicalCharacteristics.map((characteristic, index) => (
+                      <PhysicalCharacteristicVoting
+                        key={index}
+                        characteristic={characteristic}
+                      />
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
             {/* Comments Section */}
             <div data-comments-section>
-              <CommentsSection 
-                profileId={profile.id}
-                onAddComment={addComment}
-                onLikeComment={likeComment}
-                onDeleteComment={deleteComment}
-                currentUserId={user?.id}
-                comments={realComments}
-              />
+              {commentsLoading ? (
+                <Card className="bg-gradient-card border-phindex-teal/20">
+                  <CardHeader>
+                    <Skeleton className="h-6 w-32" />
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                          <Skeleton className="h-4 w-24" />
+                        </div>
+                        <Skeleton className="h-16 w-full" />
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              ) : (
+                <CommentsSection 
+                  profileId={profile.id}
+                  onAddComment={addComment}
+                  onLikeComment={likeComment}
+                  onDeleteComment={deleteComment}
+                  currentUserId={user?.id}
+                  comments={realComments}
+                />
+              )}
             </div>
 
             {/* Vote Modal */}

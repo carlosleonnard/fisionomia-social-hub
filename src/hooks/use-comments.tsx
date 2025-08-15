@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/use-auth';
@@ -25,42 +25,46 @@ export const useComments = (profileId: string) => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
+    if (!profileId) return;
+    
     try {
-      const { data: commentsData } = await supabase
-        .from('comments')
-        .select(`
-          id,
-          content,
-          created_at,
-          likes_count,
-          user_id,
-          parent_comment_id,
-          profiles!comments_user_id_fkey (
-            name,
-            email
-          )
-        `)
-        .eq('profile_id', profileId)
-        .order('created_at', { ascending: false });
-
-      if (commentsData) {
-        // Check which comments the current user has liked
-        let userLikes: string[] = [];
-        if (user) {
-          const { data: likesData } = await supabase
-            .from('comment_likes')
-            .select('comment_id')
-            .eq('user_id', user.id);
-          
-          userLikes = likesData?.map(like => like.comment_id) || [];
-        }
-
-        // Get user votes for this profile to show next to names
-        const { data: userVotesData } = await supabase
+      // Fetch all data in parallel to improve performance
+      const [commentsResult, likesResult, votesResult] = await Promise.all([
+        supabase
+          .from('comments')
+          .select(`
+            id,
+            content,
+            created_at,
+            likes_count,
+            user_id,
+            parent_comment_id,
+            profiles!comments_user_id_fkey (
+              name,
+              email
+            )
+          `)
+          .eq('profile_id', profileId)
+          .order('created_at', { ascending: false }),
+        
+        user ? supabase
+          .from('comment_likes')
+          .select('comment_id')
+          .eq('user_id', user.id) : { data: [] },
+        
+        supabase
           .from('votes')
           .select('user_id, classification, characteristic_type')
-          .eq('profile_id', profileId);
+          .eq('profile_id', profileId)
+      ]);
+
+      const { data: commentsData } = commentsResult;
+      const { data: likesData } = likesResult;
+      const { data: userVotesData } = votesResult;
+
+      if (commentsData) {
+        const userLikes = likesData?.map(like => like.comment_id) || [];
 
         const userVotesMap = new Map();
         userVotesData?.forEach(vote => {
@@ -110,7 +114,7 @@ export const useComments = (profileId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [profileId, user?.id]);
 
   const addComment = async (content: string, parentCommentId?: string) => {
     if (!user) {
@@ -263,8 +267,9 @@ export const useComments = (profileId: string) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchComments();
-  }, [profileId, user]);
+  }, [fetchComments]);
 
   return {
     comments,
