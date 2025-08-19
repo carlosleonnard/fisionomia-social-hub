@@ -41,7 +41,7 @@ export const UserProfilesList = () => {
   }
 
   return (
-    <div className="space-y-6">
+      <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-foreground">Perfis da Comunidade</h2>
         <Badge variant="secondary" className="px-3 py-1">
@@ -71,18 +71,23 @@ export const UserProfilesList = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
-                    {profile.name}
-                  </h3>
-                  
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <span className="w-3 h-3 rounded-full bg-primary/20"></span>
-                      {profile.country}
-                    </span>
-                    <span>{profile.height}m</span>
-                  </div>
+                 <div className="space-y-2">
+                   <div className="flex items-center gap-2 mb-2">
+                     <span className="text-lg">🏳️</span>
+                     <span className="text-sm font-medium text-muted-foreground">{profile.country}</span>
+                   </div>
+                   
+                   <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+                     {profile.name}
+                   </h3>
+                   
+                   <div className="flex items-center justify-between text-xs text-muted-foreground">
+                     <span className="flex items-center gap-1">
+                       <span className="w-3 h-3 rounded-full bg-primary/20"></span>
+                       {profile.ancestry}
+                     </span>
+                     <span>{profile.height}m</span>
+                   </div>
 
                   <div className="flex items-center justify-between">
                     <Badge variant="outline" className="text-xs">

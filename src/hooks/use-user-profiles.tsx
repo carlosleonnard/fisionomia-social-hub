@@ -51,6 +51,37 @@ export const useUserProfiles = () => {
     },
   });
 
+  // Get profiles ordered by vote count
+  const { data: profilesByVotes, isLoading: profilesByVotesLoading } = useQuery({
+    queryKey: ['user-profiles-by-votes'],
+    queryFn: async () => {
+      // First get all profiles
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('user_profiles')
+        .select('*');
+
+      if (profilesError) throw profilesError;
+
+      // Get vote counts for each profile
+      const profilesWithVotes = await Promise.all(
+        (profilesData || []).map(async (profile) => {
+          const { data: votesData } = await supabase
+            .from('votes')
+            .select('id')
+            .eq('profile_id', profile.slug);
+
+          return {
+            ...profile,
+            vote_count: votesData?.length || 0
+          };
+        })
+      );
+
+      // Sort by vote count descending
+      return profilesWithVotes.sort((a, b) => b.vote_count - a.vote_count);
+    },
+  });
+
   // Get user's own profiles
   const { data: myProfiles, isLoading: myProfilesLoading } = useQuery({
     queryKey: ['my-profiles', user?.id],
@@ -204,6 +235,8 @@ export const useUserProfiles = () => {
   return {
     profiles,
     profilesLoading,
+    profilesByVotes,
+    profilesByVotesLoading,
     myProfiles,
     myProfilesLoading,
     createProfile,
