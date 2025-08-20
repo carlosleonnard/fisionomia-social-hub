@@ -86,7 +86,7 @@ const Index = () => {
                                  <Vote className="h-2.5 w-2.5" />
                                  <span className="text-xs">{(profile as any).vote_count || 0}</span>
                                </div>
-                                <div className="absolute -top-1 -left-1 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
                                   {profile.country}
                                 </div>
                                {index < 3 && (
