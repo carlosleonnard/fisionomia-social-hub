@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -65,13 +66,11 @@ export default function UserProfileDetail() {
     Object.keys(physicalUserVotes).length > 0;
 
   const handleDelete = async () => {
-    if (window.confirm('Tem certeza que deseja excluir este perfil?')) {
-      try {
-        await deleteProfile.mutateAsync(profile.id);
-        navigate('/');
-      } catch (error) {
-        console.error('Erro ao excluir perfil:', error);
-      }
+    try {
+      await deleteProfile.mutateAsync(profile.id);
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao excluir perfil:', error);
     }
   };
 
@@ -246,32 +245,59 @@ export default function UserProfileDetail() {
                     Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : new Date(profile.created_at).toLocaleDateString('pt-BR')}
                   </p>
                   
-                  <div className="flex justify-center gap-4 mb-6">
-                    <div 
-                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                      onClick={() => {
-                        const votingSection = document.querySelector('[data-voting-section]');
-                        if (votingSection) {
-                          votingSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      <Vote className="h-4 w-4 text-phindex-teal" />
-                      <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
-                    </div>
-                    <div 
-                      className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
-                      onClick={() => {
-                        const commentsSection = document.querySelector('[data-comments-section]');
-                        if (commentsSection) {
-                          commentsSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      <MessageSquare className="h-4 w-4 text-blue-500" />
-                      <span>{realComments.length} comentários</span>
-                    </div>
-                  </div>
+                   <div className="flex justify-center gap-4 mb-6">
+                     <div 
+                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                       onClick={() => {
+                         const votingSection = document.querySelector('[data-voting-section]');
+                         if (votingSection) {
+                           votingSection.scrollIntoView({ behavior: 'smooth' });
+                         }
+                       }}
+                     >
+                       <Vote className="h-4 w-4 text-phindex-teal" />
+                       <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
+                     </div>
+                     <div 
+                       className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
+                       onClick={() => {
+                         const commentsSection = document.querySelector('[data-comments-section]');
+                         if (commentsSection) {
+                           commentsSection.scrollIntoView({ behavior: 'smooth' });
+                         }
+                       }}
+                     >
+                       <MessageSquare className="h-4 w-4 text-blue-500" />
+                       <span>{realComments.length} comentários</span>
+                     </div>
+                     {isOwner && (
+                       <AlertDialog>
+                         <AlertDialogTrigger asChild>
+                           <div className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors">
+                             <Trash2 className="h-4 w-4 text-red-500" />
+                             <span className="text-red-500">Excluir</span>
+                           </div>
+                         </AlertDialogTrigger>
+                         <AlertDialogContent>
+                           <AlertDialogHeader>
+                             <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+                             <AlertDialogDescription>
+                               Tem certeza que deseja excluir este perfil? Esta ação não pode ser desfeita.
+                             </AlertDialogDescription>
+                           </AlertDialogHeader>
+                           <AlertDialogFooter>
+                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                             <AlertDialogAction 
+                               onClick={handleDelete}
+                               className="bg-red-500 hover:bg-red-600"
+                             >
+                               Sim, excluir
+                             </AlertDialogAction>
+                           </AlertDialogFooter>
+                         </AlertDialogContent>
+                       </AlertDialog>
+                     )}
+                   </div>
 
                    <div className="space-y-2">
                      {user ? (

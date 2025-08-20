@@ -5,11 +5,11 @@ export const useProfileCreator = (profileId: string) => {
   return useQuery({
     queryKey: ['profile-creator', profileId],
     queryFn: async () => {
-      // First get the profile data to find the user_id (creator)
+      // First get the user_id from user_profiles table
       const { data: profileData, error: profileError } = await supabase
-        .from('profiles_data')
+        .from('user_profiles')
         .select('user_id, created_at')
-        .eq('profile_id', profileId)
+        .eq('id', profileId)
         .single();
 
       if (profileError) {
