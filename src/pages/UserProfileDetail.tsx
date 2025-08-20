@@ -23,6 +23,7 @@ import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
 import { useProfileCreator } from "@/hooks/use-profile-creator";
 import { useState } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function UserProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -36,6 +37,20 @@ export default function UserProfileDetail() {
     queryKey: ['user-profile', slug],
     queryFn: () => getProfileBySlug(slug!),
     enabled: !!slug,
+  });
+
+  // Get total vote count for this profile
+  const { data: totalVoteCount = 0 } = useQuery({
+    queryKey: ['total-votes', profile?.id],
+    queryFn: async () => {
+      if (!profile?.id) return 0;
+      const { data: allVotes } = await supabase
+        .from('votes')
+        .select('id')
+        .eq('profile_id', profile.slug);
+      return allVotes?.length || 0;
+    },
+    enabled: !!profile?.id,
   });
 
   // Initialize voting and comments hooks
@@ -256,7 +271,7 @@ export default function UserProfileDetail() {
                        }}
                      >
                        <Vote className="h-4 w-4 text-phindex-teal" />
-                       <span>{realVotes.reduce((sum, vote) => sum + vote.count, 0)} votos</span>
+                       <span>{totalVoteCount} votos</span>
                      </div>
                      <div 
                        className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
