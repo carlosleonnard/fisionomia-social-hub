@@ -241,35 +241,6 @@ const Index = () => {
               <Separator className="bg-border" />
             </div>
 
-            {/* Regional Classification */}
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
-                  <Vote className="h-4 w-4 text-primary" />
-                </div>
-                <h2 className="text-2xl font-bold text-foreground">Classificação Regional</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {["Africa", "Asia", "Europe", "North America", "South America", "Oceania"].map((region) => (
-                  <Card 
-                    key={region} 
-                    className="bg-gradient-card border-border/50 hover:border-primary/50 transition-colors cursor-pointer group"
-                    onClick={() => handleRegionClick(region)}
-                  >
-                    <div className="p-6 text-center">
-                      <div className="text-4xl mb-3">🌍</div>
-                      <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                        {region}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Explore regional phenotypes and classifications
-                      </p>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
 
             <div className="p-6">
               <AddProfileModal />
