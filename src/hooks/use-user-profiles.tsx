@@ -37,17 +37,34 @@ export const useUserProfiles = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  // Get all user profiles
+  // Get all user profiles with vote counts
   const { data: profiles, isLoading: profilesLoading } = useQuery({
     queryKey: ['user-profiles'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // First get all profiles
+      const { data: profilesData, error: profilesError } = await supabase
         .from('user_profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      return data as UserProfile[];
+      if (profilesError) throw profilesError;
+
+      // Get vote counts for each profile
+      const profilesWithVotes = await Promise.all(
+        (profilesData || []).map(async (profile) => {
+          const { data: votesData } = await supabase
+            .from('votes')
+            .select('id')
+            .eq('profile_id', profile.slug);
+
+          return {
+            ...profile,
+            vote_count: votesData?.length || 0
+          };
+        })
+      );
+
+      return profilesWithVotes;
     },
   });
 
