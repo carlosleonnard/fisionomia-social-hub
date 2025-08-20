@@ -1,6 +1,8 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/use-auth";
 import { 
   Users, 
   Film, 
@@ -10,12 +12,17 @@ import {
   Microscope, 
   Trophy, 
   Briefcase, 
-  Building 
+  Building,
+  GitBranch,
+  Settings,
+  HelpCircle,
+  LogOut
 } from "lucide-react";
 
 export const AppSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { signOut } = useAuth();
 
   const handleRegionClick = (region: string) => {
     const regionSlug = region.toLowerCase()
@@ -157,6 +164,47 @@ export const AppSidebar = () => {
                   </button>
                 );
                })}
+            </div>
+          </div>
+          
+          {/* Separator */}
+          <Separator className="my-6" />
+          
+          {/* More Info Section */}
+          <div>
+            <h3 className="text-xl font-semibold mb-6 text-phindex-dark">MORE INFO</h3>
+            <div className="space-y-4">
+              <button
+                className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-muted/50"
+                onClick={() => navigate('/phenotype-flow')}
+              >
+                <GitBranch className="h-5 w-5" color="#007a75" />
+                <span className="text-base">Phenotype Flow</span>
+              </button>
+              
+              <button
+                className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-muted/50"
+                onClick={() => navigate('/settings')}
+              >
+                <Settings className="h-5 w-5" color="#007a75" />
+                <span className="text-base">Settings</span>
+              </button>
+              
+              <button
+                className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-muted/50"
+                onClick={() => navigate('/faq')}
+              >
+                <HelpCircle className="h-5 w-5" color="#007a75" />
+                <span className="text-base">FAQ</span>
+              </button>
+              
+              <button
+                className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-destructive/10 text-destructive hover:text-destructive"
+                onClick={() => signOut()}
+              >
+                <LogOut className="h-5 w-5" />
+                <span className="text-base">Logout</span>
+              </button>
             </div>
           </div>
         </div>
