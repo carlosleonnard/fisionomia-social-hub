@@ -1,228 +1,148 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
-import { ProfileCard } from "@/components/ProfileCard";
-import { CommentsSection } from "@/components/CommentsSection";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
-interface Vote {
-  classification: string;
-  count: number;
-  percentage: number;
-}
-
-interface Profile {
+interface UserProfile {
   id: string;
   name: string;
-  age: number;
-  location: string;
-  imageUrl: string;
-  phenotypes: string[];
-  likes: number;
-  comments: any[];
-  votes: Vote[];
-  hasUserVoted: boolean;
-  description?: string;
   country: string;
+  category: string;
+  front_image_url: string;
+  profile_image_url?: string;
+  slug: string;
+  general_phenotype_primary?: string;
+  vote_count?: number;
+}
+
+interface UserProfileWithVotes extends UserProfile {
+  vote_count: number;
 }
 
 const RegionPage = () => {
   const { region } = useParams<{ region: string }>();
   const navigate = useNavigate();
-  const { toast } = useToast();
   
-  const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
-  const [selectedPhenotype, setSelectedPhenotype] = useState<string | null>(null);
-  const [selectedDivision, setSelectedDivision] = useState<string | null>(null);
-
-  // Mapeamento hierárquico de regiões
-  const regionHierarchy: Record<string, { divisions: Record<string, string[]> }> = {
-    "africa": {
-      divisions: {
-        "North Africa": ["Berberid", "Arabic"],
-        "West Africa": ["Sudanese", "Tropical"],
-        "East Africa": ["Nilotic", "Tropical"],
-        "Sub-Saharan Africa": ["Hottentot", "Negrillo"]
-      }
-    },
-    "asia": {
-      divisions: {
-        "South Asia": ["Dravídico", "Indo-Ariano"],
-        "East Asia": ["Mongolóide", "Sino-Tibetano"],
-        "Southeast Asia": ["Malaio"],
-        "Central Asia": ["Mongolóide"]
-      }
-    },
-    "europe": {
-      divisions: {
-        "Western Europe": ["Mediterrâneo", "Alpino", "Nórdico"],
-        "Southern Europe": ["Mediterrâneo", "Ibérico"],
-        "Northern Europe": ["Nórdico"],
-        "Eastern Europe": ["Alpino", "Dinárico"]
-      }
-    },
-    "americas": {
-      divisions: {
-        "North America": ["Anglo-Saxão", "Ameríndio"],
-        "Central America": ["Ameríndio", "Hispânico"],
-        "South America": ["Atlântida", "Ameríndio", "Mestiço"]
-      }
-    },
-    "middle-east": {
-      divisions: {
-        "Arabian Peninsula": ["Arabic", "Berberid"],
-        "Levant": ["Arabic", "Mediterrâneo"],
-        "Mesopotamia": ["Arabic", "Indo-Ariano"]
-      }
-    },
-    "oceania": {
-      divisions: {
-        "Australia": ["Australóide", "Anglo-Saxão"],
-        "Melanesia": ["Melanésio"],
-        "Polynesia": ["Polinésio"]
-      }
-    }
+  // Mapeamento de regiões para general phenotype classifications
+  const regionToPheno: Record<string, string[]> = {
+    "africa": ["Subsaharan African", "North African", "Ethiopian", "Sudanese"],
+    "asia": ["East Asian", "South Asian", "Southeast Asian", "Central Asian"],
+    "europe": ["European", "Nordic", "Mediterranean", "Alpine"],
+    "americas": ["Native American", "Mixed American", "European American"],
+    "middle-east": ["Middle Eastern", "Arabian", "Persian"],
+    "oceania": ["Australoid", "Polynesian", "Melanesian"]
   };
 
   const regionNames: Record<string, string> = {
-    "africa": "Africa",
-    "asia": "Asia", 
-    "europe": "Europe",
-    "americas": "Americas",
-    "middle-east": "Middle East",
+    "africa": "África",
+    "asia": "Ásia", 
+    "europe": "Europa",
+    "americas": "Américas",
+    "middle-east": "Oriente Médio",
     "oceania": "Oceania"
   };
 
-  // Get current region data
+  // Mapeamento de códigos de países para códigos de 3 letras
+  const countryCodes: Record<string, string> = {
+    "US": "USA", "BR": "BRA", "IN": "IND", "IL": "ISR", "ES": "ESP", 
+    "NG": "NGA", "FR": "FRA", "DE": "DEU", "IT": "ITA", "JP": "JPN",
+    "CN": "CHN", "KR": "KOR", "MX": "MEX", "CA": "CAN", "AU": "AUS",
+    "GB": "GBR", "RU": "RUS", "AR": "ARG", "EG": "EGY", "ZA": "ZAF"
+  };
+
   const regionKey = region?.toLowerCase() || "";
   const regionDisplayName = regionNames[regionKey] || region;
-  const currentRegionData = regionHierarchy[regionKey];
-  
-  // Get available divisions for current region
-  const availableDivisions = currentRegionData ? Object.keys(currentRegionData.divisions) : [];
-  
-  // Get available phenotypes for selected division
-  const availablePhenotypes = selectedDivision && currentRegionData
-    ? currentRegionData.divisions[selectedDivision] || []
-    : [];
+  const relevantPhenotypes = regionToPheno[regionKey] || [];
 
-  // Reset phenotype when division changes
-  const handleDivisionChange = (division: string) => {
-    setSelectedDivision(division);
-    setSelectedPhenotype(null);
-  };
-
-  // Dados mockados dos perfis (mesmo dados da página principal)
-  const [profiles] = useState<Profile[]>([
-    {
-      id: "1",
-      name: "Sofia",
-      age: 24,
-      location: "São Paulo, SP",
-      imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Mediterrâneo", "Dinárico"],
-      likes: 47,
-      votes: [
-        { classification: "Mediterrâneo", count: 15, percentage: 65 },
-        { classification: "Dinárico", count: 8, percentage: 35 }
-      ],
-      hasUserVoted: false,
-      comments: [],
-      country: "BR"
-    },
-    {
-      id: "4",
-      name: "Amara",
-      age: 26,
-      location: "Lagos, Nigéria",
-      imageUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Negrillo", "Sudanese"],
-      likes: 73,
-      votes: [
-        { classification: "Negrillo", count: 67, percentage: 78.8 },
-        { classification: "Sudanese", count: 12, percentage: 21.2 }
-      ],
-      hasUserVoted: false,
-      comments: [],
-      country: "NG"
-    },
-    {
-      id: "5",
-      name: "Rajesh",
-      age: 31,
-      location: "Mumbai, Índia",
-      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      phenotypes: ["Dravídico"],
-      likes: 29,
-      votes: [
-        { classification: "Dravídico", count: 34, percentage: 100 }
-      ],
-      hasUserVoted: false,
-      comments: [],
-      country: "IN"
-    }
-  ]);
-
-  // Filtrar perfis baseado na hierarquia selecionada
-  const filteredProfiles = profiles.filter(profile => {
-    // Se há uma divisão selecionada, filtrar pelos fenótipos dela
-    if (selectedDivision && availablePhenotypes.length > 0) {
-      const hasDivisionPhenotype = profile.phenotypes.some(phenotype => 
-        availablePhenotypes.some(regionPhenotype => 
-          phenotype.toLowerCase().includes(regionPhenotype.toLowerCase()) ||
-          regionPhenotype.toLowerCase().includes(phenotype.toLowerCase())
-        )
-      );
+  // Fetch profiles filtered by general phenotype primary
+  const { data: profiles = [], isLoading } = useQuery<UserProfileWithVotes[]>({
+    queryKey: ['region-profiles', regionKey],
+    queryFn: async (): Promise<UserProfileWithVotes[]> => {
+      if (relevantPhenotypes.length === 0) return [];
       
-      if (!hasDivisionPhenotype) return false;
-    }
-    
-    // Se um fenótipo específico está selecionado, filtrar por ele
-    if (selectedPhenotype) {
-      return profile.phenotypes.some(phenotype => 
-        phenotype.toLowerCase().includes(selectedPhenotype.toLowerCase()) ||
-        selectedPhenotype.toLowerCase().includes(phenotype.toLowerCase())
+      // Get user profiles with their complete profile data
+      const { data: userProfiles } = await supabase
+        .from('user_profiles')
+        .select(`
+          id,
+          name,
+          country,
+          category,
+          front_image_url,
+          profile_image_url,
+          slug
+        `);
+
+      if (!userProfiles) return [];
+
+      // Get complete profiles with general phenotype data
+      const { data: completeProfiles } = await supabase
+        .from('complete_profiles')
+        .select('profile_id, general_phenotype_primary')
+        .in('general_phenotype_primary', relevantPhenotypes);
+
+      if (!completeProfiles) {
+        // Add vote count to all profiles if no phenotype filtering
+        const profilesWithVotes = await Promise.all(
+          userProfiles.map(async (profile) => {
+            const { data: votes } = await supabase
+              .from('votes')
+              .select('id')
+              .eq('profile_id', profile.slug);
+            
+            return {
+              ...profile,
+              vote_count: votes?.length || 0
+            };
+          })
+        );
+        return profilesWithVotes;
+      }
+
+      // Filter user profiles that have matching general phenotype
+      const matchingProfileIds = completeProfiles.map(cp => cp.profile_id);
+      const filteredProfiles = userProfiles.filter(up => 
+        matchingProfileIds.includes(up.id)
       );
-    }
-    
-    return true;
+
+      // Get vote counts for each profile
+      const profilesWithVotes = await Promise.all(
+        filteredProfiles.map(async (profile) => {
+          const { data: votes } = await supabase
+            .from('votes')
+            .select('id')
+            .eq('profile_id', profile.slug);
+          
+          return {
+            ...profile,
+            vote_count: votes?.length || 0
+          };
+        })
+      );
+
+      return profilesWithVotes;
+    },
+    enabled: !!regionKey && relevantPhenotypes.length > 0
   });
 
-  const handleLike = (profileId: string) => {
-    toast({
-      title: "Like added!",
-      description: "Profile liked successfully.",
-    });
-  };
-
-  const handleComment = (profileId: string) => {
-    setSelectedProfile(profileId);
-  };
-
-  const handleClassify = (profileId: string, classification: string) => {
-    toast({
-      title: "Classification added!",
-      description: `Profile classified as ${classification}.`,
-    });
-  };
-
-  const selectedProfileData = profiles.find(p => p.id === selectedProfile);
-
-  if (!regionKey || !currentRegionData) {
+  if (!regionKey || relevantPhenotypes.length === 0) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-phindex-dark mb-4">Region not found</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-4">Região não encontrada</h1>
             <Button onClick={() => navigate("/")}>
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to home
+              Voltar ao início
             </Button>
           </div>
         </div>
@@ -232,16 +152,16 @@ const RegionPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-100">
       <Header />
       
-      <div className="container px-4 py-8">
+      <div className="container px-4 max-w-none">
         <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
           <AppSidebar />
 
           {/* Main Content */}
-          <div>
+          <div className="bg-slate-100">
             <div className="mb-8">
               <Button 
                 variant="ghost" 
@@ -249,126 +169,75 @@ const RegionPage = () => {
                 className="mb-4"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
+                Voltar
               </Button>
               
-              <h1 className="text-3xl font-bold text-phindex-dark mb-2">{regionDisplayName}</h1>
-              <p className="text-muted-foreground">Explore the phenotypes of {regionDisplayName}</p>
-            </div>
-
-            {/* Hierarchical Filter Section */}
-            <div className="mb-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {/* Division Selection */}
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Division</label>
-                  <Select value={selectedDivision || ""} onValueChange={handleDivisionChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Please select..." />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border shadow-lg z-50">
-                      {availableDivisions.map((division) => (
-                        <SelectItem key={division} value={division} className="hover:bg-muted">
-                          {division}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Phenotype Selection */}
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Phenotype</label>
-                  <Select 
-                    value={selectedPhenotype || ""} 
-                    onValueChange={setSelectedPhenotype}
-                    disabled={!selectedDivision}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Please select..." />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border shadow-lg z-50">
-                      {availablePhenotypes.map((phenotype) => (
-                        <SelectItem key={phenotype} value={phenotype} className="hover:bg-muted">
-                          {phenotype}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Quick Reset Button */}
-              {(selectedDivision || selectedPhenotype) && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setSelectedDivision(null);
-                    setSelectedPhenotype(null);
-                  }}
-                  className="mb-4"
-                >
-                  Clear Filters
-                </Button>
-              )}
-            </div>
-
-            <div className="flex flex-col lg:flex-row gap-8">
-              {/* Grid de perfis */}
-              <div className="flex-1">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                  {filteredProfiles.map((profile) => (
-                    <div 
-                      key={profile.id}
-                      className="cursor-pointer transition-transform hover:scale-105"
-                      onClick={() => navigate(`/profile/${profile.id}`)}
-                    >
-                      <ProfileCard
-                        id={profile.id}
-                        name={profile.name}
-                        age={profile.age}
-                        location={profile.location}
-                        imageUrl={profile.imageUrl}
-                        phenotypes={profile.phenotypes}
-                        likes={profile.likes}
-                        comments={profile.comments.length}
-                        votes={profile.votes}
-                        hasUserVoted={profile.hasUserVoted}
-                        onLike={handleLike}
-                        onComment={handleComment}
-                        onVote={handleClassify}
-                        country={profile.country || "BR"}
-                      />
-                    </div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">{regionDisplayName}</h1>
+              <p className="text-muted-foreground mb-4">
+                Perfis com fenótipo primário relacionado à {regionDisplayName}
+              </p>
+              
+              {relevantPhenotypes.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {relevantPhenotypes.map((phenotype) => (
+                    <Badge key={phenotype} variant="outline">
+                      {phenotype}
+                    </Badge>
                   ))}
                 </div>
-                
-                {filteredProfiles.length === 0 && (
-                  <div className="text-center py-12">
-                    <p className="text-muted-foreground text-lg">
-                      No profiles found for {selectedPhenotype ? selectedPhenotype : regionDisplayName}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Sidebar com comentários */}
-              {selectedProfile && selectedProfileData && (
-                <div className="lg:w-96">
-                  <div className="sticky top-24">
-                    <CommentsSection
-                      profileId={selectedProfile}
-                      comments={selectedProfileData.comments}
-                      onAddComment={async () => false}
-                      onLikeComment={() => {}}
-                      onDeleteComment={() => {}}
-                      currentUserId={undefined}
-                    />
-                  </div>
-                </div>
               )}
             </div>
+
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-muted h-48 rounded-lg"></div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                {profiles.map((profile) => (
+                  <Card 
+                    key={profile.id}
+                    className="cursor-pointer transition-transform hover:scale-105 overflow-hidden"
+                    onClick={() => navigate(`/user-profile/${profile.slug}`)}
+                  >
+                    <div className="aspect-square relative">
+                      <img 
+                        src={profile.front_image_url} 
+                        alt={profile.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                        <span>{profile.vote_count || 0} votos</span>
+                      </div>
+                      <div className="absolute bottom-2 left-2 text-xs bg-background/80 px-2 py-1 rounded">
+                        {countryCodes[profile.country] || "XXX"}
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-medium text-foreground mb-1">{profile.name}</h3>
+                      <Badge variant="secondary" className="text-xs">
+                        {profile.category}
+                      </Badge>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+            
+            {!isLoading && profiles.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  Nenhum perfil encontrado para {regionDisplayName}
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Fenótipos procurados: {relevantPhenotypes.join(", ")}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
