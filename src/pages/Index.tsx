@@ -14,12 +14,12 @@ const Index = () => {
   const navigate = useNavigate();
   const { profiles: userProfiles, profilesByVotes } = useUserProfiles();
 
-  // Mapeamento de códigos de países para emojis de bandeiras
-  const countryFlags: Record<string, string> = {
-    "US": "🇺🇸", "BR": "🇧🇷", "IN": "🇮🇳", "IL": "🇮🇱", "ES": "🇪🇸", 
-    "NG": "🇳🇬", "FR": "🇫🇷", "DE": "🇩🇪", "IT": "🇮🇹", "JP": "🇯🇵",
-    "CN": "🇨🇳", "KR": "🇰🇷", "MX": "🇲🇽", "CA": "🇨🇦", "AU": "🇦🇺",
-    "GB": "🇬🇧", "RU": "🇷🇺", "AR": "🇦🇷", "EG": "🇪🇬", "ZA": "🇿🇦"
+  // Mapeamento de códigos de países para códigos de 3 letras
+  const countryCodes: Record<string, string> = {
+    "US": "USA", "BR": "BRA", "IN": "IND", "IL": "ISR", "ES": "ESP", 
+    "NG": "NGA", "FR": "FRA", "DE": "DEU", "IT": "ITA", "JP": "JPN",
+    "CN": "CHN", "KR": "KOR", "MX": "MEX", "CA": "CAN", "AU": "AUS",
+    "GB": "GBR", "RU": "RUS", "AR": "ARG", "EG": "EGY", "ZA": "ZAF"
   };
 
   const handleRegionClick = (region: string) => {
@@ -86,9 +86,9 @@ const Index = () => {
                                  <Vote className="h-2.5 w-2.5" />
                                  <span className="text-xs">{(profile as any).vote_count || 0}</span>
                                </div>
-                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-lg">
-                                  {countryFlags[profile.country] || "🌎"}
-                                </div>
+                                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                   {countryCodes[profile.country] || profile.country}
+                                 </div>
                                {index < 3 && (
                                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                                    #{index + 1}
@@ -153,9 +153,9 @@ const Index = () => {
                                  <Vote className="h-2.5 w-2.5" />
                                  <span className="text-xs">{(profile as any).vote_count || 0}</span>
                                </div>
-                               <div className="absolute -top-1 -left-1 text-lg">
-                                 {countryFlags[profile.country] || "🌎"}
-                               </div>
+                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                  {countryCodes[profile.country] || profile.country}
+                                </div>
                                {index < 3 && (
                                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                                    #{index + 1}
@@ -218,9 +218,9 @@ const Index = () => {
                                <Vote className="h-2.5 w-2.5" />
                                <span className="text-xs">0</span>
                              </div>
-                             <div className="absolute -top-1 -left-1 text-lg">
-                               {countryFlags[profile.country] || "🌎"}
-                             </div>
+                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                {countryCodes[profile.country] || profile.country}
+                              </div>
                               </div>
                              <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
                              <p className="text-xs text-muted-foreground text-center">{profile.category}</p>
