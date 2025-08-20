@@ -63,10 +63,10 @@ const Index = () => {
                     Discover and classify the most voted public figures in our phenotyping community
                   </p>
                   
-                  <Carousel className="w-full" opts={{ align: "start", loop: false }}>
+                   <Carousel className="w-full" opts={{ align: "start", loop: false }}>
                     <div className="relative group">
                      <CarouselContent className="ml-0">
-                      {(userProfiles?.filter(profile => !profile.is_anonymous) || []).map((profile, index) => (
+                      {(profilesByVotes?.filter(profile => !profile.is_anonymous) || []).map((profile, index) => (
                       <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                          <div className="flex-shrink-0 group/item">
                            <div 
@@ -84,11 +84,16 @@ const Index = () => {
                                   </div>
                                <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
                                  <Vote className="h-2.5 w-2.5" />
-                                 <span className="text-xs">0</span>
+                                 <span className="text-xs">{(profile as any).vote_count || 0}</span>
                                </div>
                                <div className="absolute -top-1 -left-1 text-lg">
                                  {countryFlags[profile.country] || "🌎"}
                                </div>
+                               {index < 3 && (
+                                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                   #{index + 1}
+                                 </div>
+                               )}
                                 </div>
                                <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
                                <p className="text-xs text-muted-foreground text-center">{profile.category}</p>
@@ -171,51 +176,63 @@ const Index = () => {
 
             {/* Top User Profiles Section */}
             <div className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
-                  <Vote className="h-4 w-4 text-primary" />
-                </div>
-                <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
-                <Badge variant="outline" className="px-3 py-1">
-                  Mais votados
-                </Badge>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {(profilesByVotes || []).slice(0, 12).map((profile, index) => (
-                  <div key={profile.id} className="group relative">
-                    <div 
-                      className="cursor-pointer"
-                      onClick={() => navigate(`/user-profile/${profile.slug}`)}
-                    >
-                      <div className="flex flex-col items-center p-3 rounded-lg hover:bg-accent/50 transition-colors">
-                        <div className="relative mb-3">
-                          <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
-                            <img 
-                              src={profile.front_image_url} 
-                              alt={profile.name}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          </div>
-                          <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                            <Vote className="h-2.5 w-2.5" />
-                            <span className="text-xs">{(profile as any).vote_count || 0}</span>
-                          </div>
-                          <div className="absolute -top-1 -left-1 text-lg">
-                            {countryFlags[profile.country] || "🌎"}
-                          </div>
-                          {index < 3 && (
-                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">
-                              #{index + 1}
-                            </div>
-                          )}
-                        </div>
-                        <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
-                        <p className="text-xs text-muted-foreground text-center">{profile.category}</p>
-                      </div>
+              <div className="relative p-6">
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
+                      <Vote className="h-4 w-4 text-primary" />
                     </div>
+                    <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
                   </div>
-                ))}
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Most voted user-created profiles in our community
+                  </p>
+                  
+                  <Carousel className="w-full" opts={{ align: "start", loop: false }}>
+                    <div className="relative group">
+                     <CarouselContent className="ml-0">
+                      {(profilesByVotes?.filter(profile => profile.category === "User Profiles") || []).map((profile, index) => (
+                      <CarouselItem key={profile.id} className="pl-1 basis-1/10">
+                         <div className="flex-shrink-0 group/item">
+                           <div 
+                             className="cursor-pointer"
+                             onClick={() => navigate(`/user-profile/${profile.slug}`)}
+                           >
+                              <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
+                                <div className="relative mb-1">
+                                  <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                    <img 
+                                      src={profile.front_image_url} 
+                                      alt={profile.name}
+                                      className="w-full h-full rounded-full object-cover"
+                                    />
+                                  </div>
+                               <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                 <Vote className="h-2.5 w-2.5" />
+                                 <span className="text-xs">{(profile as any).vote_count || 0}</span>
+                               </div>
+                               <div className="absolute -top-1 -left-1 text-lg">
+                                 {countryFlags[profile.country] || "🌎"}
+                               </div>
+                               {index < 3 && (
+                                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                   #{index + 1}
+                                 </div>
+                               )}
+                                </div>
+                               <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
+                               <p className="text-xs text-muted-foreground text-center">{profile.category}</p>
+                             </div>
+                           </div>
+                         </div>
+                     </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
+                <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-background border-0" />
+              </div>
+            </Carousel>
+                </div>
               </div>
             </div>
 
