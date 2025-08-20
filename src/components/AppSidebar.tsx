@@ -16,7 +16,8 @@ import {
   GitBranch,
   Settings,
   HelpCircle,
-  LogOut
+  LogOut,
+  Mail
 } from "lucide-react";
 
 export const AppSidebar = () => {
@@ -188,6 +189,14 @@ export const AppSidebar = () => {
               >
                 <Settings className="h-5 w-5" color="#007a75" />
                 <span className="text-base">Settings</span>
+              </button>
+              
+              <button
+                className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-muted/50"
+                onClick={() => navigate('/contact')}
+              >
+                <Mail className="h-5 w-5" color="#007a75" />
+                <span className="text-base">Contact</span>
               </button>
               
               <button
