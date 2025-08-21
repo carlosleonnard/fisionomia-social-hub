@@ -17,34 +17,34 @@ export const AuthPrompt = () => {
             </div>
           </div>
           <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
-            Faça parte da comunidade
+            Join the community
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-muted-foreground max-w-md mx-auto">
-            Entre com sua conta Google para criar perfis, participar de classificações e interagir com a comunidade.
+            Sign in with your Google account to create profiles, participate in classifications and interact with the community.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
             <div className="flex flex-col items-center p-4 rounded-lg bg-muted/20">
               <Star className="h-6 w-6 text-primary mb-2" />
-              <h4 className="font-medium text-sm">Criar Perfis</h4>
+              <h4 className="font-medium text-sm">Create Profiles</h4>
               <p className="text-xs text-muted-foreground text-center">
-                Adicione novos perfis para classificação da comunidade
+                Add new profiles for community classification
               </p>
             </div>
             <div className="flex flex-col items-center p-4 rounded-lg bg-muted/20">
               <Users className="h-6 w-6 text-primary mb-2" />
-              <h4 className="font-medium text-sm">Participar</h4>
+              <h4 className="font-medium text-sm">Participate</h4>
               <p className="text-xs text-muted-foreground text-center">
-                Vote e classifique características físicas
+                Vote and classify physical characteristics
               </p>
             </div>
             <div className="flex flex-col items-center p-4 rounded-lg bg-muted/20">
               <LogIn className="h-6 w-6 text-primary mb-2" />
-              <h4 className="font-medium text-sm">Gerenciar</h4>
+              <h4 className="font-medium text-sm">Manage</h4>
               <p className="text-xs text-muted-foreground text-center">
-                Edite e gerencie seus próprios perfis
+                Edit and manage your own profiles
               </p>
             </div>
           </div>
@@ -60,7 +60,7 @@ export const AuthPrompt = () => {
               <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Entrar com Google
+            Sign in with Google
           </Button>
         </CardContent>
       </Card>

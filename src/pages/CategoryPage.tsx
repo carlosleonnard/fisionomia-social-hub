@@ -26,17 +26,17 @@ interface Profile {
 }
 
 
-const categoryDescriptions: Record<string, string> = {
-  "community": "Perfis de pessoas anônimas e usuários comuns da plataforma",
-  "pop-culture": "Celebridades, influenciadores e personalidades da cultura pop",
-  "music-and-entertainment": "Artistas, músicos, atores e profissionais do entretenimento",
-  "arts": "Artistas visuais, escritores e profissionais das artes",
-  "philosophy": "Filósofos, pensadores e intelectuais",
-  "sciences": "Cientistas, pesquisadores e acadêmicos",
-  "sports": "Atletas, esportistas e profissionais do esporte",
-  "business": "Empresários, executivos e líderes de negócios",
-  "politics": "Políticos, líderes governamentais e figuras políticas"
-};
+  const categoryDescriptions: Record<string, string> = {
+    "community": "Profiles of anonymous people and regular users of the platform",
+    "pop-culture": "Celebrities, influencers and pop culture personalities",
+    "music-and-entertainment": "Artists, musicians, actors and entertainment professionals",
+    "arts": "Visual artists, writers and arts professionals",
+    "philosophy": "Philosophers, thinkers and intellectuals",
+    "sciences": "Scientists, researchers and academics",
+    "sports": "Athletes, sportspeople and sports professionals",
+    "business": "Entrepreneurs, executives and business leaders",
+    "politics": "Politicians, government leaders and political figures"
+  };
 
 const categoryNames: Record<string, string> = {
   "community": "User Profiles",
@@ -56,7 +56,7 @@ export default function CategoryPage() {
   const { profiles, profilesLoading } = useUserProfiles();
 
   const categoryName = category ? categoryNames[category] : "Unknown Category";
-  const categoryDescription = category ? categoryDescriptions[category] : "Categoria não encontrada";
+  const categoryDescription = category ? categoryDescriptions[category] : "Category not found";
   
   // Map URL category to database category names
   const categoryMapping: Record<string, string> = {
@@ -83,10 +83,10 @@ export default function CategoryPage() {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Categoria não encontrada</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-4">Category not found</h1>
             <Button onClick={() => navigate("/")} variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              Back
             </Button>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function CategoryPage() {
           className="mb-6"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Voltar
+          Back
         </Button>
 
         <div className="lg:ml-80 pt-20">
@@ -124,12 +124,12 @@ export default function CategoryPage() {
                   </Badge>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>{filteredProfiles.length} perfis</span>
+                    <span>{filteredProfiles.length} profiles</span>
                   </div>
                 </div>
-                <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                  Categoria: {categoryName}
-                </CardTitle>
+                  <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                    Category: {categoryName}
+                  </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
@@ -176,7 +176,7 @@ export default function CategoryPage() {
                         <h3 className="font-semibold text-foreground mb-1">{profile.name}</h3>
                         <p className="text-sm text-muted-foreground mb-2">{profile.ancestry}</p>
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span>Altura: {profile.height}m</span>
+                          <span>Height: {profile.height}m</span>
                           <span>{profile.gender}</span>
                         </div>
                       </CardContent>
@@ -188,12 +188,12 @@ export default function CategoryPage() {
               <Card className="bg-gradient-card border-phindex-teal/20">
                 <CardContent className="text-center py-12">
                   <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    Nenhum perfil encontrado
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Ainda não há perfis cadastrados nesta categoria.
-                  </p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">
+                      No profiles found
+                    </h3>
+                    <p className="text-muted-foreground">
+                      No profiles registered in this category yet.
+                    </p>
                 </CardContent>
               </Card>
             )}

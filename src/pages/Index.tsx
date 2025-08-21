@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AddProfileModal } from "@/components/AddProfileModal";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
@@ -23,7 +23,7 @@ const Index = () => {
   };
 
   const handleRegionClick = (region: string) => {
-    // Converter nome da região para URL slug
+    // Convert region name to URL slug
     const regionSlug = region.toLowerCase()
       .replace(/\s+/g, '-')
       .replace('á', 'a')
@@ -178,6 +178,38 @@ const Index = () => {
               </div>
             </div>
 
+            {/* Phenotype Region Navigation */}
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
+                  <Vote className="h-4 w-4 text-primary" />
+                </div>
+                <h2 className="text-2xl font-bold text-foreground">Explore by Region</h2>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+                {[
+                  { name: "Europe", flag: "🇪🇺", slug: "europe" },
+                  { name: "Africa", flag: "🌍", slug: "africa" },
+                  { name: "Asia", flag: "🌏", slug: "asia" },
+                  { name: "Americas", flag: "🌎", slug: "americas" },
+                  { name: "Middle East", flag: "🕌", slug: "middle-east" },
+                  { name: "Oceania", flag: "🏝️", slug: "oceania" }
+                ].map((region) => (
+                  <Card
+                    key={region.slug}
+                    className="cursor-pointer hover:scale-105 transition-transform bg-gradient-card border-phindex-teal/20"
+                    onClick={() => handleRegionClick(region.slug)}
+                  >
+                    <CardContent className="p-4 text-center">
+                      <div className="text-3xl mb-2">{region.flag}</div>
+                      <h3 className="font-semibold text-foreground text-sm">{region.name}</h3>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
             {/* Separator */}
             <div className="px-6 mb-8">
               <Separator className="bg-border" />
@@ -191,8 +223,8 @@ const Index = () => {
                 </div>
                 <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
                  <Badge variant="outline" className="px-3 py-1">
-                   {(userProfiles?.filter(profile => profile.is_anonymous) || []).length} novos
-                 </Badge>
+                    {(userProfiles?.filter(profile => profile.is_anonymous) || []).length} new
+                  </Badge>
               </div>
               
               <Carousel className="w-full" opts={{ align: "start", loop: false }}>
