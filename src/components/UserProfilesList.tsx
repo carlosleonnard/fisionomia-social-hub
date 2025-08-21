@@ -34,8 +34,8 @@ export const UserProfilesList = () => {
     return (
       <div className="text-center py-12">
         <User className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-foreground mb-2">No profiles found</h3>
-        <p className="text-muted-foreground">Be the first to create a profile!</p>
+        <h3 className="text-lg font-medium text-foreground mb-2">Nenhum perfil encontrado</h3>
+        <p className="text-muted-foreground">Seja o primeiro a criar um perfil!</p>
       </div>
     );
   }
@@ -43,9 +43,9 @@ export const UserProfilesList = () => {
   return (
       <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-foreground">Community Profiles</h2>
+        <h2 className="text-2xl font-bold text-foreground">Perfis da Comunidade</h2>
         <Badge variant="secondary" className="px-3 py-1">
-          {profiles.length} profile{profiles.length !== 1 ? 's' : ''}
+          {profiles.length} perfil{profiles.length !== 1 ? 's' : ''}
         </Badge>
       </div>
 
@@ -66,7 +66,7 @@ export const UserProfilesList = () => {
                   />
                   <div className="absolute top-2 right-2">
                     <Badge variant={profile.is_anonymous ? "secondary" : "default"} className="text-xs">
-                      {profile.is_anonymous ? "Anonymous" : "Celebrity"}
+                      {profile.is_anonymous ? "Anônimo" : "Famoso"}
                     </Badge>
                   </div>
                 </div>
@@ -95,7 +95,7 @@ export const UserProfilesList = () => {
                     </Badge>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
-                      {new Date(profile.created_at).toLocaleDateString('en-US')}
+                      {new Date(profile.created_at).toLocaleDateString('pt-BR')}
                     </div>
                   </div>
                 </div>

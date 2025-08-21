@@ -125,7 +125,6 @@ export type Database = {
           nasal_breadth: string | null
           profile_id: string
           profile_image_url: string | null
-          region: string | null
           skin_tone: string | null
           specific_phenotype_primary: string | null
           specific_phenotype_secondary: string | null
@@ -159,7 +158,6 @@ export type Database = {
           nasal_breadth?: string | null
           profile_id: string
           profile_image_url?: string | null
-          region?: string | null
           skin_tone?: string | null
           specific_phenotype_primary?: string | null
           specific_phenotype_secondary?: string | null
@@ -193,7 +191,6 @@ export type Database = {
           nasal_breadth?: string | null
           profile_id?: string
           profile_image_url?: string | null
-          region?: string | null
           skin_tone?: string | null
           specific_phenotype_primary?: string | null
           specific_phenotype_secondary?: string | null
@@ -436,10 +433,6 @@ export type Database = {
       can_view_sensitive_profile_data: {
         Args: { target_profile_id: string; target_user_id: string }
         Returns: boolean
-      }
-      compute_region_from_general: {
-        Args: { primary_text: string }
-        Returns: string
       }
       create_notification: {
         Args: {

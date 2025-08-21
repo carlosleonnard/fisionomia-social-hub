@@ -45,8 +45,8 @@ export const useGeographicVoting = (profileId: string) => {
   const castGeographicVote = async (characteristicType: string, classification: string) => {
     if (!user) {
       toast({
-        title: "Login required",
-        description: "You need to be logged in to vote",
+        title: "Login necessário",
+        description: "Você precisa estar logado para votar",
         variant: "destructive",
       });
       return false;
@@ -71,7 +71,7 @@ export const useGeographicVoting = (profileId: string) => {
       return true;
     } catch (error: any) {
       toast({
-        title: "Voting error",
+        title: "Erro ao votar",
         description: error.message,
         variant: "destructive",
       });
