@@ -25,7 +25,7 @@ export const Header = () => {
           <div className="flex items-center gap-3">
             <Link to="/" className="cursor-pointer">
               <img 
-                src="/lovable-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
+                src="/phindex-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
                 alt="Phindex Logo" 
                 className="h-12 object-contain"
               />

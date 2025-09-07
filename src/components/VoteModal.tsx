@@ -155,7 +155,7 @@ const characteristics = [
     options: ["Straight (Fine/Thin)", "Straight (Medium)", "Straight (Coarse)", "Wavy (Fine/Thin)", "Wavy (Medium)", "Wavy (Coarse)", "Curly (Loose)", "Curly (Tight)", "Kinky (Soft)", "Kinky (Wiry)"]
   },
   {
-    category: "Head Breadth",
+    category: "Head Type",
     options: ["Hyperdolichocephalic", "Dolichocephalic", "Mesocephalic", "Brachycephalic", "Hyperbrachycephalic"]
   },
   {
