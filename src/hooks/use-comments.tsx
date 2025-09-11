@@ -29,18 +29,7 @@ export const useComments = (profileId: string) => {
     try {
       const { data: commentsData } = await supabase
         .from('comments')
-        .select(`
-          id,
-          content,
-          created_at,
-          likes_count,
-          user_id,
-          parent_comment_id,
-          profiles!comments_user_id_fkey (
-            name,
-            email
-          )
-        `)
+        .select('*')
         .eq('profile_id', profileId)
         .order('created_at', { ascending: false });
 
@@ -70,6 +59,20 @@ export const useComments = (profileId: string) => {
           userVotesMap.get(vote.user_id)[vote.characteristic_type] = vote.classification;
         });
 
+        // Get unique user IDs to fetch profile names securely
+        const uniqueUserIds = [...new Set(commentsData.map(c => c.user_id))];
+        
+        // Fetch profile names using secure RPC
+        const profileNamesPromises = uniqueUserIds.map(async (userId) => {
+          const { data } = await supabase
+            .rpc('get_public_profile_name', { p_user_id: userId })
+            .single();
+          return { userId, name: data?.name || 'Usuário' };
+        });
+        
+        const profileNames = await Promise.all(profileNamesPromises);
+        const profileNameMap = new Map(profileNames.map(p => [p.userId, p.name]));
+
         const formattedComments: Comment[] = commentsData
           .filter(comment => !comment.parent_comment_id) // Only get top-level comments
           .map(comment => ({
@@ -80,8 +83,8 @@ export const useComments = (profileId: string) => {
             parent_comment_id: comment.parent_comment_id,
             user_id: comment.user_id,
             user: {
-              name: (comment.profiles as any)?.name || 'Usuário',
-              email: (comment.profiles as any)?.email || ''
+              name: profileNameMap.get(comment.user_id) || 'Usuário',
+              email: '' // No longer expose emails for security
             },
             userVotes: userVotesMap.get(comment.user_id) || {},
             isLiked: userLikes.includes(comment.id),
@@ -95,8 +98,8 @@ export const useComments = (profileId: string) => {
                 parent_comment_id: reply.parent_comment_id,
                 user_id: reply.user_id,
                 user: {
-                  name: (reply.profiles as any)?.name || 'Usuário',
-                  email: (reply.profiles as any)?.email || ''
+                  name: profileNameMap.get(reply.user_id) || 'Usuário',
+                  email: '' // No longer expose emails for security
                 },
                 userVotes: userVotesMap.get(reply.user_id) || {},
                 isLiked: userLikes.includes(reply.id)

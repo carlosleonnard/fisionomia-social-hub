@@ -20,11 +20,9 @@ export const useProfileCreator = (profileId: string) => {
         return null;
       }
 
-      // Then get the creator's profile information
+      // Then get the creator's profile information using secure RPC
       const { data: creatorData, error: creatorError } = await supabase
-        .from('profiles')
-        .select('name')
-        .eq('id', profileData.user_id)
+        .rpc('get_public_profile_name', { p_user_id: profileData.user_id })
         .single();
 
       if (creatorError) {

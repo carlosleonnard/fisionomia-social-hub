@@ -459,6 +459,13 @@ export type Database = {
         Args: { profile_id?: string; profile_name: string }
         Returns: string
       }
+      get_public_profile_name: {
+        Args: { p_user_id: string }
+        Returns: {
+          id: string
+          name: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
