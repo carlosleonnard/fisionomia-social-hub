@@ -8,6 +8,7 @@ import ProfileDetail from "./pages/ProfileDetail";
 import UserProfileDetail from "./pages/UserProfileDetail";
 import RegionPage from "./pages/RegionPage";
 import CategoryPage from "./pages/CategoryPage";
+import PhenotypeFlowPage from "./pages/PhenotypeFlowPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/user-profile/:slug" element={<UserProfileDetail />} />
           <Route path="/region/:region" element={<RegionPage />} />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/phenotype-flow" element={<PhenotypeFlowPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
