@@ -1,32 +1,79 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import ProfileDetail from "./pages/ProfileDetail";
-import UserProfileDetail from "./pages/UserProfileDetail";
-import RegionPage from "./pages/RegionPage";
-import CategoryPage from "./pages/CategoryPage";
-import PhenotypeFlowPage from "./pages/PhenotypeFlowPage";
-import NotFound from "./pages/NotFound";
+/**
+ * ARQUIVO PRINCIPAL DA APLICAÇÃO (App.tsx)
+ * 
+ * Este arquivo é o componente raiz da aplicação Phindex - uma rede social para classificação
+ * de fenótipos físicos. Ele configura todos os providers globais e define o sistema de rotas.
+ */
 
+// Importa o sistema de notificações toast (UI feedback para usuário)
+import { Toaster } from "@/components/ui/toaster";
+// Importa notificações do Sonner (alternativa mais moderna para toasts)
+import { Toaster as Sonner } from "@/components/ui/sonner";
+// Provider para tooltips (dicas que aparecem ao passar mouse sobre elementos)
+import { TooltipProvider } from "@/components/ui/tooltip";
+// React Query para gerenciamento de estado assíncrono e cache de dados da API
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// Sistema de roteamento do React Router para navegação entre páginas
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Importa todas as páginas da aplicação
+import Index from "./pages/Index"; // Página inicial com lista de perfis
+import ProfileDetail from "./pages/ProfileDetail"; // Página de detalhes de um perfil específico
+import UserProfileDetail from "./pages/UserProfileDetail"; // Página de perfil de usuário
+import RegionPage from "./pages/RegionPage"; // Página filtrada por região geográfica
+import CategoryPage from "./pages/CategoryPage"; // Página filtrada por categoria
+import PhenotypeFlowPage from "./pages/PhenotypeFlowPage"; // Página do fluxo de fenótipos (em construção)
+import NotFound from "./pages/NotFound"; // Página 404 para rotas não encontradas
+
+/**
+ * CONFIGURAÇÃO DO CLIENTE REACT QUERY
+ * 
+ * Cria uma instância do QueryClient que será usado globalmente para:
+ * - Cache de dados das APIs
+ * - Gerenciamento de estados de loading/error
+ * - Invalidação automática de cache
+ * - Retry automático em caso de falha
+ */
 const queryClient = new QueryClient();
 
+/**
+ * COMPONENTE PRINCIPAL DA APLICAÇÃO
+ * 
+ * Define a estrutura hierárquica de providers e rotas da aplicação.
+ * A ordem dos providers é importante - cada um envolve os componentes filhos.
+ */
 const App = () => (
+  // Provider para React Query - gerencia todo o estado assíncrono da aplicação
   <QueryClientProvider client={queryClient}>
+    {/* Provider para tooltips - permite usar tooltips em qualquer componente filho */}
     <TooltipProvider>
+      {/* Sistema de notificações Toast - feedback visual para ações do usuário */}
       <Toaster />
+      {/* Sistema Sonner alternativo para notificações mais modernas */}
       <Sonner />
+      {/* Router principal - habilita navegação entre páginas */}
       <BrowserRouter>
+        {/* Container de todas as rotas da aplicação */}
         <Routes>
+          {/* ROTA INICIAL: Página principal com lista de perfis */}
           <Route path="/" element={<Index />} />
+          
+          {/* ROTA DINÂMICA: Detalhes de perfil por ID específico */}
           <Route path="/profile/:id" element={<ProfileDetail />} />
+          
+          {/* ROTA DINÂMICA: Perfil de usuário por slug único */}
           <Route path="/user-profile/:slug" element={<UserProfileDetail />} />
+          
+          {/* ROTA DINÂMICA: Página filtrada por região geográfica */}
           <Route path="/region/:region" element={<RegionPage />} />
+          
+          {/* ROTA DINÂMICA: Página filtrada por categoria de fenótipo */}
           <Route path="/category/:category" element={<CategoryPage />} />
+          
+          {/* ROTA ESTÁTICA: Fluxo de fenótipos (funcionalidade em desenvolvimento) */}
           <Route path="/phenotype-flow" element={<PhenotypeFlowPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          
+          {/* ROTA CATCH-ALL: Captura qualquer URL não definida acima e mostra 404 */}
+          {/* IMPORTANTE: Esta deve sempre ser a última rota para funcionar corretamente */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
@@ -34,4 +81,5 @@ const App = () => (
   </QueryClientProvider>
 );
 
+// Exporta o componente App como padrão para ser usado no main.tsx
 export default App;

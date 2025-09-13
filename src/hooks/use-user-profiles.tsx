@@ -1,65 +1,108 @@
+/**
+ * HOOK PARA GERENCIAMENTO DE PERFIS DE USUÁRIO (use-user-profiles.tsx)
+ * 
+ * Este hook centraliza todo o gerenciamento de perfis de usuário na aplicação Phindex.
+ * Permite criar, ler, atualizar e deletar perfis, além de buscar por votos e filtros.
+ * Utiliza React Query para cache otimizado e Supabase como backend.
+ */
+
+// Hooks do React para estado local
 import { useState } from 'react';
+// React Query para gerenciamento de estado assíncrono e cache
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+// Cliente Supabase para interação com o banco de dados
 import { supabase } from '@/integrations/supabase/client';
+// Hook de autenticação para verificar usuário logado
 import { useAuth } from './use-auth';
+// Sistema de notificações para feedback do usuário
 import { toast } from 'sonner';
 
+/**
+ * INTERFACE DO PERFIL DE USUÁRIO
+ * 
+ * Define a estrutura completa de um perfil armazenado no banco de dados.
+ * Todos os campos obrigatórios para classificação fenotípica.
+ */
 export interface UserProfile {
-  id: string;
-  user_id: string;
-  name: string;
-  country: string;
-  gender: string;
-  category: string;
-  height: number;
-  ancestry: string;
-  front_image_url: string;
-  profile_image_url?: string;
-  is_anonymous: boolean;
-  slug: string;
-  created_at: string;
-  updated_at: string;
+  id: string;                    // ID único do perfil (UUID)
+  user_id: string;               // ID do usuário que criou o perfil
+  name: string;                  // Nome da pessoa no perfil
+  country: string;               // País de origem (código ISO)
+  gender: string;                // Gênero da pessoa
+  category: string;              // Categoria (Celebrity, User Profile, etc)
+  height: number;                // Altura em centímetros
+  ancestry: string;              // Ancestralidade/etnia
+  front_image_url: string;       // URL da imagem frontal (obrigatória)
+  profile_image_url?: string;    // URL da imagem de perfil (opcional)
+  is_anonymous: boolean;         // Se o perfil é anônimo ou não
+  slug: string;                  // Slug único para URLs amigáveis
+  created_at: string;            // Data de criação
+  updated_at: string;            // Data da última atualização
 }
 
+/**
+ * INTERFACE PARA CRIAÇÃO DE PERFIL
+ * 
+ * Define os dados necessários para criar um novo perfil.
+ * Alguns campos são transformados para match com a interface do banco.
+ */
 export interface CreateUserProfileData {
-  name: string;
-  country: string;
-  gender: string;
-  category: string;
-  height: number;
-  ancestry: string;
-  frontImageUrl: string;
-  profileImageUrl?: string;
-  isAnonymous: boolean;
+  name: string;                  // Nome da pessoa
+  country: string;               // País de origem
+  gender: string;                // Gênero
+  category: string;              // Categoria do perfil
+  height: number;                // Altura em centímetros
+  ancestry: string;              // Ancestralidade
+  frontImageUrl: string;         // URL da imagem frontal
+  profileImageUrl?: string;      // URL da imagem de perfil (opcional)
+  isAnonymous: boolean;          // Se é perfil anônimo
 }
 
+/**
+ * HOOK PRINCIPAL PARA GERENCIAMENTO DE PERFIS
+ * 
+ * Centraliza todas as operações relacionadas a perfis de usuário:
+ * - Busca de perfis com contagem de votos
+ * - Ordenação por popularidade
+ * - Operações CRUD (Create, Read, Update, Delete)
+ * - Cache inteligente para performance
+ */
 export const useUserProfiles = () => {
+  // Obtém informações do usuário autenticado
   const { user } = useAuth();
+  // Cliente React Query para invalidação de cache
   const queryClient = useQueryClient();
 
-  // Get all user profiles with vote counts
+  /**
+   * BUSCAR TODOS OS PERFIS COM CONTAGEM DE VOTOS
+   * 
+   * Query que busca todos os perfis ordenados por data de criação (mais recentes primeiro)
+   * e adiciona a contagem de votos para cada perfil.
+   */
   const { data: profiles, isLoading: profilesLoading } = useQuery({
-    queryKey: ['user-profiles'],
+    queryKey: ['user-profiles'],    // Chave única para cache
     queryFn: async () => {
-      // First get all profiles
+      // 1. Busca todos os perfis ordenados por data de criação
       const { data: profilesData, error: profilesError } = await supabase
         .from('user_profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*')                           // Seleciona todos os campos
+        .order('created_at', { ascending: false });  // Mais recentes primeiro
 
       if (profilesError) throw profilesError;
 
-      // Get vote counts for each profile
+      // 2. Para cada perfil, conta quantos votos ele recebeu
       const profilesWithVotes = await Promise.all(
         (profilesData || []).map(async (profile) => {
+          // Busca todos os votos para este perfil específico
           const { data: votesData } = await supabase
             .from('votes')
-            .select('id')
-            .eq('profile_id', profile.slug);
+            .select('id')                      // Só precisa do ID para contar
+            .eq('profile_id', profile.slug);   // Filtra pelo slug do perfil
 
+          // Retorna o perfil original + contagem de votos
           return {
             ...profile,
-            vote_count: votesData?.length || 0
+            vote_count: votesData?.length || 0   // Conta ou 0 se não houver votos
           };
         })
       );

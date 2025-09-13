@@ -1,20 +1,53 @@
+/**
+ * COMPONENTE DE CABEÇALHO PRINCIPAL (Header.tsx)
+ * 
+ * Este componente renderiza a barra de navegação fixa no topo da aplicação.
+ * Inclui logo, barra de busca, botões de ação e menu de usuário.
+ * É exibido em todas as páginas da aplicação.
+ */
+
+// Ícones do Lucide React (biblioteca de ícones SVG otimizada)
 import { Search, User, Bell, Plus, HelpCircle, Settings, LogOut } from "lucide-react";
+// Componentes de UI reutilizáveis do sistema de design
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+// Link do React Router para navegação sem reload da página
 import { Link } from "react-router-dom";
-import { AddProfileModal } from "./AddProfileModal";
-import { LoginModal } from "./LoginModal";
-import { NotificationBell } from "./NotificationBell";
+// Modais específicos da aplicação
+import { AddProfileModal } from "./AddProfileModal";    // Modal para criar novos perfis
+import { LoginModal } from "./LoginModal";              // Modal de autenticação
+import { NotificationBell } from "./NotificationBell";  // Componente de notificações
+// Componentes de avatar para imagem do usuário
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+// Popover para menu dropdown do usuário
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// Hook do React para estado local
 import { useState } from "react";
+// Hook customizado para gerenciamento de autenticação
 import { useAuth } from "@/hooks/use-auth";
 
+/**
+ * COMPONENTE HEADER
+ * 
+ * Renderiza a barra de navegação principal com:
+ * - Logo clicável que leva à página inicial
+ * - Barra de busca global
+ * - Botões de ação (adicionar perfil, ajuda, notificações)
+ * - Menu de usuário ou botão de login
+ */
 export const Header = () => {
+  // Estado local para controlar abertura/fechamento do modal de login
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  
+  // Desestrutura dados de autenticação do hook customizado
   const { user, signOut, loading } = useAuth();
   
-
+  /**
+   * FUNÇÃO DE LOGOUT
+   * 
+   * Executa o processo de logout do usuário através do Supabase.
+   * Limpa a sessão e redireciona para estado não autenticado.
+   */
   const handleSignOut = async () => {
     await signOut();
   };

@@ -1,41 +1,72 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/**
+ * ARQUIVO DE ESTILOS GLOBAIS (index.css)
+ * 
+ * Este arquivo define todo o sistema de design da aplicação Phindex.
+ * Utiliza Tailwind CSS como base e adiciona um sistema de design personalizado
+ * com tokens semânticos para cores, gradientes, sombras e animações.
+ */
 
-/* Design system para rede social de classificação de fenótipos */
+/* Importa as camadas base do Tailwind CSS */
+@tailwind base;      /* Reset CSS e estilos base */
+@tailwind components; /* Classes de componentes customizadas */
+@tailwind utilities;  /* Classes utilitárias para espaçamento, cores, etc */
 
+/* ========================================== */
+/* SISTEMA DE DESIGN PHINDEX                 */
+/* Design system para rede social de         */
+/* classificação de fenótipos físicos        */
+/* ========================================== */
+
+/**
+ * CAMADA BASE - DEFINIÇÃO DAS VARIÁVEIS CSS GLOBAIS
+ * 
+ * Define todas as variáveis CSS que serão usadas como tokens do sistema de design.
+ * Utiliza HSL (Hue, Saturation, Lightness) para melhor controle de cores.
+ */
 @layer base {
+  /* ========================================== */
+  /* TEMA CLARO (LIGHT MODE)                   */
+  /* ========================================== */
   :root {
-    --background: 210 20% 98%;
-    --foreground: 190 25% 25%;
+    /* CORES PRINCIPAIS DE LAYOUT */
+    --background: 210 20% 98%;      /* Fundo principal da aplicação - branco acinzentado */
+    --foreground: 190 25% 25%;      /* Cor principal do texto - azul escuro */
 
-    --card: 0 0% 100%;
-    --card-foreground: 190 25% 25%;
+    /* CORES DE CARDS E POPUPS */
+    --card: 0 0% 100%;              /* Fundo dos cards - branco puro */
+    --card-foreground: 190 25% 25%; /* Texto nos cards - azul escuro */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 190 25% 25%;
+    --popover: 0 0% 100%;           /* Fundo de popovers/dropdowns - branco puro */
+    --popover-foreground: 190 25% 25%; /* Texto em popovers - azul escuro */
 
-    --primary: 190 55% 35%;
-    --primary-foreground: 0 0% 98%;
-    --primary-glow: 190 55% 45%;
+    /* CORES PRIMÁRIAS (MARCA PHINDEX) */
+    --primary: 190 55% 35%;         /* Cor principal da marca - teal escuro */
+    --primary-foreground: 0 0% 98%; /* Texto sobre cor primária - branco */
+    --primary-glow: 190 55% 45%;    /* Variação mais clara para efeitos glow */
 
-    --secondary: 210 15% 92%;
-    --secondary-foreground: 190 25% 25%;
+    /* CORES SECUNDÁRIAS */
+    --secondary: 210 15% 92%;       /* Cor secundária - cinza claro */
+    --secondary-foreground: 190 25% 25%; /* Texto sobre cor secundária */
 
-    --muted: 210 15% 95%;
-    --muted-foreground: 190 15% 50%;
+    /* CORES NEUTRAS (MUTED) */
+    --muted: 210 15% 95%;           /* Cor para elementos desabilitados */
+    --muted-foreground: 190 15% 50%; /* Texto desabilitado ou secundário */
 
-    --accent: 185 40% 45%;
-    --accent-foreground: 0 0% 98%;
+    /* CORES DE DESTAQUE (ACCENT) */
+    --accent: 185 40% 45%;          /* Cor de destaque para hover/focus */
+    --accent-foreground: 0 0% 98%;  /* Texto sobre cor de destaque */
 
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 98%;
+    /* CORES DE ALERTA E ERRO */
+    --destructive: 0 62.8% 50%;     /* Vermelho para ações destrutivas */
+    --destructive-foreground: 0 0% 98%; /* Texto sobre cor destrutiva */
 
-    --border: 210 15% 88%;
-    --input: 210 15% 95%;
-    --ring: 190 55% 35%;
+    /* CORES DE INTERFACE */
+    --border: 210 15% 88%;          /* Cor das bordas */
+    --input: 210 15% 95%;           /* Fundo dos campos de entrada */
+    --ring: 190 55% 35%;            /* Cor do anel de foco (acessibilidade) */
 
-    --radius: 0.5rem;
+    /* RAIO DAS BORDAS ARREDONDADAS */
+    --radius: 0.5rem;               /* Padrão para border-radius (8px) */
 
     /* Phindex Design System */
     --phindex-teal: 190 55% 35%;

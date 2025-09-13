@@ -1,13 +1,31 @@
+/**
+ * PÁGINA INICIAL DA APLICAÇÃO (Index.tsx)
+ * 
+ * Esta é a página principal (home) da aplicação Phindex.
+ * Exibe três seções principais:
+ * 1. Celebridades populares (mais votadas)
+ * 2. Perfis de usuário mais votados  
+ * 3. Perfis recentes da comunidade
+ * 
+ * Cada seção utiliza carousels horizontais para navegação.
+ */
+
+// Ícone de voto da biblioteca Lucide React
 import { Vote } from "lucide-react";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { AppSidebar } from "@/components/AppSidebar";
-import { AddProfileModal } from "@/components/AddProfileModal";
+// Componentes de layout da aplicação
+import { Header } from "@/components/Header";           // Cabeçalho fixo
+import { Footer } from "@/components/Footer";           // Rodapé
+import { AppSidebar } from "@/components/AppSidebar";   // Barra lateral de navegação
+import { AddProfileModal } from "@/components/AddProfileModal"; // Modal de criação de perfil
+// Hook customizado para gerenciar perfis de usuário
 import { useUserProfiles } from "@/hooks/use-user-profiles";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+// Componentes de UI do sistema de design
+import { Card } from "@/components/ui/card";            // Cards para layout
+import { Badge } from "@/components/ui/badge";          // Badges para indicadores
+// Componentes de carousel para navegação horizontal
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";  // Separadores visuais
+// Hook para navegação programática entre páginas
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
