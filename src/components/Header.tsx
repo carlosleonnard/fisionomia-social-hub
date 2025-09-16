@@ -110,12 +110,12 @@ export const Header = () => {
    * FUNÇÃO PARA NAVEGAR PARA PERFIL
    * 
    * Redireciona o usuário para a página de detalhes do perfil selecionado.
-   * Usa o ID do perfil como parâmetro da URL.
+   * Usa o slug do perfil para navegar para a rota /user-profile/.
    */
   const handleProfileSelect = (profile: any) => {
     setSearchTerm("");
     setIsSearchOpen(false);
-    navigate(`/profile/${profile.id}`);
+    navigate(`/user-profile/${profile.slug}`);
   };
   
   /**
