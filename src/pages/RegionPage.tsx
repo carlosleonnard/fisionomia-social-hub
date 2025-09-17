@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { useRegionProfiles } from "@/hooks/use-region-profiles";
+import { useGeographicRegionProfiles } from "@/hooks/use-geographic-region-profiles";
 import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 
@@ -25,8 +25,8 @@ const RegionPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Buscar perfis reais do banco de dados filtrados por região
-  const { data: profiles, isLoading: profilesLoading, error: profilesError } = useRegionProfiles(region);
+  // Buscar perfis reais do banco de dados filtrados por região baseado em votação geográfica
+  const { data: profiles, isLoading: profilesLoading, error: profilesError } = useGeographicRegionProfiles(region);
 
   /**
    * MAPEAMENTO DE NOMES DE REGIÕES
