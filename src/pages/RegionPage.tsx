@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { useRegionProfiles } from "@/hooks/use-region-profiles";
+import { usePhenotypeRegionProfiles } from "@/hooks/use-phenotype-region-profiles";
 import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 
@@ -25,8 +25,8 @@ const RegionPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Buscar perfis reais do banco de dados filtrados por região
-  const { data: profiles, isLoading: profilesLoading, error: profilesError } = useRegionProfiles(region);
+  // Buscar perfis reais do banco de dados filtrados por general phenotype primário
+  const { data: profiles, isLoading: profilesLoading, error: profilesError } = usePhenotypeRegionProfiles(region);
 
   /**
    * MAPEAMENTO DE NOMES DE REGIÕES
@@ -163,11 +163,11 @@ const RegionPage = () => {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {profiles.map((profile) => (
-                      <Link
-                        key={profile.id}
-                        to={`/user-profile/${profile.slug}`}
-                        className="group block"
-                      >
+                        <Link
+                          key={profile.id}
+                          to={`/user-profile/${profile.slug}`}
+                          className="group block"
+                        >
                         <Card className="bg-gradient-card border-border/50 hover:border-primary/50 transition-all duration-300 group-hover:shadow-lg">
                           <CardContent className="p-4">
                             <div className="relative overflow-hidden rounded-lg mb-4">
