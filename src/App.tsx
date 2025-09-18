@@ -22,6 +22,9 @@ import UserProfileDetail from "./pages/UserProfileDetail"; // Página de perfil 
 import RegionPage from "./pages/RegionPage"; // Página filtrada por região geográfica
 import CategoryPage from "./pages/CategoryPage"; // Página filtrada por categoria
 import PhenotypeFlowPage from "./pages/PhenotypeFlowPage"; // Página do fluxo de fenótipos (em construção)
+import Settings from "./pages/Settings"; // Página de configurações do usuário
+import Contact from "./pages/Contact"; // Página de contato
+import FAQ from "./pages/FAQ"; // Página de perguntas frequentes
 import NotFound from "./pages/NotFound"; // Página 404 para rotas não encontradas
 
 /**
@@ -71,6 +74,15 @@ const App = () => (
           
           {/* ROTA ESTÁTICA: Fluxo de fenótipos (funcionalidade em desenvolvimento) */}
           <Route path="/phenotype-flow" element={<PhenotypeFlowPage />} />
+          
+          {/* ROTA ESTÁTICA: Configurações do usuário */}
+          <Route path="/settings" element={<Settings />} />
+          
+          {/* ROTA ESTÁTICA: Página de contato */}
+          <Route path="/contact" element={<Contact />} />
+          
+          {/* ROTA ESTÁTICA: Página de perguntas frequentes */}
+          <Route path="/faq" element={<FAQ />} />
           
           {/* ROTA CATCH-ALL: Captura qualquer URL não definida acima e mostra 404 */}
           {/* IMPORTANTE: Esta deve sempre ser a última rota para funcionar corretamente */}
