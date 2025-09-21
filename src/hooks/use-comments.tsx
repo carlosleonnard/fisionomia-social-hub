@@ -175,7 +175,7 @@ export const useComments = (profileId: string) => {
       return true;
     } catch (error: any) {
       toast({
-        title: "Erro ao comentar",
+        title: "Error commenting",
         description: error.message,
         variant: "destructive",
       });
@@ -271,7 +271,7 @@ export const useComments = (profileId: string) => {
     } catch (error: any) {
       console.error('Error liking comment:', error);
       toast({
-        title: "Erro",
+        title: "Error",
         description: error.message,
         variant: "destructive",
       });
@@ -304,7 +304,7 @@ export const useComments = (profileId: string) => {
       });
     } catch (error: any) {
       toast({
-        title: "Erro ao excluir",
+        title: "Error deleting",
         description: error.message,
         variant: "destructive",
       });
