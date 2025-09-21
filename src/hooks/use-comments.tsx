@@ -139,6 +139,32 @@ export const useComments = (profileId: string) => {
 
       if (error) throw error;
 
+      // If this is a reply, create a notification for the parent comment owner
+      if (parentCommentId) {
+        const { data: parentComment } = await supabase
+          .from('comments')
+          .select('user_id')
+          .eq('id', parentCommentId)
+          .single();
+
+        if (parentComment && parentComment.user_id !== user.id) {
+          // Get the current user's nickname for notification
+          const { data: currentUserProfile } = await supabase
+            .rpc('get_public_profile_nickname', { p_user_id: user.id })
+            .single();
+          
+          const currentUserNickname = currentUserProfile?.nickname || 'Usuário';
+          
+          await supabase.rpc('create_notification', {
+            target_user_id: parentComment.user_id,
+            notification_type: 'reply',
+            notification_message: `${currentUserNickname} respondeu seu comentário`,
+            target_profile_id: profileId,
+            target_comment_id: parentCommentId
+          });
+        }
+      }
+
       await fetchComments(); // Refresh comments
 
       toast({

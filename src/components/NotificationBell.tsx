@@ -69,12 +69,42 @@ export const NotificationBell = () => {
 
     // Navigate to the profile and scroll to comment if available
     if (notification.profile_id) {
-      const url = `/user-profile/${notification.profile_id}`;
-      if (notification.comment_id) {
-        // Add comment hash to URL for scrolling
-        navigate(`${url}#comment-${notification.comment_id}`);
-      } else {
-        navigate(url);
+      try {
+        // Get the profile slug from profile_id
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('slug')
+          .eq('id', notification.profile_id)
+          .single();
+
+        if (profileData?.slug) {
+          const url = `/user-profile/${profileData.slug}`;
+          if (notification.comment_id) {
+            // Add comment hash to URL for scrolling
+            navigate(`${url}#comment-${notification.comment_id}`);
+            
+            // Scroll to comment after navigation
+            setTimeout(() => {
+              const commentElement = document.getElementById(`comment-${notification.comment_id}`);
+              if (commentElement) {
+                commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight effect
+                commentElement.classList.add('bg-primary/10');
+                setTimeout(() => {
+                  commentElement.classList.remove('bg-primary/10');
+                }, 2000);
+              }
+            }, 100);
+          } else {
+            navigate(url);
+          }
+        }
+      } catch (error) {
+        console.error('Error navigating to profile:', error);
+        // Fallback: try to navigate with profile_id directly
+        if (notification.profile_id) {
+          navigate(`/user-profile/${notification.profile_id}`);
+        }
       }
     }
   };
