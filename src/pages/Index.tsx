@@ -93,7 +93,7 @@ const Index = () => {
                            >
                               <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
-                                  <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                   <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary cursor-pointer bg-primary/10">
                                      <img 
                                        src={profile.front_image_url} 
                                        alt={profile.name}
@@ -160,7 +160,7 @@ const Index = () => {
                            >
                               <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
-                                  <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                   <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary cursor-pointer bg-primary/10">
                                      <img 
                                        src={profile.front_image_url} 
                                        alt={profile.name}
@@ -225,7 +225,7 @@ const Index = () => {
                          >
                             <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                               <div className="relative mb-1">
-                                <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
+                                <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary cursor-pointer bg-primary/10">
                                    <img 
                                      src={profile.front_image_url} 
                                      alt={profile.name}
