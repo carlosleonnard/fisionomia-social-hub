@@ -126,6 +126,31 @@ export const NotificationBell = () => {
     }
   };
 
+  const clearAllNotifications = async () => {
+    if (!user) return;
+
+    try {
+      await supabase
+        .from('notifications')
+        .delete()
+        .eq('user_id', user.id);
+
+      setNotifications([]);
+      setUnreadCount(0);
+      toast({
+        title: "Notifications cleared",
+        description: "All notifications have been removed.",
+      });
+    } catch (error) {
+      console.error('Error clearing notifications:', error);
+      toast({
+        title: "Error",
+        description: "Failed to clear notifications.",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchNotifications();
 
@@ -148,7 +173,7 @@ export const NotificationBell = () => {
             
             // Show toast for new notification
             toast({
-              title: "Nova notificação",
+              title: "New notification",
               description: newNotification.message,
             });
           }
@@ -177,20 +202,30 @@ export const NotificationBell = () => {
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0" align="end">
         <div className="p-4 border-b border-border">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold">Notificações</h3>
-            {unreadCount > 0 && (
-              <Button variant="ghost" size="sm" onClick={markAllAsRead}>
-                Marcar como lidas
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold">Notifications</h3>
+            {notifications.length > 0 && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={clearAllNotifications}
+                className="text-xs"
+              >
+                Clear All
               </Button>
             )}
           </div>
+          {unreadCount > 0 && (
+            <Button variant="ghost" size="sm" onClick={markAllAsRead} className="w-full">
+              Mark all as read
+            </Button>
+          )}
         </div>
         
         <div className="max-h-96 overflow-y-auto">
           {notifications.length === 0 ? (
             <div className="p-4 text-center text-muted-foreground">
-              Nenhuma notificação
+              No notifications
             </div>
           ) : (
             notifications.map((notification) => (
@@ -203,7 +238,7 @@ export const NotificationBell = () => {
               >
                 <p className="text-sm">{notification.message}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {new Date(notification.created_at).toLocaleDateString('pt-BR', {
+                  {new Date(notification.created_at).toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: '2-digit',
                     hour: '2-digit',
