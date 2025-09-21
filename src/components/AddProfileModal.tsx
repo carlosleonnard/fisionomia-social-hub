@@ -350,7 +350,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
             {/* Campo sim/não para perfil anônimo */}
             <div className="space-y-2">
-              <Label htmlFor="anonymousSelect">Is this an anonymous person (not famous)? *</Label>
+              <Label htmlFor="anonymousSelect">Is this an anonymous person? *</Label>
               <select
                 id="anonymousSelect"
                 value={formData.isAnonymous === true ? "yes" : formData.isAnonymous === false ? "no" : ""}
