@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Send, Heart, MoreHorizontal, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -143,8 +142,7 @@ export const CommentsSection = ({
                         )}
                         <span className="text-xs text-muted-foreground">
                           {formatDistanceToNow(new Date(comment.created_at), { 
-                            addSuffix: true, 
-                            locale: ptBR 
+                            addSuffix: true 
                           })}
                         </span>
                       </div>
@@ -237,8 +235,7 @@ export const CommentsSection = ({
                         )}
                         <span className="text-xs text-muted-foreground">
                           {formatDistanceToNow(new Date(reply.created_at), { 
-                            addSuffix: true, 
-                            locale: ptBR 
+                            addSuffix: true 
                           })}
                         </span>
                       </div>
