@@ -111,19 +111,6 @@ export default function UserProfileDetail() {
           {/* Sidebar */}
           <AppSidebar />
 
-          {/* Botão de voltar fixo acima do perfil */}
-          <div className="fixed top-20 left-4 z-50 mb-6">
-            <Button 
-              onClick={() => navigate("/")} 
-              variant="secondary"
-              size="sm"
-              className="bg-card/95 backdrop-blur-sm border border-border/50 hover:bg-card shadow-lg"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
-            </Button>
-          </div>
-
           {/* Main Content */}
           <div>
             {/* Profile Images and Basic Info - Full width */}
