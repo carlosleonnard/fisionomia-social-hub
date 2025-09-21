@@ -224,7 +224,8 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
     Object.entries(geographicOptions).forEach(([region, subregions]) => {
       allOptions.push(...subregions);
     });
-    return allOptions;
+    // Remove duplicates using Set
+    return [...new Set(allOptions)];
   };
 
   // Função para filtrar opções disponíveis
@@ -248,7 +249,8 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
     Object.entries(specificPhenotypeOptions).forEach(([region, phenotypes]) => {
       allOptions.push(...phenotypes);
     });
-    return allOptions;
+    // Remove duplicates using Set
+    return [...new Set(allOptions)];
   };
 
   const getAvailablePhenotypeOptions = (level: 'secondary' | 'tertiary') => {
