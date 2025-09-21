@@ -570,7 +570,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   <option value="Sweden">Sweden</option>
                   <option value="Switzerland">Switzerland</option>
                   <option value="Syria">Syria</option>
-                  <option value="Taiwan*">Taiwan*</option>
+                  <option value="Taiwan">Taiwan</option>
                   <option value="Tajikistan">Tajikistan</option>
                   <option value="Tanzania">Tanzania</option>
                   <option value="Thailand">Thailand</option>
