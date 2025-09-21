@@ -47,7 +47,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
   };
 
   const handleAnonymousChange = (value: string) => {
-    const isAnonymous = value === "sim";
+    const isAnonymous = value === "yes";
     setFormData(prev => ({ 
       ...prev, 
       isAnonymous: isAnonymous,
@@ -59,7 +59,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
     e.preventDefault();
     
     if (!user) {
-      alert('Você precisa estar logado para criar um perfil.');
+      alert('You need to be logged in to create a profile.');
       return;
     }
     
@@ -96,7 +96,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
           });
 
         if (completeProfileError) {
-          console.error('Erro ao criar registro completo do perfil:', completeProfileError);
+          console.error('Error creating complete profile record:', completeProfileError);
         }
 
         // Reset form and close modal
@@ -105,8 +105,8 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
         
         // Navigate to the new profile page
         navigate(`/user-profile/${newProfile.slug}`);
-      } catch (error) {
-        console.error('Erro ao criar perfil:', error);
+        } catch (error) {
+        console.error('Error creating profile:', error);
       }
     }
   };
@@ -180,19 +180,28 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
           <div className="space-y-4 py-4">
             <div className="space-y-3 text-sm text-muted-foreground">
-              <p className="font-medium text-foreground">Antes de adicionar um perfil, leia e concorde com os seguintes termos:</p>
+              <p className="font-medium text-foreground">Before adding a profile, please read and agree to the following terms:</p>
               
               <ul className="space-y-2 list-disc list-inside">
-                <li>Respeite a privacidade e direitos das pessoas representadas nas imagens</li>
-                <li>Use apenas imagens que você tem permissão para compartilhar</li>
-                <li>Forneça informações precisas e respeitosas sobre ancestralidade</li>
-                <li>Não use imagens de menores de idade sem consentimento apropriado</li>
-                <li>Mantenha um ambiente respeitoso e inclusivo</li>
-                <li>As classificações devem ser baseadas em características visíveis, não em estereótipos</li>
+                <li>Respect the privacy and rights of people represented in images</li>
+                <li>Only use images you have permission to share</li>
+                <li>Provide accurate and respectful information about ancestry</li>
+                <li>Do not use images of minors without appropriate consent</li>
+                <li>Maintain a respectful and inclusive environment</li>
+                <li>Classifications should be based on visible characteristics, not stereotypes</li>
               </ul>
               
+              <div className="space-y-2 pt-3 border-t border-border">
+                <p className="text-xs font-medium text-foreground">
+                  Please do your best to check for duplicates, periodically, we will clean out inactive or duplicated profiles
+                </p>
+                <p className="text-xs">
+                  If you would like to remove a profile, please report to contact@phindex.com
+                </p>
+              </div>
+              
               <p className="text-xs pt-2 border-t border-border">
-                Ao continuar, você concorda em seguir estas diretrizes e usar a plataforma de forma responsável.
+                By continuing, you agree to follow these guidelines and use the platform responsibly.
               </p>
             </div>
           </div>
@@ -204,14 +213,14 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
               className="flex-1"
               onClick={() => setShowGuidelines(false)}
             >
-              Cancelar
+              Cancel
             </Button>
             <Button
               type="button"
               className="flex-1 bg-gradient-primary hover:shadow-button transition-all duration-300"
               onClick={handleGuidelinesAccept}
             >
-              Concordo e Continuar
+              I Agree and Continue
             </Button>
           </div>
         </DialogContent>
@@ -222,20 +231,20 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
         <DialogContent className="bg-gradient-card border-border/50 max-w-md max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Novo Perfil
+              New Profile
             </DialogTitle>
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Upload de imagens */}
             <div className="space-y-3">
-              <Label>Fotos do Perfil</Label>
-              <p className="text-xs text-muted-foreground">Foto de frente é obrigatória, foto de perfil é opcional</p>
+              <Label>Profile Photos</Label>
+              <p className="text-xs text-muted-foreground">Front photo is required, profile photo is optional</p>
               
               <div className="grid grid-cols-2 gap-3">
                 {/* Foto de Frente */}
                 <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Foto de Frente *</Label>
+                  <Label className="text-sm text-muted-foreground">Front Photo *</Label>
                 <Card
                   className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
                     dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
@@ -255,12 +264,12 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   />
                   {formData.frontImageUrl ? (
                     <div className="relative inline-block">
-                       <img 
-                         src={formData.frontImageUrl} 
-                         alt="Preview Frente" 
-                         className="w-20 h-19 rounded-lg mx-auto object-cover"
-                         style={{ aspectRatio: '640/607' }}
-                       />
+                        <img 
+                          src={formData.frontImageUrl} 
+                          alt="Front Preview" 
+                          className="w-20 h-19 rounded-lg mx-auto object-cover"
+                          style={{ aspectRatio: '640/607' }}
+                        />
                       <Button
                         type="button"
                         variant="ghost"
@@ -278,7 +287,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">
-                        {isUploading ? 'Enviando...' : 'Clique ou arraste a foto de frente *'}
+                        {isUploading ? 'Uploading...' : 'Click or drag front photo *'}
                       </p>
                     </div>
                   )}
@@ -287,7 +296,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
                 {/* Foto de Perfil */}
                 <div className="space-y-2">
-                  <Label className="text-sm text-muted-foreground">Foto de Perfil</Label>
+                  <Label className="text-sm text-muted-foreground">Profile Photo</Label>
                 <Card
                   className={`border-2 border-dashed transition-colors p-4 text-center cursor-pointer ${
                     dragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
@@ -307,12 +316,12 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   />
                   {formData.profileImageUrl ? (
                     <div className="relative inline-block">
-                       <img 
-                         src={formData.profileImageUrl} 
-                         alt="Preview Perfil" 
-                         className="w-20 h-19 rounded-lg mx-auto object-cover"
-                         style={{ aspectRatio: '640/607' }}
-                       />
+                        <img 
+                          src={formData.profileImageUrl} 
+                          alt="Profile Preview" 
+                          className="w-20 h-19 rounded-lg mx-auto object-cover"
+                          style={{ aspectRatio: '640/607' }}
+                        />
                       <Button
                         type="button"
                         variant="ghost"
@@ -330,7 +339,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">
-                        {isUploading ? 'Enviando...' : 'Clique ou arraste a foto de perfil'}
+                        {isUploading ? 'Uploading...' : 'Click or drag profile photo'}
                       </p>
                     </div>
                   )}
@@ -341,23 +350,23 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
             {/* Campo sim/não para perfil anônimo */}
             <div className="space-y-2">
-              <Label htmlFor="anonymousSelect">Esta é uma pessoa anônima (não famosa)? *</Label>
+              <Label htmlFor="anonymousSelect">Is this an anonymous person (not famous)? *</Label>
               <select
                 id="anonymousSelect"
-                value={formData.isAnonymous === true ? "sim" : formData.isAnonymous === false ? "nao" : ""}
+                value={formData.isAnonymous === true ? "yes" : formData.isAnonymous === false ? "no" : ""}
                 onChange={(e) => handleAnonymousChange(e.target.value)}
                 className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               >
-                <option value="" disabled>Selecionar</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
+                <option value="" disabled>Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
               </select>
             </div>
 
             {/* Informações básicas */}
             <div className="space-y-2">
-              <Label htmlFor="name">Nome *</Label>
+              <Label htmlFor="name">Name *</Label>
               <Input
                 id="name"
                 value={formData.name}
@@ -368,14 +377,14 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="height">Altura (metros) *</Label>
+                <Label htmlFor="height">Height (meters) *</Label>
                 <Input
                   id="height"
                   type="number"
                   step="0.01"
                   min="0.5"
                   max="3"
-                  placeholder="ex: 1.75"
+                  placeholder="e.g: 1.75"
                   value={formData.height}
                   onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
                   required
@@ -383,7 +392,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="country">País *</Label>
+                <Label htmlFor="country">Country *</Label>
                 <select
                   id="country"
                   value={formData.country}
@@ -391,56 +400,56 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 >
-                  <option value="">Selecionar país</option>
-                  <option value="Afeganistão">Afeganistão</option>
-                  <option value="África do Sul">África do Sul</option>
-                  <option value="Alemanha">Alemanha</option>
+                  <option value="">Select country</option>
+                  <option value="Afghanistan">Afghanistan</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Germany">Germany</option>
                   <option value="Argentina">Argentina</option>
-                  <option value="Austrália">Austrália</option>
-                  <option value="Áustria">Áustria</option>
-                  <option value="Bélgica">Bélgica</option>
-                  <option value="Bolívia">Bolívia</option>
-                  <option value="Brasil">Brasil</option>
-                  <option value="Canadá">Canadá</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Austria">Austria</option>
+                  <option value="Belgium">Belgium</option>
+                  <option value="Bolivia">Bolivia</option>
+                  <option value="Brazil">Brazil</option>
+                  <option value="Canada">Canada</option>
                   <option value="Chile">Chile</option>
                   <option value="China">China</option>
-                  <option value="Colômbia">Colômbia</option>
-                  <option value="Coreia do Sul">Coreia do Sul</option>
+                  <option value="Colombia">Colombia</option>
+                  <option value="South Korea">South Korea</option>
                   <option value="Costa Rica">Costa Rica</option>
                   <option value="Cuba">Cuba</option>
-                  <option value="Dinamarca">Dinamarca</option>
-                  <option value="Equador">Equador</option>
-                  <option value="Espanha">Espanha</option>
-                  <option value="Estados Unidos">Estados Unidos</option>
-                  <option value="Finlândia">Finlândia</option>
-                  <option value="França">França</option>
-                  <option value="Grécia">Grécia</option>
+                  <option value="Denmark">Denmark</option>
+                  <option value="Ecuador">Ecuador</option>
+                  <option value="Spain">Spain</option>
+                  <option value="United States">United States</option>
+                  <option value="Finland">Finland</option>
+                  <option value="France">France</option>
+                  <option value="Greece">Greece</option>
                   <option value="Guatemala">Guatemala</option>
                   <option value="Honduras">Honduras</option>
-                  <option value="Índia">Índia</option>
-                  <option value="Indonésia">Indonésia</option>
-                  <option value="Irlanda">Irlanda</option>
-                  <option value="Islândia">Islândia</option>
+                  <option value="India">India</option>
+                  <option value="Indonesia">Indonesia</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="Iceland">Iceland</option>
                   <option value="Israel">Israel</option>
-                  <option value="Itália">Itália</option>
-                  <option value="Japão">Japão</option>
-                  <option value="México">México</option>
-                  <option value="Nicarágua">Nicarágua</option>
-                  <option value="Noruega">Noruega</option>
-                  <option value="Nova Zelândia">Nova Zelândia</option>
-                  <option value="Panamá">Panamá</option>
-                  <option value="Paraguai">Paraguai</option>
+                  <option value="Italy">Italy</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Mexico">Mexico</option>
+                  <option value="Nicaragua">Nicaragua</option>
+                  <option value="Norway">Norway</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Panama">Panama</option>
+                  <option value="Paraguay">Paraguay</option>
                   <option value="Peru">Peru</option>
-                  <option value="Polônia">Polônia</option>
+                  <option value="Poland">Poland</option>
                   <option value="Portugal">Portugal</option>
-                  <option value="Reino Unido">Reino Unido</option>
-                  <option value="República Dominicana">República Dominicana</option>
-                  <option value="Rússia">Rússia</option>
-                  <option value="Suécia">Suécia</option>
-                  <option value="Suíça">Suíça</option>
-                  <option value="Turquia">Turquia</option>
-                  <option value="Ucrânia">Ucrânia</option>
-                  <option value="Uruguai">Uruguai</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Dominican Republic">Dominican Republic</option>
+                  <option value="Russia">Russia</option>
+                  <option value="Sweden">Sweden</option>
+                  <option value="Switzerland">Switzerland</option>
+                  <option value="Turkey">Turkey</option>
+                  <option value="Ukraine">Ukraine</option>
+                  <option value="Uruguay">Uruguay</option>
                   <option value="Venezuela">Venezuela</option>
                 </select>
               </div>
@@ -448,7 +457,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="gender">Gênero *</Label>
+                <Label htmlFor="gender">Gender *</Label>
                 <select
                   id="gender"
                   value={formData.gender}
@@ -456,15 +465,15 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 >
-                  <option value="">Selecionar</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Feminino">Feminino</option>
-                  <option value="Outro">Outro</option>
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="category">Categoria *</Label>
+                <Label htmlFor="category">Category *</Label>
                 <select
                   id="category"
                   value={formData.category}
@@ -473,7 +482,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   disabled={formData.isAnonymous === true}
                   required
                 >
-                  <option value="">Selecionar categoria</option>
+                  <option value="">Select category</option>
                   {formData.isAnonymous !== true && (
                     <>
                       <option value="Pop Culture">Pop Culture</option>
@@ -494,14 +503,14 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ancestry">Ancestralidade Conhecida *</Label>
+              <Label htmlFor="ancestry">Known Ancestry *</Label>
               <CountrySelector
                 selectedCountries={formData.ancestry}
                 onCountriesChange={(countries) => setFormData(prev => ({ ...prev, ancestry: countries }))}
-                placeholder="Digite para buscar países de ancestralidade..."
+                placeholder="Type to search ancestry countries..."
                 maxCountries={5}
               />
-              <p className="text-xs text-muted-foreground">Selecione até 5 países que representam a ancestralidade conhecida</p>
+              <p className="text-xs text-muted-foreground">Select up to 5 countries that represent known ancestry</p>
             </div>
 
             <div className="flex gap-2 pt-4">
@@ -511,14 +520,14 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                 className="flex-1"
                 onClick={() => setOpen(false)}
               >
-                Cancelar
+                Cancel
               </Button>
               <Button
                 type="submit"
                 className="flex-1 bg-gradient-primary hover:shadow-button transition-all duration-300"
                 disabled={createProfile.isPending || isUploading}
               >
-                {createProfile.isPending || isUploading ? 'Criando...' : 'Adicionar'}
+                {createProfile.isPending || isUploading ? 'Creating...' : 'Add Profile'}
               </Button>
             </div>
           </form>
