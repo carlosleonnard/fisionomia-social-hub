@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { AddProfileModal } from "./AddProfileModal";    // Modal para criar novos perfis
 import { LoginModal } from "./LoginModal";              // Modal de autenticação
 import { NotificationBell } from "./NotificationBell";  // Componente de notificações
+import { UserMenuPopover } from "./UserMenuPopover";        // Menu do usuário com nickname
 // Componentes de avatar para imagem do usuário
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 // Popover para menu dropdown do usuário
@@ -212,63 +213,7 @@ export const Header = () => {
           <NotificationBell />
           
           {user ? (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage 
-                      src={user.user_metadata?.avatar_url || user.user_metadata?.picture} 
-                      alt={user.user_metadata?.name || user.email || "User"} 
-                    />
-                    <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                      {(user.user_metadata?.name || user.email || "U").charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56 p-0" align="end">
-                <div className="p-4 border-b border-border">
-                  <div className="flex items-center space-x-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage 
-                        src={user.user_metadata?.avatar_url || user.user_metadata?.picture} 
-                        alt={user.user_metadata?.name || user.email || "User"} 
-                      />
-                      <AvatarFallback className="bg-primary/10 text-primary text-sm">
-                        {(user.user_metadata?.name || user.email || "U").charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">
-                        {user.user_metadata?.name || "Usuário"}
-                      </p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-1">
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-start h-9 px-3 text-sm"
-                    size="sm"
-                  >
-                    <Settings className="mr-2 h-4 w-4" />
-                    Configurações
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-start h-9 px-3 text-sm text-destructive hover:text-destructive"
-                    size="sm"
-                    onClick={handleSignOut}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sair
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
+            <UserMenuPopover user={user} />
           ) : (
             <Button 
               variant="default" 

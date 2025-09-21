@@ -28,7 +28,7 @@ interface Comment {
   parent_comment_id?: string | null;
   user_id: string;
   user: {
-    name: string;
+    nickname: string;
     email: string;
   };
   userVotes?: { [key: string]: string };
@@ -128,14 +128,14 @@ export const CommentsSection = ({
             {/* Main comment */}
             <div className="flex gap-3 p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
               <Avatar className="h-8 w-8">
-                <AvatarFallback>{comment.user.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{comment.user.nickname.charAt(0)}</AvatarFallback>
               </Avatar>
               
               <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-sm">{comment.user.name}</span>
+                        <span className="font-medium text-sm">{comment.user.nickname}</span>
                         {comment.userVotes?.phenotype && (
                           <span className="text-xs px-2 py-1 bg-phindex-teal/10 text-phindex-teal rounded-full font-medium">
                             {comment.userVotes.phenotype}
@@ -230,12 +230,12 @@ export const CommentsSection = ({
                 {comment.replies.map((reply) => (
                   <div key={reply.id} className="flex gap-3 p-2 rounded-lg bg-muted/10 hover:bg-muted/20 transition-colors">
                     <Avatar className="h-6 w-6">
-                      <AvatarFallback className="text-xs">{reply.user.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback className="text-xs">{reply.user.nickname.charAt(0)}</AvatarFallback>
                     </Avatar>
                     
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-xs">{reply.user.name}</span>
+                        <span className="font-medium text-xs">{reply.user.nickname}</span>
                         {reply.userVotes?.phenotype && (
                           <span className="text-xs px-1.5 py-0.5 bg-phindex-teal/10 text-phindex-teal rounded-full font-medium">
                             {reply.userVotes.phenotype}

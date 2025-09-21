@@ -11,7 +11,7 @@ interface Comment {
   parent_comment_id?: string | null;
   user_id: string;
   user: {
-    name: string;
+    nickname: string;
     email: string;
   };
   userVotes?: { [key: string]: string };
@@ -59,15 +59,15 @@ export const useComments = (profileId: string) => {
           userVotesMap.get(vote.user_id)[vote.characteristic_type] = vote.classification;
         });
 
-        // Get unique user IDs to fetch profile names securely
+        // Get unique user IDs to fetch profile nicknames securely
         const uniqueUserIds = [...new Set(commentsData.map(c => c.user_id))];
         
         // Fetch profile nicknames using secure RPC
         const profileNicknamesPromises = uniqueUserIds.map(async (userId) => {
           const { data } = await supabase
-            .rpc('get_public_profile_name', { p_user_id: userId })
+            .rpc('get_public_profile_nickname', { p_user_id: userId })
             .single();
-          return { userId, nickname: data?.nickname || 'Usuário Anônimo' };
+          return { userId, nickname: data?.nickname || 'Usuário' };
         });
         
         const profileNicknames = await Promise.all(profileNicknamesPromises);
@@ -83,7 +83,7 @@ export const useComments = (profileId: string) => {
             parent_comment_id: comment.parent_comment_id,
             user_id: comment.user_id,
             user: {
-              name: profileNicknameMap.get(comment.user_id) || 'Usuário Anônimo',
+              nickname: profileNicknameMap.get(comment.user_id) || 'Usuário',
               email: '' // No longer expose emails for security
             },
             userVotes: userVotesMap.get(comment.user_id) || {},
@@ -98,7 +98,7 @@ export const useComments = (profileId: string) => {
                 parent_comment_id: reply.parent_comment_id,
                 user_id: reply.user_id,
                 user: {
-                  name: profileNicknameMap.get(reply.user_id) || 'Usuário Anônimo',
+                  nickname: profileNicknameMap.get(reply.user_id) || 'Usuário',
                   email: '' // No longer expose emails for security
                 },
                 userVotes: userVotesMap.get(reply.user_id) || {},
@@ -204,7 +204,7 @@ export const useComments = (profileId: string) => {
           .update({ likes_count: comment.likes_count + 1 })
           .eq('id', commentId);
 
-        // Create notification for comment owner
+        // Create notification for comment owner (using nickname for anonymity)
         const { data: commentData } = await supabase
           .from('comments')
           .select('user_id')
@@ -212,10 +212,17 @@ export const useComments = (profileId: string) => {
           .single();
 
         if (commentData && commentData.user_id !== user.id) {
+          // Get the current user's nickname for notification
+          const { data: currentUserProfile } = await supabase
+            .rpc('get_public_profile_nickname', { p_user_id: user.id })
+            .single();
+          
+          const currentUserNickname = currentUserProfile?.nickname || 'Usuário';
+          
           await supabase.rpc('create_notification', {
             target_user_id: commentData.user_id,
             notification_type: 'like',
-            notification_message: `${user.user_metadata?.name || user.email} curtiu seu comentário`,
+            notification_message: `${currentUserNickname} curtiu seu comentário`,
             target_profile_id: profileId,
             target_comment_id: commentId
           });

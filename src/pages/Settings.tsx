@@ -17,7 +17,6 @@ const Settings = () => {
   const { uploadImage, isUploading } = useImageUpload();
   const { toast } = useToast();
   
-  const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -32,22 +31,19 @@ const Settings = () => {
       try {
         const { data: profile, error } = await supabase
           .from('profiles')
-          .select('name, nickname, avatar_url')
+          .select('nickname, avatar_url')
           .eq('id', user.id)
           .single();
 
         if (error) throw error;
 
         if (profile) {
-          setName(profile.name || "");
           setNickname(profile.nickname || "");
           setProfileImage(profile.avatar_url || "");
         }
       } catch (error) {
         console.error('Error loading profile:', error);
-        // Fallback to user metadata
-        setName(user.user_metadata?.name || "");
-        setProfileImage(user.user_metadata?.avatar_url || "");
+        // No fallback to Google Auth data - maintain anonymity
       } finally {
         setIsLoading(false);
       }
@@ -146,21 +142,10 @@ const Settings = () => {
 
     setIsUpdating(true);
     try {
-      // Update auth user metadata
-      const { error: authError } = await supabase.auth.updateUser({
-        data: {
-          name: name,
-          avatar_url: profileImage
-        }
-      });
-
-      if (authError) throw authError;
-
-      // Update profiles table
+      // Update profiles table only (no auth metadata for anonymity)
       const { error: profileError } = await supabase
         .from('profiles')
         .update({ 
-          name: name,
           nickname: nickname,
           avatar_url: profileImage
         })
@@ -231,9 +216,9 @@ const Settings = () => {
                   {/* Profile Image Section */}
                   <div className="flex flex-col items-center space-y-4">
                     <Avatar className="h-24 w-24">
-                      <AvatarImage src={profileImage} alt={name} />
+                      <AvatarImage src={profileImage} alt={nickname} />
                       <AvatarFallback className="text-2xl">
-                        {nickname ? nickname.charAt(0).toUpperCase() : name.charAt(0).toUpperCase()}
+                        {nickname ? nickname.charAt(0).toUpperCase() : 'U'}
                       </AvatarFallback>
                     </Avatar>
                     <div>
@@ -265,17 +250,6 @@ const Settings = () => {
                     </div>
                   </div>
 
-                  {/* Name Section */}
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nome</Label>
-                    <Input
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Digite seu nome"
-                    />
-                  </div>
-
                   {/* Nickname Section */}
                   <div className="space-y-2">
                     <Label htmlFor="nickname">Nickname</Label>
@@ -293,7 +267,7 @@ const Settings = () => {
                       </div>
                     )}
                     <p className="text-sm text-muted-foreground">
-                      Seu nickname deve ser único e ter pelo menos 3 caracteres.
+                      Seu nickname deve ser único e ter pelo menos 3 caracteres. Este é o nome que aparece nos comentários.
                     </p>
                   </div>
 
