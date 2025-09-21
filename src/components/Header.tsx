@@ -172,12 +172,13 @@ export const Header = () => {
                   >
                     {/* Imagem do perfil */}
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-muted flex-shrink-0">
-                      <img 
-                        src={profile.front_image_url} 
-                        alt={profile.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/placeholder.svg';
+                       <img 
+                         src={profile.front_image_url} 
+                         alt={profile.name}
+                         className="w-full h-full object-cover"
+                         style={{ width: '40px', height: '38px' }}
+                         onError={(e) => {
+                           (e.target as HTMLImageElement).src = '/placeholder.svg';
                         }}
                       />
                     </div>

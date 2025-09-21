@@ -68,11 +68,11 @@ export const ProfileCard = ({
     <Card className="bg-card border-border/50 hover:shadow-card transition-all duration-300 overflow-hidden group">
       <div className="relative cursor-pointer" onClick={() => navigate(`/profile/${id}`)}>
         <div className="relative">
-          <img 
-            src={imageUrl} 
-            alt={name}
-            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105 border-2 border-primary"
-          />
+           <img 
+             src={imageUrl} 
+             alt={name}
+             className="profile-image-thumbnail w-full transition-transform duration-300 group-hover:scale-105 border-2 border-primary rounded-lg"
+           />
           <div className="absolute top-2 left-2 text-lg">
             {countryFlags[country] || "🌎"}
           </div>

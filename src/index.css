@@ -185,3 +185,43 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Classe padronizada para todas as fotos de perfil */
+  .profile-image {
+    width: 640px;
+    height: 607px;
+    object-fit: cover;
+  }
+  
+  /* Versão responsiva para dispositivos menores - mantém proporção 640:607 */
+  .profile-image-responsive {
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 640/607;
+    object-fit: cover;
+  }
+  
+  /* Para carrosséis e displays menores - mantém proporção 640:607 */
+  .profile-image-small {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 640/607;
+    object-fit: cover;
+  }
+  
+  /* Para miniaturas em listas - mantém proporção 640:607 */
+  .profile-image-thumbnail {
+    width: 100%;
+    max-width: 160px;
+    aspect-ratio: 640/607;
+    object-fit: cover;
+  }
+  
+  /* Forçar tamanho fixo quando necessário */
+  .profile-image-fixed {
+    width: 640px !important;
+    height: 607px !important;
+    object-fit: cover;
+  }
+}

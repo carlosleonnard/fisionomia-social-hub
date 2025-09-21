@@ -163,11 +163,11 @@ export default function CategoryPage() {
                   >
                     <Card className="bg-gradient-card border-phindex-teal/20 overflow-hidden">
                       <div className="relative">
-                        <img 
-                          src={profile.front_image_url} 
-                          alt={profile.name}
-                          className="w-full h-48 object-cover"
-                        />
+                         <img 
+                           src={profile.front_image_url} 
+                           alt={profile.name}
+                           className="profile-image-thumbnail rounded-lg"
+                         />
                         <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1">
                           <span className="text-xs font-medium">{profile.country}</span>
                         </div>

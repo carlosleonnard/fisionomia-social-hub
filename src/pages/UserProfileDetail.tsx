@@ -134,11 +134,11 @@ export default function UserProfileDetail() {
                         {images.map((image, index) => (
                           <CarouselItem key={index}>
                             <div className="text-center">
-                              <img 
-                                src={image.src} 
-                                alt={image.alt}
-                                className="w-full max-w-sm mx-auto rounded-lg"
-                              />
+                               <img 
+                                 src={image.src} 
+                                 alt={image.alt}
+                                 className="profile-image-responsive rounded-lg mx-auto"
+                               />
                               <p className="text-xs text-muted-foreground mt-2">{image.label}</p>
                             </div>
                           </CarouselItem>

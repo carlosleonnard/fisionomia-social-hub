@@ -94,11 +94,11 @@ const Index = () => {
                               <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
                                   <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
-                                    <img 
-                                      src={profile.front_image_url} 
-                                      alt={profile.name}
-                                      className="w-full h-full rounded-full object-cover"
-                                    />
+                                     <img 
+                                       src={profile.front_image_url} 
+                                       alt={profile.name}
+                                       className="profile-image-small rounded-full"
+                                     />
                                   </div>
                                <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
                                  <Vote className="h-2.5 w-2.5" />
@@ -161,11 +161,11 @@ const Index = () => {
                               <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                                 <div className="relative mb-1">
                                   <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
-                                    <img 
-                                      src={profile.front_image_url} 
-                                      alt={profile.name}
-                                      className="w-full h-full rounded-full object-cover"
-                                    />
+                                     <img 
+                                       src={profile.front_image_url} 
+                                       alt={profile.name}
+                                       className="profile-image-small rounded-full"
+                                     />
                                   </div>
                                <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
                                  <Vote className="h-2.5 w-2.5" />
@@ -226,11 +226,11 @@ const Index = () => {
                             <div className="flex flex-col items-center p-1 rounded-lg hover:bg-accent/50 transition-colors">
                               <div className="relative mb-1">
                                 <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-primary p-1 cursor-pointer bg-primary/10">
-                                  <img 
-                                    src={profile.front_image_url} 
-                                    alt={profile.name}
-                                    className="w-full h-full rounded-full object-cover"
-                                  />
+                                   <img 
+                                     src={profile.front_image_url} 
+                                     alt={profile.name}
+                                     className="profile-image-small rounded-full"
+                                   />
                                 </div>
                              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
                                <Vote className="h-2.5 w-2.5" />

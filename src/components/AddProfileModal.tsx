@@ -255,11 +255,12 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   />
                   {formData.frontImageUrl ? (
                     <div className="relative inline-block">
-                      <img 
-                        src={formData.frontImageUrl} 
-                        alt="Preview Frente" 
-                        className="w-16 h-16 rounded-lg mx-auto object-cover"
-                      />
+                       <img 
+                         src={formData.frontImageUrl} 
+                         alt="Preview Frente" 
+                         className="w-20 h-19 rounded-lg mx-auto object-cover"
+                         style={{ aspectRatio: '640/607' }}
+                       />
                       <Button
                         type="button"
                         variant="ghost"
@@ -306,11 +307,12 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   />
                   {formData.profileImageUrl ? (
                     <div className="relative inline-block">
-                      <img 
-                        src={formData.profileImageUrl} 
-                        alt="Preview Perfil" 
-                        className="w-16 h-16 rounded-lg mx-auto object-cover"
-                      />
+                       <img 
+                         src={formData.profileImageUrl} 
+                         alt="Preview Perfil" 
+                         className="w-20 h-19 rounded-lg mx-auto object-cover"
+                         style={{ aspectRatio: '640/607' }}
+                       />
                       <Button
                         type="button"
                         variant="ghost"

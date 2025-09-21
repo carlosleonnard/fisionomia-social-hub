@@ -59,11 +59,11 @@ export const UserProfilesList = () => {
             <Card className="bg-gradient-card border-border/50 hover:border-primary/50 transition-all duration-300 group-hover:shadow-lg">
               <CardContent className="p-4">
                 <div className="relative overflow-hidden rounded-lg mb-4">
-                  <img
-                    src={profile.front_image_url}
-                    alt={profile.name}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
+                   <img
+                     src={profile.front_image_url}
+                     alt={profile.name}
+                     className="profile-image-thumbnail rounded-lg transition-transform duration-300 group-hover:scale-105"
+                   />
                   <div className="absolute top-2 right-2">
                     <Badge variant={profile.is_anonymous ? "secondary" : "default"} className="text-xs">
                       {profile.is_anonymous ? "Anônimo" : "Famoso"}
