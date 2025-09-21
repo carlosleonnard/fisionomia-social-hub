@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { CountrySelector } from "@/components/CountrySelector";
 import { useUserProfiles, UserProfile } from "@/hooks/use-user-profiles";
 import { useImageUpload } from "@/hooks/use-image-upload";
 
@@ -24,7 +24,7 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
     gender: profile.gender,
     category: profile.category,
     height: profile.height.toString(),
-    ancestry: profile.ancestry,
+    ancestry: profile.ancestry ? profile.ancestry.split(', ') : [], // Convert string to array
     frontImageUrl: profile.front_image_url,
     profileImageUrl: profile.profile_image_url || "",
     isAnonymous: profile.is_anonymous
@@ -53,7 +53,7 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
           gender: formData.gender,
           category: formData.category,
           height: parseFloat(formData.height),
-          ancestry: formData.ancestry,
+          ancestry: formData.ancestry.join(', '), // Convert array to string
           frontImageUrl: formData.frontImageUrl,
           profileImageUrl: formData.profileImageUrl,
           isAnonymous: formData.isAnonymous
@@ -352,14 +352,13 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
 
           <div className="space-y-2">
             <Label htmlFor="ancestry">Ancestralidade Conhecida *</Label>
-            <Textarea
-              id="ancestry"
-              placeholder="Descreva a ancestralidade conhecida..."
-              value={formData.ancestry}
-              onChange={(e) => setFormData(prev => ({ ...prev, ancestry: e.target.value }))}
-              rows={3}
-              required
+            <CountrySelector
+              selectedCountries={formData.ancestry}
+              onCountriesChange={(countries) => setFormData(prev => ({ ...prev, ancestry: countries }))}
+              placeholder="Digite para buscar países de ancestralidade..."
+              maxCountries={5}
             />
+            <p className="text-xs text-muted-foreground">Selecione até 5 países que representam a ancestralidade conhecida</p>
           </div>
 
           <div className="flex gap-2 pt-4">
