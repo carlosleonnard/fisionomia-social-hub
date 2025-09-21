@@ -104,9 +104,9 @@ const Index = () => {
                                  <Vote className="h-2.5 w-2.5" />
                                   <span className="text-xs">{(profile as any).vote_count || 0}</span>
                                </div>
-                                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
-                                   {countryCodes[profile.country] || "XXX"}
-                                 </div>
+                                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded max-w-[9rem] truncate" title={(profile as any).most_voted_phenotype || ""}>
+                                    {(profile as any).most_voted_phenotype || "—"}
+                                  </div>
                                {index < 3 && (
                                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                                    #{index + 1}
@@ -171,9 +171,9 @@ const Index = () => {
                                  <Vote className="h-2.5 w-2.5" />
                                  <span className="text-xs">{(profile as any).vote_count || 0}</span>
                                </div>
-                                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
-                                   {countryCodes[profile.country] || "XXX"}
-                                 </div>
+                                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded max-w-[9rem] truncate" title={(profile as any).most_voted_phenotype || ""}>
+                                    {(profile as any).most_voted_phenotype || "—"}
+                                  </div>
                                {index < 3 && (
                                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                                    #{index + 1}
@@ -236,8 +236,8 @@ const Index = () => {
                                <Vote className="h-2.5 w-2.5" />
                                <span className="text-xs">{(profile as any).vote_count || 0}</span>
                              </div>
-                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
-                                 {countryCodes[profile.country] || "XXX"}
+                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded max-w-[9rem] truncate" title={(profile as any).most_voted_phenotype || ""}>
+                                 {(profile as any).most_voted_phenotype || "—"}
                                </div>
                               </div>
                              <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
