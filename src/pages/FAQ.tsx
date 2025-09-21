@@ -7,6 +7,10 @@ import { HelpCircle } from "lucide-react";
 const FAQ = () => {
   const faqData = [
     {
+      question: "What is a phenotype?",
+      answer: "A phenotype is an individual's observable physical, biochemical, and behavioral characteristics, such as height, eye color, or blood type, which are determined by both their genotype (genetic makeup) and environmental factors, like diet and exercise. The list of phenotypes presented on this website is a partial list that will be updated as we develop our community further."
+    },
+    {
       question: "What is Phindex?",
       answer: "Phindex is a platform for classification and discussion of physical phenotypes. Users can create profiles, vote on classifications, and participate in discussions about phenotypic diversity."
     },
