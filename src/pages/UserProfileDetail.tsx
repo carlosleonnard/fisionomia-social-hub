@@ -39,16 +39,25 @@ export default function UserProfileDetail() {
     enabled: !!slug,
   });
 
-  // Get total vote count for this profile
+  // Get total vote count for this profile (unique voters only)
   const { data: totalVoteCount = 0 } = useQuery({
     queryKey: ['total-votes', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return 0;
-      const { data: allVotes } = await supabase
+      
+      const { data, error } = await supabase
         .from('votes')
-        .select('id')
+        .select('user_id')
         .eq('profile_id', profile.slug);
-      return allVotes?.length || 0;
+      
+      if (error) {
+        console.error('Error counting voters:', error);
+        return 0;
+      }
+      
+      // Count unique voters
+      const uniqueVoters = new Set(data?.map(vote => vote.user_id) || []);
+      return uniqueVoters.size;
     },
     enabled: !!profile?.id,
   });
