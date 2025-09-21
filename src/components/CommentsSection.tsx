@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Send, Heart, MoreHorizontal, Trash2 } from "lucide-react";
+import { Send, Heart, MoreHorizontal, Trash2, Flag } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +53,7 @@ export const CommentsSection = ({
   onDeleteComment,
   currentUserId
  }: CommentsSectionProps) => {
+  const navigate = useNavigate();
   const [newComment, setNewComment] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
@@ -155,6 +157,13 @@ export const CommentsSection = ({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur border-border/50">
+                      <DropdownMenuItem 
+                        className="cursor-pointer"
+                        onClick={() => navigate('/faq')}
+                      >
+                        <Flag className="h-3 w-3 mr-2" />
+                        Report comment
+                      </DropdownMenuItem>
                       {currentUserId === comment.user_id && (
                         <DropdownMenuItem 
                           className="cursor-pointer text-destructive"
@@ -264,12 +273,21 @@ export const CommentsSection = ({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur border-border/50">
                               <DropdownMenuItem 
-                                className="cursor-pointer text-destructive"
-                                onClick={() => onDeleteComment(reply.id)}
+                                className="cursor-pointer"
+                                onClick={() => navigate('/faq')}
                               >
-                                <Trash2 className="h-3 w-3 mr-2" />
-                                Delete reply
+                                <Flag className="h-3 w-3 mr-2" />
+                                Report reply
                               </DropdownMenuItem>
+                              {currentUserId === reply.user_id && (
+                                <DropdownMenuItem 
+                                  className="cursor-pointer text-destructive"
+                                  onClick={() => onDeleteComment(reply.id)}
+                                >
+                                  <Trash2 className="h-3 w-3 mr-2" />
+                                  Delete reply
+                                </DropdownMenuItem>
+                              )}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         )}
