@@ -4,7 +4,10 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Upload, Image as ImageIcon } from "lucide-react";
+import { Upload, Image as ImageIcon, X } from "lucide-react";
+import { useImageUpload } from "@/hooks/use-image-upload";
+import { useState, useRef } from "react";
+import { toast } from "sonner";
 
 const phenotypeData = {
   "Northern America": [
@@ -154,6 +157,59 @@ const phenotypeRegions = [
 ];
 
 export default function PhenotypeFlowPage() {
+  const { uploadImage, isUploading } = useImageUpload();
+  const [uploadedImages, setUploadedImages] = useState<Record<string, { male?: string; female?: string }>>({});
+  const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const getImageKey = (phenotype: string, gender: 'male' | 'female') => `${phenotype}-${gender}`;
+
+  const handleFileSelect = async (phenotype: string, gender: 'male' | 'female', file: File) => {
+    try {
+      const imageUrl = await uploadImage(file, 'profile');
+      if (imageUrl) {
+        setUploadedImages(prev => ({
+          ...prev,
+          [phenotype]: {
+            ...prev[phenotype],
+            [gender]: imageUrl
+          }
+        }));
+        toast.success(`${gender} photo uploaded successfully for ${phenotype}`);
+      } else {
+        toast.error("Failed to upload image");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("Failed to upload image");
+    }
+  };
+
+  const handleUploadClick = (phenotype: string, gender: 'male' | 'female') => {
+    const key = getImageKey(phenotype, gender);
+    const input = fileInputRefs.current[key];
+    if (input) {
+      input.click();
+    }
+  };
+
+  const handleFileChange = (phenotype: string, gender: 'male' | 'female') => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileSelect(phenotype, gender, file);
+    }
+  };
+
+  const removeImage = (phenotype: string, gender: 'male' | 'female') => {
+    setUploadedImages(prev => ({
+      ...prev,
+      [phenotype]: {
+        ...prev[phenotype],
+        [gender]: undefined
+      }
+    }));
+    toast.success(`${gender} photo removed for ${phenotype}`);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -196,14 +252,46 @@ export default function PhenotypeFlowPage() {
                                   <div className="space-y-3">
                                     <h5 className="text-md font-medium text-muted-foreground">Male</h5>
                                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
-                                      <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                                      <p className="text-sm text-muted-foreground mb-3">
-                                        No male reference photo
-                                      </p>
-                                      <Button variant="outline" size="sm">
-                                        <Upload className="h-4 w-4 mr-2" />
-                                        Upload Male Photo
-                                      </Button>
+                                      {uploadedImages[phenotype]?.male ? (
+                                        <div className="relative">
+                                          <img 
+                                            src={uploadedImages[phenotype].male} 
+                                            alt={`${phenotype} male reference`}
+                                            className="max-h-48 mx-auto rounded object-cover"
+                                          />
+                                          <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            className="absolute top-2 right-2"
+                                            onClick={() => removeImage(phenotype, 'male')}
+                                          >
+                                            <X className="h-4 w-4" />
+                                          </Button>
+                                        </div>
+                                      ) : (
+                                        <>
+                                          <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                                          <p className="text-sm text-muted-foreground mb-3">
+                                            No male reference photo
+                                          </p>
+                                          <Button 
+                                            variant="outline" 
+                                            size="sm"
+                                            onClick={() => handleUploadClick(phenotype, 'male')}
+                                            disabled={isUploading}
+                                          >
+                                            <Upload className="h-4 w-4 mr-2" />
+                                            {isUploading ? 'Uploading...' : 'Upload Male Photo'}
+                                          </Button>
+                                        </>
+                                      )}
+                                      <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        ref={(el) => fileInputRefs.current[getImageKey(phenotype, 'male')] = el}
+                                        onChange={handleFileChange(phenotype, 'male')}
+                                      />
                                     </div>
                                   </div>
                                   
@@ -211,14 +299,46 @@ export default function PhenotypeFlowPage() {
                                   <div className="space-y-3">
                                     <h5 className="text-md font-medium text-muted-foreground">Female</h5>
                                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
-                                      <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                                      <p className="text-sm text-muted-foreground mb-3">
-                                        No female reference photo
-                                      </p>
-                                      <Button variant="outline" size="sm">
-                                        <Upload className="h-4 w-4 mr-2" />
-                                        Upload Female Photo
-                                      </Button>
+                                      {uploadedImages[phenotype]?.female ? (
+                                        <div className="relative">
+                                          <img 
+                                            src={uploadedImages[phenotype].female} 
+                                            alt={`${phenotype} female reference`}
+                                            className="max-h-48 mx-auto rounded object-cover"
+                                          />
+                                          <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            className="absolute top-2 right-2"
+                                            onClick={() => removeImage(phenotype, 'female')}
+                                          >
+                                            <X className="h-4 w-4" />
+                                          </Button>
+                                        </div>
+                                      ) : (
+                                        <>
+                                          <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                                          <p className="text-sm text-muted-foreground mb-3">
+                                            No female reference photo
+                                          </p>
+                                          <Button 
+                                            variant="outline" 
+                                            size="sm"
+                                            onClick={() => handleUploadClick(phenotype, 'female')}
+                                            disabled={isUploading}
+                                          >
+                                            <Upload className="h-4 w-4 mr-2" />
+                                            {isUploading ? 'Uploading...' : 'Upload Female Photo'}
+                                          </Button>
+                                        </>
+                                      )}
+                                      <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        ref={(el) => fileInputRefs.current[getImageKey(phenotype, 'female')] = el}
+                                        onChange={handleFileChange(phenotype, 'female')}
+                                      />
                                     </div>
                                   </div>
                                 </div>
