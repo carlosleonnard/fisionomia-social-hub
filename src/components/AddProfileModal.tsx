@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { CountrySelector } from "@/components/CountrySelector";
+import { CountrySearchSelector } from "@/components/CountrySearchSelector";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { useImageUpload } from "@/hooks/use-image-upload";
@@ -393,65 +394,12 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
               
               <div className="space-y-2">
                 <Label htmlFor="country">Country *</Label>
-                <select
-                  id="country"
-                  value={formData.country}
-                  onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
-                  className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                <CountrySearchSelector
+                  selectedCountry={formData.country}
+                  onCountryChange={(country) => setFormData(prev => ({ ...prev, country }))}
+                  placeholder="Search and select country"
                   required
-                >
-                  <option value="">Select country</option>
-                  <option value="Afghanistan">Afghanistan</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Germany">Germany</option>
-                  <option value="Argentina">Argentina</option>
-                  <option value="Australia">Australia</option>
-                  <option value="Austria">Austria</option>
-                  <option value="Belgium">Belgium</option>
-                  <option value="Bolivia">Bolivia</option>
-                  <option value="Brazil">Brazil</option>
-                  <option value="Canada">Canada</option>
-                  <option value="Chile">Chile</option>
-                  <option value="China">China</option>
-                  <option value="Colombia">Colombia</option>
-                  <option value="South Korea">South Korea</option>
-                  <option value="Costa Rica">Costa Rica</option>
-                  <option value="Cuba">Cuba</option>
-                  <option value="Denmark">Denmark</option>
-                  <option value="Ecuador">Ecuador</option>
-                  <option value="Spain">Spain</option>
-                  <option value="United States">United States</option>
-                  <option value="Finland">Finland</option>
-                  <option value="France">France</option>
-                  <option value="Greece">Greece</option>
-                  <option value="Guatemala">Guatemala</option>
-                  <option value="Honduras">Honduras</option>
-                  <option value="India">India</option>
-                  <option value="Indonesia">Indonesia</option>
-                  <option value="Ireland">Ireland</option>
-                  <option value="Iceland">Iceland</option>
-                  <option value="Israel">Israel</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Japan">Japan</option>
-                  <option value="Mexico">Mexico</option>
-                  <option value="Nicaragua">Nicaragua</option>
-                  <option value="Norway">Norway</option>
-                  <option value="New Zealand">New Zealand</option>
-                  <option value="Panama">Panama</option>
-                  <option value="Paraguay">Paraguay</option>
-                  <option value="Peru">Peru</option>
-                  <option value="Poland">Poland</option>
-                  <option value="Portugal">Portugal</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Dominican Republic">Dominican Republic</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Sweden">Sweden</option>
-                  <option value="Switzerland">Switzerland</option>
-                  <option value="Turkey">Turkey</option>
-                  <option value="Ukraine">Ukraine</option>
-                  <option value="Uruguay">Uruguay</option>
-                  <option value="Venezuela">Venezuela</option>
-                </select>
+                />
               </div>
             </div>
 
