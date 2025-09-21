@@ -87,8 +87,8 @@ export const useVoting = (profileId: string) => {
       await fetchVotes(); // Refresh vote counts
 
       toast({
-        title: "Voto registrado!",
-        description: `Você votou em ${classification}`,
+        title: "Vote registered!",
+        description: `You voted for ${classification}`,
       });
 
       return true;
@@ -133,14 +133,14 @@ export const useVoting = (profileId: string) => {
       await fetchVotes(); // Refresh vote counts
 
       toast({
-        title: "Voto atualizado!",
-        description: `Você mudou seu voto para ${newClassification}`,
+        title: "Vote updated!",
+        description: `You changed your vote to ${newClassification}`,
       });
 
       return true;
     } catch (error: any) {
       toast({
-        title: "Erro ao atualizar voto",
+        title: "Error updating vote",
         description: error.message,
         variant: "destructive",
       });

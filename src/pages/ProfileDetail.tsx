@@ -388,7 +388,7 @@ export default function ProfileDetail() {
 
                   {/* Created By Information */}
                   <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
-                    Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : 'Data não disponível'}
+                    Created by <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'User'}</span> on {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('en-US') : 'Date not available'}
                   </p>
                   
                   <div className="flex justify-center gap-4 mb-6">
@@ -414,7 +414,7 @@ export default function ProfileDetail() {
                       }}
                     >
                       <MessageSquare className="h-4 w-4 text-blue-500" />
-                      <span>{realComments.length} comentários</span>
+                      <span>{realComments.length} comments</span>
                     </div>
                   </div>
 

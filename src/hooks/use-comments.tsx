@@ -67,7 +67,7 @@ export const useComments = (profileId: string) => {
           const { data } = await supabase
             .rpc('get_public_profile_nickname', { p_user_id: userId })
             .single();
-          return { userId, nickname: data?.nickname || 'Usuário' };
+          return { userId, nickname: data?.nickname || 'User' };
         });
         
         const profileNicknames = await Promise.all(profileNicknamesPromises);
@@ -83,7 +83,7 @@ export const useComments = (profileId: string) => {
             parent_comment_id: comment.parent_comment_id,
             user_id: comment.user_id,
             user: {
-              nickname: profileNicknameMap.get(comment.user_id) || 'Usuário',
+              nickname: profileNicknameMap.get(comment.user_id) || 'User',
               email: '' // No longer expose emails for security
             },
             userVotes: userVotesMap.get(comment.user_id) || {},
@@ -98,7 +98,7 @@ export const useComments = (profileId: string) => {
                 parent_comment_id: reply.parent_comment_id,
                 user_id: reply.user_id,
                 user: {
-                  nickname: profileNicknameMap.get(reply.user_id) || 'Usuário',
+                  nickname: profileNicknameMap.get(reply.user_id) || 'User',
                   email: '' // No longer expose emails for security
                 },
                 userVotes: userVotesMap.get(reply.user_id) || {},
@@ -153,12 +153,12 @@ export const useComments = (profileId: string) => {
             .rpc('get_public_profile_nickname', { p_user_id: user.id })
             .single();
           
-          const currentUserNickname = currentUserProfile?.nickname || 'Usuário';
+          const currentUserNickname = currentUserProfile?.nickname || 'User';
           
           await supabase.rpc('create_notification', {
             target_user_id: parentComment.user_id,
             notification_type: 'reply',
-            notification_message: `${currentUserNickname} respondeu seu comentário`,
+            notification_message: `${currentUserNickname} replied to your comment`,
             target_profile_id: profileId,
             target_comment_id: parentCommentId
           });
@@ -168,8 +168,8 @@ export const useComments = (profileId: string) => {
       await fetchComments(); // Refresh comments
 
       toast({
-        title: "Comentário adicionado!",
-        description: "Seu comentário foi publicado com sucesso",
+        title: "Comment added!",
+        description: "Your comment has been posted successfully",
       });
 
       return true;
@@ -254,12 +254,12 @@ export const useComments = (profileId: string) => {
             .rpc('get_public_profile_nickname', { p_user_id: user.id })
             .single();
           
-          const currentUserNickname = currentUserProfile?.nickname || 'Usuário';
+          const currentUserNickname = currentUserProfile?.nickname || 'User';
           
           await supabase.rpc('create_notification', {
             target_user_id: commentData.user_id,
             notification_type: 'like',
-            notification_message: `${currentUserNickname} curtiu seu comentário`,
+            notification_message: `${currentUserNickname} liked your comment`,
             target_profile_id: profileId,
             target_comment_id: commentId
           });
@@ -299,8 +299,8 @@ export const useComments = (profileId: string) => {
       await fetchComments(); // Refresh comments
 
       toast({
-        title: "Comentário excluído!",
-        description: "Seu comentário foi removido com sucesso",
+        title: "Comment deleted!",
+        description: "Your comment has been removed successfully",
       });
     } catch (error: any) {
       toast({

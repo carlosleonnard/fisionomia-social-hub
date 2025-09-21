@@ -30,7 +30,7 @@ export const useProfileCreator = (profileId: string) => {
       }
 
       return {
-        creatorName: creatorData?.nickname || 'Usuário',
+        creatorName: creatorData?.nickname || 'User',
         createdAt: profileData.created_at
       };
     },

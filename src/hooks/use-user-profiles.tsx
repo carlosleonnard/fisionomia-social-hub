@@ -218,7 +218,7 @@ export const useUserProfiles = () => {
   const createProfile = useMutation({
     mutationFn: async (profileData: CreateUserProfileData) => {
       if (!user?.id) {
-        throw new Error('Usuário não autenticado');
+        throw new Error('User not authenticated');
       }
 
       // Generate slug from name
@@ -264,7 +264,7 @@ export const useUserProfiles = () => {
   const updateProfile = useMutation({
     mutationFn: async ({ id, profileData }: { id: string; profileData: Partial<CreateUserProfileData> }) => {
       if (!user?.id) {
-        throw new Error('Usuário não autenticado');
+        throw new Error('User not authenticated');
       }
 
       let updateData: any = {
@@ -312,7 +312,7 @@ export const useUserProfiles = () => {
   const deleteProfile = useMutation({
     mutationFn: async (profileId: string) => {
       if (!user?.id) {
-        throw new Error('Usuário não autenticado');
+        throw new Error('User not authenticated');
       }
 
       const { error } = await supabase
