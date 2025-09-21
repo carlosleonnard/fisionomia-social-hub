@@ -166,12 +166,6 @@ export const CommentsSection = ({
                           Delete comment
                         </DropdownMenuItem>
                       )}
-                      <DropdownMenuItem className="cursor-pointer">
-                        Report
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer text-destructive">
-                        Block user
-                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
