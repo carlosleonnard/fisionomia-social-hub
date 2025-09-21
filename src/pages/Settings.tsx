@@ -157,10 +157,6 @@ const Settings = () => {
         title: "Perfil atualizado",
         description: "Suas informações foram salvas com sucesso.",
       });
-      
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error: any) {
       console.error('Error updating profile:', error);
       
