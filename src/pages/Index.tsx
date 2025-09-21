@@ -19,6 +19,8 @@ import { AppSidebar } from "@/components/AppSidebar";   // Barra lateral de nave
 import { AddProfileModal } from "@/components/AddProfileModal"; // Modal de criação de perfil
 // Hook customizado para gerenciar perfis de usuário
 import { useUserProfiles } from "@/hooks/use-user-profiles";
+// Componente customizado para contagem de votos únicos
+import { UniqueVoteCounter } from "@/components/UniqueVoteCounter";
 // Componentes de UI do sistema de design
 import { Card } from "@/components/ui/card";            // Cards para layout
 import { Badge } from "@/components/ui/badge";          // Badges para indicadores
@@ -100,13 +102,7 @@ const Index = () => {
                                        className="profile-image-small rounded-full"
                                      />
                                   </div>
-                               <div 
-                                 className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1"
-                                 title={`${(profile as any).vote_count || 0} usuário(s) votaram neste perfil`}
-                               >
-                                  <Vote className="h-2.5 w-2.5" />
-                                   <span className="text-xs">{(profile as any).vote_count || 0}</span>
-                                </div>
+                                <UniqueVoteCounter profileSlug={profile.slug} />
                                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
                                    {countryCodes[profile.country] || "XXX"}
                                  </div>
@@ -170,10 +166,7 @@ const Index = () => {
                                        className="profile-image-small rounded-full"
                                      />
                                   </div>
-                               <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                                 <Vote className="h-2.5 w-2.5" />
-                                 <span className="text-xs">{(profile as any).vote_count || 0}</span>
-                               </div>
+                                <UniqueVoteCounter profileSlug={profile.slug} />
                                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
                                    {countryCodes[profile.country] || "XXX"}
                                  </div>
@@ -235,10 +228,7 @@ const Index = () => {
                                      className="profile-image-small rounded-full"
                                    />
                                 </div>
-                             <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                               <Vote className="h-2.5 w-2.5" />
-                               <span className="text-xs">{(profile as any).vote_count || 0}</span>
-                             </div>
+                              <UniqueVoteCounter profileSlug={profile.slug} />
                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
                                  {countryCodes[profile.country] || "XXX"}
                                </div>
