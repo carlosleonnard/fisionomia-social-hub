@@ -447,10 +447,6 @@ export type Database = {
         Args: { primary_text: string }
         Returns: string
       }
-      count_unique_voters_for_profile: {
-        Args: { profile_slug: string }
-        Returns: number
-      }
       create_notification: {
         Args: {
           notification_message: string

@@ -93,19 +93,16 @@ export const useUserProfiles = () => {
       // 2. Para cada perfil, conta quantos votos ele recebeu
       const profilesWithVotes = await Promise.all(
         (profilesData || []).map(async (profile) => {
-          // Busca e conta usuários únicos que votaram neste perfil
+          // Busca todos os votos para este perfil específico
           const { data: votesData } = await supabase
             .from('votes')
-            .select('user_id')                 // Seleciona apenas user_id
+            .select('id')                      // Só precisa do ID para contar
             .eq('profile_id', profile.slug);   // Filtra pelo slug do perfil
 
-          // Conta usuários únicos usando Set para remover duplicatas
-          const uniqueVoters = new Set(votesData?.map(vote => vote.user_id) || []);
-
-          // Retorna o perfil original + contagem de usuários únicos que votaram
+          // Retorna o perfil original + contagem de votos
           return {
             ...profile,
-            vote_count: uniqueVoters.size        // Quantidade de usuários únicos
+            vote_count: votesData?.length || 0   // Conta ou 0 se não houver votos
           };
         })
       );
@@ -125,20 +122,17 @@ export const useUserProfiles = () => {
 
       if (profilesError) throw profilesError;
 
-      // Obter contagem de usuários únicos que votaram em cada perfil
+      // Get vote counts for each profile
       const profilesWithVotes = await Promise.all(
         (profilesData || []).map(async (profile) => {
           const { data: votesData } = await supabase
             .from('votes')
-            .select('user_id')                 // Seleciona apenas user_id
+            .select('id')
             .eq('profile_id', profile.slug);
-
-          // Conta usuários únicos usando Set para remover duplicatas
-          const uniqueVoters = new Set(votesData?.map(vote => vote.user_id) || []);
 
           return {
             ...profile,
-            vote_count: uniqueVoters.size      // Quantidade de usuários únicos
+            vote_count: votesData?.length || 0
           };
         })
       );

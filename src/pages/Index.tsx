@@ -19,9 +19,6 @@ import { AppSidebar } from "@/components/AppSidebar";   // Barra lateral de nave
 import { AddProfileModal } from "@/components/AddProfileModal"; // Modal de criação de perfil
 // Hook customizado para gerenciar perfis de usuário
 import { useUserProfiles } from "@/hooks/use-user-profiles";
-// Componente customizado para contagem de votos únicos
-import { UniqueVoteCounter } from "@/components/UniqueVoteCounter";
-import { MostVotedPhenotype } from "@/components/MostVotedPhenotype";
 // Componentes de UI do sistema de design
 import { Card } from "@/components/ui/card";            // Cards para layout
 import { Badge } from "@/components/ui/badge";          // Badges para indicadores
@@ -103,8 +100,13 @@ const Index = () => {
                                        className="profile-image-small rounded-full"
                                      />
                                   </div>
-                                <UniqueVoteCounter profileSlug={profile.slug} />
-                                <MostVotedPhenotype profileSlug={profile.slug} />
+                               <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                 <Vote className="h-2.5 w-2.5" />
+                                  <span className="text-xs">{(profile as any).vote_count || 0}</span>
+                               </div>
+                                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                   {countryCodes[profile.country] || "XXX"}
+                                 </div>
                                {index < 3 && (
                                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                                    #{index + 1}
@@ -165,8 +167,13 @@ const Index = () => {
                                        className="profile-image-small rounded-full"
                                      />
                                   </div>
-                                <UniqueVoteCounter profileSlug={profile.slug} />
-                                <MostVotedPhenotype profileSlug={profile.slug} />
+                               <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                 <Vote className="h-2.5 w-2.5" />
+                                 <span className="text-xs">{(profile as any).vote_count || 0}</span>
+                               </div>
+                                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                   {countryCodes[profile.country] || "XXX"}
+                                 </div>
                                {index < 3 && (
                                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                                    #{index + 1}
@@ -225,8 +232,13 @@ const Index = () => {
                                      className="profile-image-small rounded-full"
                                    />
                                 </div>
-                              <UniqueVoteCounter profileSlug={profile.slug} />
-                               <MostVotedPhenotype profileSlug={profile.slug} />
+                             <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                               <Vote className="h-2.5 w-2.5" />
+                               <span className="text-xs">{(profile as any).vote_count || 0}</span>
+                             </div>
+                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs bg-background/80 px-1 py-0.5 rounded">
+                                 {countryCodes[profile.country] || "XXX"}
+                               </div>
                               </div>
                              <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
                              <p className="text-xs text-muted-foreground text-center">{profile.category}</p>
