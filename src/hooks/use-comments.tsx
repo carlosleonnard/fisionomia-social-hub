@@ -34,8 +34,10 @@ export const useComments = (profileId: string) => {
         .order('created_at', { ascending: false });
 
       if (commentsData) {
-        // Check which comments the current user has liked
+        // Check which comments the current user has liked and get like counts
         let userLikes: string[] = [];
+        const likeCounts = new Map<string, number>();
+        
         if (user) {
           const { data: likesData } = await supabase
             .from('comment_likes')
@@ -43,6 +45,31 @@ export const useComments = (profileId: string) => {
             .eq('user_id', user.id);
           
           userLikes = likesData?.map(like => like.comment_id) || [];
+        }
+
+        // Get unique user counts for each comment
+        const { data: allLikesData } = await supabase
+          .from('comment_likes')
+          .select('comment_id, user_id');
+
+        if (allLikesData) {
+          allLikesData.forEach(like => {
+            const current = likeCounts.get(like.comment_id) || 0;
+            likeCounts.set(like.comment_id, current);
+          });
+          
+          // Count unique users for each comment
+          const uniqueUserCounts = new Map<string, Set<string>>();
+          allLikesData.forEach(like => {
+            if (!uniqueUserCounts.has(like.comment_id)) {
+              uniqueUserCounts.set(like.comment_id, new Set());
+            }
+            uniqueUserCounts.get(like.comment_id)!.add(like.user_id);
+          });
+          
+          uniqueUserCounts.forEach((userSet, commentId) => {
+            likeCounts.set(commentId, userSet.size);
+          });
         }
 
         // Get user votes for this profile to show next to names
@@ -79,7 +106,7 @@ export const useComments = (profileId: string) => {
             id: comment.id,
             content: comment.content,
             created_at: comment.created_at,
-            likes_count: comment.likes_count,
+            likes_count: likeCounts.get(comment.id) || 0,
             parent_comment_id: comment.parent_comment_id,
             user_id: comment.user_id,
             user: {
@@ -94,7 +121,7 @@ export const useComments = (profileId: string) => {
                 id: reply.id,
                 content: reply.content,
                 created_at: reply.created_at,
-                likes_count: reply.likes_count,
+                likes_count: likeCounts.get(reply.id) || 0,
                 parent_comment_id: reply.parent_comment_id,
                 user_id: reply.user_id,
                 user: {
@@ -205,7 +232,7 @@ export const useComments = (profileId: string) => {
       // Get current comment data
       const { data: commentData } = await supabase
         .from('comments')
-        .select('likes_count, user_id')
+        .select('user_id')
         .eq('id', commentId)
         .single();
 
@@ -220,14 +247,6 @@ export const useComments = (profileId: string) => {
           .eq('comment_id', commentId);
 
         if (deleteError) throw deleteError;
-
-        // Update likes count
-        const { error: updateError } = await supabase
-          .from('comments')
-          .update({ likes_count: Math.max(0, commentData.likes_count - 1) })
-          .eq('id', commentId);
-
-        if (updateError) throw updateError;
       } else {
         // Like the comment
         const { error: insertError } = await supabase
@@ -238,14 +257,6 @@ export const useComments = (profileId: string) => {
           });
 
         if (insertError) throw insertError;
-
-        // Update likes count
-        const { error: updateError } = await supabase
-          .from('comments')
-          .update({ likes_count: commentData.likes_count + 1 })
-          .eq('id', commentId);
-
-        if (updateError) throw updateError;
 
         // Create notification for comment owner (using nickname for anonymity)
         if (commentData.user_id !== user.id) {
