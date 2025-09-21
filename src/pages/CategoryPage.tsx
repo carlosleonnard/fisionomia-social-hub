@@ -100,22 +100,22 @@ export default function CategoryPage() {
       <Header />
       
       <div className="container mx-auto px-4 py-8 flex-1">
-        {/* Botão de voltar fixo no topo */}
-        <div className="fixed top-20 left-4 z-50 lg:left-[340px]">
-          <Button 
-            onClick={() => navigate("/")} 
-            variant="secondary"
-            size="sm"
-            className="bg-card/90 backdrop-blur-sm border border-border/50 hover:bg-card shadow-lg"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Voltar
-          </Button>
-        </div>
-
         <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
           <AppSidebar />
+
+          {/* Botão de voltar fixo acima do perfil */}
+          <div className="sticky top-20 z-40 mb-6">
+            <Button 
+              onClick={() => navigate("/")} 
+              variant="secondary"
+              size="sm"
+              className="bg-card/95 backdrop-blur-sm border border-border/50 hover:bg-card shadow-lg"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Voltar
+            </Button>
+          </div>
 
           {/* Main Content */}
           <div>
