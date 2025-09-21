@@ -5,35 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-const COUNTRIES = [
-  'Afeganistão', 'África do Sul', 'Albânia', 'Alemanha', 'Andorra', 'Angola', 'Antígua e Barbuda',
-  'Arábia Saudita', 'Argélia', 'Argentina', 'Armênia', 'Austrália', 'Áustria', 'Azerbaijão',
-  'Bahamas', 'Bahrein', 'Bangladesh', 'Barbados', 'Bélgica', 'Belize', 'Benin', 'Bielorrússia',
-  'Bolívia', 'Bósnia e Herzegovina', 'Botsuana', 'Brasil', 'Brunei', 'Bulgária', 'Burkina Faso',
-  'Burundi', 'Butão', 'Cabo Verde', 'Camarões', 'Camboja', 'Canadá', 'Catar', 'Cazaquistão',
-  'Chade', 'Chile', 'China', 'Chipre', 'Colômbia', 'Comores', 'Congo', 'Coreia do Norte',
-  'Coreia do Sul', 'Costa do Marfim', 'Costa Rica', 'Croácia', 'Cuba', 'Dinamarca', 'Djibuti',
-  'Dominica', 'Egito', 'El Salvador', 'Emirados Árabes Unidos', 'Equador', 'Eritreia',
-  'Eslováquia', 'Eslovênia', 'Espanha', 'Estados Unidos', 'Estônia', 'Eswatini', 'Etiópia',
-  'Fiji', 'Filipinas', 'Finlândia', 'França', 'Gabão', 'Gâmbia', 'Gana', 'Geórgia',
-  'Granada', 'Grécia', 'Guatemala', 'Guiana', 'Guiné', 'Guiné-Bissau', 'Guiné Equatorial',
-  'Haiti', 'Honduras', 'Hungria', 'Iêmen', 'Ilhas Marshall', 'Ilhas Salomão', 'Índia',
-  'Indonésia', 'Irã', 'Iraque', 'Irlanda', 'Islândia', 'Israel', 'Itália', 'Jamaica',
-  'Japão', 'Jordânia', 'Kiribati', 'Kuwait', 'Laos', 'Lesoto', 'Letônia', 'Líbano',
-  'Libéria', 'Líbia', 'Liechtenstein', 'Lituânia', 'Luxemburgo', 'Macedônia do Norte',
-  'Madagascar', 'Malásia', 'Malawi', 'Maldivas', 'Mali', 'Malta', 'Marrocos', 'Maurício',
-  'Mauritânia', 'México', 'Mianmar', 'Micronésia', 'Moçambique', 'Moldávia', 'Mônaco',
-  'Mongólia', 'Montenegro', 'Namíbia', 'Nauru', 'Nepal', 'Nicarágua', 'Níger', 'Nigéria',
-  'Noruega', 'Nova Zelândia', 'Omã', 'Países Baixos', 'Palau', 'Panamá', 'Papua-Nova Guiné',
-  'Paquistão', 'Paraguai', 'Peru', 'Polônia', 'Portugal', 'Quênia', 'Quirguistão',
-  'Reino Unido', 'República Centro-Africana', 'República Checa', 'República Democrática do Congo',
-  'República Dominicana', 'Romênia', 'Ruanda', 'Rússia', 'Samoa', 'San Marino',
-  'Santa Lúcia', 'São Cristóvão e Névis', 'São Tomé e Príncipe', 'São Vicente e Granadinas',
-  'Seicheles', 'Senegal', 'Serra Leoa', 'Sérvia', 'Singapura', 'Síria', 'Somália',
-  'Sri Lanka', 'Suazilândia', 'Sudão', 'Sudão do Sul', 'Suécia', 'Suíça', 'Suriname',
-  'Tailândia', 'Tajiquistão', 'Tanzânia', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad e Tobago',
-  'Tunísia', 'Turcomenistão', 'Turquia', 'Tuvalu', 'Ucrânia', 'Uganda', 'Uruguai',
-  'Uzbequistão', 'Vanuatu', 'Vaticano', 'Venezuela', 'Vietnã', 'Zâmbia', 'Zimbábue'
+const ANCESTRY_OPTIONS = [
+  'Celtic', 'Germanic', 'Mediterranean', 'Slavic', 'Balkan', 'Baltic', 'Ashkenazi Jew',
+  'Arabs', 'Persians', 'Turk', 'Kurds', 'Armenians', 'Assyrians', 'Berbers', 'Sephardic Jew',
+  'Bantu', 'Yoruba', 'Igbu', 'Zulu', 'Nubian', 'Ethiopian', 'Pygmies', 'Tuareg',
+  'Hindus', 'Sikhs', 'Punjabis', 'Bengalis', 'Gujaratis', 'Tamils', 'Nepalese',
+  'Chinese', 'Koreans', 'Japanese', 'Mongols', 'Manchus', 'Vietnamese', 'Filipinos',
+  'Indonesians', 'Malays', 'Tatars', 'Afghans', 'Native Americans', 'Inuit',
+  'Mestizos', 'Afro-Caribbeans', 'Aboriginals', 'Maori', 'Polynesians', 'Melanesians', 'Gypsies'
 ];
 
 interface CountrySelectorProps {
@@ -46,7 +25,7 @@ interface CountrySelectorProps {
 export const CountrySelector: React.FC<CountrySelectorProps> = ({
   selectedCountries,
   onCountriesChange,
-  placeholder = "Digite para buscar países...",
+  placeholder = "Digite para buscar ancestralidade...",
   maxCountries = 10
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,7 +36,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
 
   useEffect(() => {
     if (searchTerm) {
-      const filtered = COUNTRIES.filter(country =>
+      const filtered = ANCESTRY_OPTIONS.filter(country =>
         country.toLowerCase().includes(searchTerm.toLowerCase()) &&
         !selectedCountries.includes(country)
       );
@@ -149,7 +128,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
               ))}
               {filteredCountries.length > 10 && (
                 <div className="px-3 py-2 text-xs text-muted-foreground text-center">
-                  +{filteredCountries.length - 10} mais países...
+                  +{filteredCountries.length - 10} mais opções...
                 </div>
               )}
             </div>
@@ -178,7 +157,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
 
       {selectedCountries.length >= maxCountries && (
         <p className="text-xs text-muted-foreground">
-          Máximo de {maxCountries} países selecionados.
+          Máximo de {maxCountries} opções selecionadas.
         </p>
       )}
     </div>
