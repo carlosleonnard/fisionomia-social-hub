@@ -69,6 +69,9 @@ export default function UserProfileDetail() {
   const { userGeographicVotes, castGeographicVote, refetchVotes: refetchGeographicVotes } = useGeographicVoting(profile?.id || '');
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(profile?.id || '');
   const { data: profileCreator } = useProfileCreator(profile?.id || '');
+  
+  // Calculate total votes for Primary Geographic
+  const primaryGeographicTotalVotes = geographicVotes['Primary Geographic']?.reduce((sum, vote) => sum + vote.count, 0) || 0;
 
   if (isLoading) {
     return (
@@ -270,7 +273,7 @@ export default function UserProfileDetail() {
                        }}
                      >
                        <Vote className="h-4 w-4 text-phindex-teal" />
-                       <span>{totalVoteCount} votos</span>
+                       <span>{primaryGeographicTotalVotes} votos</span>
                      </div>
                      <div 
                        className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
