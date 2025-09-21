@@ -42,9 +42,9 @@ export const VotingSection = ({ profileId, votes, onVote, hasUserVoted }: Voting
     <Card className="bg-card border-border/50 p-4">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-phindex-dark">Classificação Fenotípica</h3>
+          <h3 className="text-sm font-semibold text-phindex-dark">Phenotypic Classification</h3>
           <Badge variant="secondary" className="text-xs">
-            {totalVotes} votos
+            {totalVotes} votes
           </Badge>
         </div>
 
@@ -73,7 +73,7 @@ export const VotingSection = ({ profileId, votes, onVote, hasUserVoted }: Voting
         {/* Botões de votação */}
         {!hasUserVoted && (
           <div className="border-t pt-3">
-            <p className="text-xs text-muted-foreground mb-3">Vote no fenótipo que você identifica:</p>
+            <p className="text-xs text-muted-foreground mb-3">Vote for the phenotype you identify:</p>
             <div className="grid grid-cols-2 gap-2">
               {classifications.map((classification) => {
                 const voteData = getVoteData(classification);
@@ -101,7 +101,7 @@ export const VotingSection = ({ profileId, votes, onVote, hasUserVoted }: Voting
         {hasUserVoted && (
           <div className="border-t pt-3">
             <p className="text-xs text-center text-muted-foreground">
-              Obrigado pelo seu voto! 🗳️
+              Thank you for your vote! 🗳️
             </p>
           </div>
         )}

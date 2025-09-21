@@ -271,7 +271,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl h-[85vh] flex flex-col bg-gradient-modal border-modal-accent/20 shadow-modal">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-modal-accent">Vote nas Características Físicas</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-modal-accent">Vote on Physical Characteristics</DialogTitle>
         </DialogHeader>
         
         <div className="flex-1 overflow-y-auto">
@@ -287,13 +287,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     Primary Geographic
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
-                  <p className="text-xs text-muted-foreground mb-2">Selecione a região geográfica que melhor representa a ancestralidade primária</p>
+                  <p className="text-xs text-muted-foreground mb-2">Select the geographic region that best represents the primary ancestry</p>
                   <Select
                     value={votes["Primary Geographic"] || ""}
                     onValueChange={(value) => handleVoteChange("Primary Geographic", value)}
                   >
                     <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                      <SelectValue placeholder="Selecione Primary Geographic" />
+                      <SelectValue placeholder="Select Primary Geographic" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border/50 z-50">
                       {Object.entries(geographicOptions).map(([region, subregions]) => (
@@ -322,13 +322,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     <Label className="font-semibold text-foreground">
                       Secondary Geographic
                     </Label>
-                    <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica secundária, se aplicável</p>
+                    <p className="text-xs text-muted-foreground mb-2">Select a secondary geographic region, if applicable</p>
                     <Select
                       value={votes["Secondary Geographic"] || ""}
                       onValueChange={(value) => handleVoteChange("Secondary Geographic", value)}
                     >
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                        <SelectValue placeholder="Selecione Secondary Geographic" />
+                        <SelectValue placeholder="Select Secondary Geographic" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
                         {Object.entries(geographicOptions).map(([region, subregions]) => (
@@ -360,13 +360,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     <Label className="font-semibold text-foreground">
                       Tertiary Geographic
                     </Label>
-                    <p className="text-xs text-muted-foreground mb-2">Selecione uma região geográfica terciária, se aplicável</p>
+                    <p className="text-xs text-muted-foreground mb-2">Select a tertiary geographic region, if applicable</p>
                     <Select
                       value={votes["Tertiary Geographic"] || ""}
                       onValueChange={(value) => handleVoteChange("Tertiary Geographic", value)}
                     >
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                        <SelectValue placeholder="Selecione Tertiary Geographic" />
+                        <SelectValue placeholder="Select Tertiary Geographic" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
                         {Object.entries(geographicOptions).map(([region, subregions]) => (
@@ -405,13 +405,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     Primary Phenotype
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
-                  <p className="text-xs text-muted-foreground mb-2">Selecione o fenótipo específico que melhor representa as características físicas</p>
+                  <p className="text-xs text-muted-foreground mb-2">Select the specific phenotype that best represents the physical characteristics</p>
                   <Select
                     value={votes["Primary Phenotype"] || ""}
                     onValueChange={(value) => handleVoteChange("Primary Phenotype", value)}
                   >
                     <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                      <SelectValue placeholder="Selecione Primary Phenotype" />
+                      <SelectValue placeholder="Select Primary Phenotype" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border/50 z-50">
                       {(() => {
@@ -451,13 +451,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     <Label className="font-semibold text-foreground">
                       Secondary Phenotype
                     </Label>
-                    <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo secundário, se aplicável</p>
+                    <p className="text-xs text-muted-foreground mb-2">Select a secondary phenotype, if applicable</p>
                     <Select
                       value={votes["Secondary Phenotype"] || ""}
                       onValueChange={(value) => handleVoteChange("Secondary Phenotype", value)}
                     >
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                        <SelectValue placeholder="Selecione Secondary Phenotype" />
+                        <SelectValue placeholder="Select Secondary Phenotype" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
                          {(() => {
@@ -499,13 +499,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     <Label className="font-semibold text-foreground">
                       Tertiary Phenotype
                     </Label>
-                    <p className="text-xs text-muted-foreground mb-2">Selecione um fenótipo terciário, se aplicável</p>
+                    <p className="text-xs text-muted-foreground mb-2">Select a tertiary phenotype, if applicable</p>
                     <Select
                       value={votes["Tertiary Phenotype"] || ""}
                       onValueChange={(value) => handleVoteChange("Tertiary Phenotype", value)}
                     >
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                        <SelectValue placeholder="Selecione Tertiary Phenotype" />
+                        <SelectValue placeholder="Select Tertiary Phenotype" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
                          {(() => {
@@ -551,13 +551,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                     <Label className="font-semibold text-foreground">
                       {characteristic.category}
                     </Label>
-                    <p className="text-xs text-muted-foreground mb-2">Avalie esta característica física específica</p>
+                    <p className="text-xs text-muted-foreground mb-2">Evaluate this specific physical characteristic</p>
                     <Select
                       value={votes[characteristic.category] || ""}
                       onValueChange={(value) => handleVoteChange(characteristic.category, value)}
                     >
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
-                        <SelectValue placeholder={`Selecione ${characteristic.category}`} />
+                        <SelectValue placeholder={`Select ${characteristic.category}`} />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
                         {characteristic.options.map((option) => (
@@ -580,14 +580,14 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
 
         <div className="flex justify-end gap-2 mt-6">
           <Button variant="outline" onClick={onClose}>
-            Cancelar
+            Cancel
           </Button>
           <Button 
             onClick={handleSubmit} 
             disabled={!isComplete}
             className="bg-phindex-teal hover:bg-phindex-teal/90"
           >
-            Confirmar Voto
+            Confirm Vote
           </Button>
         </div>
       </DialogContent>

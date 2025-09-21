@@ -118,8 +118,8 @@ export const useComments = (profileId: string) => {
   const addComment = async (content: string, parentCommentId?: string) => {
     if (!user) {
       toast({
-        title: "Login necessário",
-        description: "Você precisa estar logado para comentar",
+        title: "Login required",
+        description: "You need to be logged in to comment",
         variant: "destructive",
       });
       return false;
@@ -186,8 +186,8 @@ export const useComments = (profileId: string) => {
   const likeComment = async (commentId: string) => {
     if (!user) {
       toast({
-        title: "Login necessário",
-        description: "Você precisa estar logado para curtir",
+        title: "Login required",
+        description: "You need to be logged in to like",
         variant: "destructive",
       });
       return;
@@ -281,8 +281,8 @@ export const useComments = (profileId: string) => {
   const deleteComment = async (commentId: string) => {
     if (!user) {
       toast({
-        title: "Login necessário",
-        description: "Você precisa estar logado para excluir",
+        title: "Login required",
+        description: "You need to be logged in to delete",
         variant: "destructive",
       });
       return;

@@ -92,8 +92,8 @@ export const usePhysicalVoting = (profileId: string) => {
   const castVote = async (characteristicType: string, classification: string) => {
     if (!user) {
       toast({
-        title: "Login necessário",
-        description: "Você precisa estar logado para votar",
+        title: "Login required",
+        description: "You need to be logged in to vote",
         variant: "destructive",
       });
       return false;
@@ -119,7 +119,7 @@ export const usePhysicalVoting = (profileId: string) => {
       return true;
     } catch (error: any) {
       toast({
-        title: "Erro ao votar",
+        title: "Voting error",
         description: error.message,
         variant: "destructive",
       });

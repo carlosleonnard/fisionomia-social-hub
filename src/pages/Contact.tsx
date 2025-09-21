@@ -19,9 +19,9 @@ const Contact = () => {
         <div className="container mx-auto px-4 py-8">
           <Card className="max-w-2xl mx-auto">
             <CardHeader className="text-center">
-              <CardTitle className="text-3xl font-bold">Entre em Contato</CardTitle>
+              <CardTitle className="text-3xl font-bold">Contact Us</CardTitle>
               <CardDescription className="text-lg">
-                Estamos aqui para ajudar você. Entre em contato conosco!
+                We're here to help you. Get in touch with us!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
@@ -33,16 +33,16 @@ const Contact = () => {
                       <Mail className="h-8 w-8 text-primary" />
                     </div>
                     <div className="text-center">
-                      <h3 className="text-xl font-semibold mb-2">E-mail Principal</h3>
+                      <h3 className="text-xl font-semibold mb-2">Primary Email</h3>
                       <p className="text-muted-foreground mb-4">
-                        Para dúvidas, sugestões ou suporte técnico
+                        For questions, suggestions or technical support
                       </p>
                       <div className="bg-muted/50 p-3 rounded-lg mb-4">
                         <p className="font-mono text-lg">{email}</p>
                       </div>
                       <Button onClick={handleEmailClick} className="w-full">
                         <Mail className="h-4 w-4 mr-2" />
-                        Enviar E-mail
+                        Send Email
                         <ExternalLink className="h-4 w-4 ml-2" />
                       </Button>
                     </div>
@@ -54,36 +54,36 @@ const Contact = () => {
               <div className="grid gap-4 md:grid-cols-2">
                 <Card>
                   <CardContent className="p-4">
-                    <h4 className="font-semibold mb-2">Suporte Técnico</h4>
+                    <h4 className="font-semibold mb-2">Technical Support</h4>
                     <p className="text-sm text-muted-foreground">
-                      Problemas com o site, bugs ou dificuldades técnicas.
+                      Website issues, bugs or technical difficulties.
                     </p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardContent className="p-4">
-                    <h4 className="font-semibold mb-2">Sugestões</h4>
+                    <h4 className="font-semibold mb-2">Suggestions</h4>
                     <p className="text-sm text-muted-foreground">
-                      Ideias para melhorar a plataforma e novas funcionalidades.
+                      Ideas to improve the platform and new features.
                     </p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardContent className="p-4">
-                    <h4 className="font-semibold mb-2">Parcerias</h4>
+                    <h4 className="font-semibold mb-2">Partnerships</h4>
                     <p className="text-sm text-muted-foreground">
-                      Propostas de colaboração e parcerias comerciais.
+                      Collaboration proposals and business partnerships.
                     </p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardContent className="p-4">
-                    <h4 className="font-semibold mb-2">Geral</h4>
+                    <h4 className="font-semibold mb-2">General</h4>
                     <p className="text-sm text-muted-foreground">
-                      Dúvidas gerais sobre a plataforma e como utilizá-la.
+                      General questions about the platform and how to use it.
                     </p>
                   </CardContent>
                 </Card>
@@ -93,7 +93,7 @@ const Contact = () => {
               <Card className="bg-muted/50">
                 <CardContent className="p-4 text-center">
                   <p className="text-sm text-muted-foreground">
-                    <strong>Tempo de resposta:</strong> Normalmente respondemos em até 24 horas durante dias úteis.
+                    <strong>Response time:</strong> We usually respond within 24 hours on business days.
                   </p>
                 </CardContent>
               </Card>

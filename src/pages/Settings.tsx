@@ -55,7 +55,7 @@ const Settings = () => {
   // Check if nickname is available
   const checkNicknameAvailability = async (nicknameToCheck: string) => {
     if (!nicknameToCheck || nicknameToCheck.length < 3) {
-      setNicknameError("Nickname deve ter pelo menos 3 caracteres");
+      setNicknameError("Nickname must be at least 3 characters");
       return false;
     }
 
@@ -69,7 +69,7 @@ const Settings = () => {
       if (error && error.code !== 'PGRST116') throw error;
 
       if (data && data.length > 0) {
-        setNicknameError("Este nickname já está em uso");
+        setNicknameError("This nickname is already in use");
         return false;
       }
 
@@ -77,7 +77,7 @@ const Settings = () => {
       return true;
     } catch (error) {
       console.error('Error checking nickname:', error);
-      setNicknameError("Erro ao verificar nickname");
+      setNicknameError("Error checking nickname");
       return false;
     }
   };
@@ -100,35 +100,35 @@ const Settings = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    console.log('Iniciando upload da imagem:', file.name);
+    console.log('Starting image upload:', file.name);
     
     try {
       const imageUrl = await uploadImage(file, 'profile');
-      console.log('URL da imagem retornada:', imageUrl);
+      console.log('Returned image URL:', imageUrl);
       
       if (imageUrl) {
         setProfileImage(imageUrl);
         toast({
-          title: "Imagem carregada",
-          description: "A imagem foi carregada com sucesso. Clique em salvar para aplicar as alterações.",
+          title: "Image uploaded",
+          description: "The image was uploaded successfully. Click save to apply changes.",
         });
       } else {
         toast({
-          title: "Erro no upload",
-          description: "Não foi possível fazer upload da imagem. Tente novamente.",
+          title: "Upload error",
+          description: "Could not upload image. Please try again.",
           variant: "destructive",
         });
       }
     } catch (error) {
-      console.error('Erro no upload da imagem:', error);
+      console.error('Image upload error:', error);
       toast({
-        title: "Erro no upload",
-        description: "Ocorreu um erro ao fazer upload da imagem. Tente novamente.",
+        title: "Upload error",
+        description: "An error occurred while uploading the image. Please try again.",
         variant: "destructive",
       });
     }
     
-    // Limpar o input para permitir reselecionar a mesma imagem
+    // Clear input to allow reselecting the same image
     event.target.value = '';
   };
 
@@ -154,19 +154,19 @@ const Settings = () => {
       if (profileError) throw profileError;
 
       toast({
-        title: "Perfil atualizado",
-        description: "Suas informações foram salvas com sucesso.",
+        title: "Profile updated",
+        description: "Your information has been saved successfully.",
       });
     } catch (error: any) {
       console.error('Error updating profile:', error);
       
-      let errorMessage = "Não foi possível atualizar o perfil. Tente novamente.";
+      let errorMessage = "Could not update profile. Please try again.";
       if (error.code === '23505' && error.constraint === 'profiles_nickname_unique') {
-        errorMessage = "Este nickname já está em uso. Escolha outro.";
+        errorMessage = "This nickname is already in use. Choose another one.";
       }
       
       toast({
-        title: "Erro",
+        title: "Error",
         description: errorMessage,
         variant: "destructive",
       });
@@ -184,7 +184,7 @@ const Settings = () => {
           <div className="container mx-auto px-4 py-8">
             <Card>
               <CardContent className="p-8 text-center">
-                <p>Você precisa estar logado para acessar as configurações.</p>
+                <p>You need to be logged in to access settings.</p>
               </CardContent>
             </Card>
           </div>
@@ -201,15 +201,15 @@ const Settings = () => {
         <div className="container mx-auto px-4 py-8">
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">Configurações do Perfil</CardTitle>
+              <CardTitle className="text-2xl font-bold">Profile Settings</CardTitle>
               <CardDescription>
-                Atualize suas informações pessoais
+                Update your personal information
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {isLoading ? (
                 <div className="text-center py-8">
-                  <p>Carregando informações do perfil...</p>
+                  <p>Loading profile information...</p>
                 </div>
               ) : (
                 <>
@@ -243,7 +243,7 @@ const Settings = () => {
                         >
                           <span>
                             <Camera className="h-4 w-4 mr-2" />
-                            {isUploading ? "Enviando..." : "Alterar Foto"}
+                            {isUploading ? "Uploading..." : "Change Photo"}
                           </span>
                         </Button>
                       </Label>
@@ -257,7 +257,7 @@ const Settings = () => {
                       id="nickname"
                       value={nickname}
                       onChange={(e) => handleNicknameChange(e.target.value)}
-                      placeholder="Digite seu nickname"
+                      placeholder="Enter your nickname"
                       className={nicknameError ? "border-destructive" : ""}
                     />
                     {nicknameError && (
@@ -267,13 +267,13 @@ const Settings = () => {
                       </div>
                     )}
                     <p className="text-sm text-muted-foreground">
-                      Seu nickname deve ser único e ter pelo menos 3 caracteres. Este é o nome que aparece nos comentários.
+                      Your nickname must be unique and at least 3 characters long. This is the name that appears in comments.
                     </p>
                   </div>
 
                   {/* Email Section (Read-only) */}
                   <div className="space-y-2">
-                    <Label htmlFor="email">E-mail</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
                       value={user.email || ""}
@@ -281,7 +281,7 @@ const Settings = () => {
                       className="bg-muted"
                     />
                     <p className="text-sm text-muted-foreground">
-                      O e-mail não pode ser alterado através desta página.
+                      Email cannot be changed through this page.
                     </p>
                   </div>
 
@@ -293,7 +293,7 @@ const Settings = () => {
                       className="w-full"
                     >
                       <Save className="h-4 w-4 mr-2" />
-                      {isUpdating ? "Salvando..." : "Salvar Alterações"}
+                      {isUpdating ? "Saving..." : "Save Changes"}
                     </Button>
                   </div>
                 </>

@@ -114,15 +114,15 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
       <DialogContent className="bg-gradient-card border-border/50 max-w-md max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            Editar Perfil
+            Edit Profile
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Upload de imagens */}
           <div className="space-y-3">
-            <Label>Fotos do Perfil</Label>
-            <p className="text-xs text-muted-foreground">Foto de frente é obrigatória, foto de perfil é opcional</p>
+            <Label>Profile Photos</Label>
+            <p className="text-xs text-muted-foreground">Front photo is required, profile photo is optional</p>
             
             <div className="grid grid-cols-2 gap-3">
               {/* Foto de Frente */}
@@ -170,7 +170,7 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">
-                        {isUploading ? 'Enviando...' : 'Clique ou arraste a foto de frente *'}
+                        {isUploading ? 'Uploading...' : 'Click or drag front photo *'}
                       </p>
                     </div>
                   )}
@@ -222,7 +222,7 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
                     <div className="space-y-1">
                       <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">
-                        {isUploading ? 'Enviando...' : 'Clique ou arraste a foto de perfil'}
+                        {isUploading ? 'Uploading...' : 'Click or drag profile photo'}
                       </p>
                     </div>
                   )}

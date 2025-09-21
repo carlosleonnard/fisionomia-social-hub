@@ -9,12 +9,12 @@ export const useImageUpload = () => {
 
   const uploadImage = async (file: File, type: 'front' | 'profile'): Promise<string | null> => {
     if (!user) {
-      toast.error('Você precisa estar logado para fazer upload de imagens.');
+      toast.error('You need to be logged in to upload images.');
       return null;
     }
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Por favor, selecione apenas arquivos de imagem.');
+      toast.error('Please select only image files.');
       return null;
     }
 

@@ -347,7 +347,7 @@ export default function UserProfileDetail() {
                         disabled
                       >
                         <Users className="mr-2 h-4 w-4" />
-                        Login para votar
+                        Login to vote
                       </Button>
                      )}
                    </div>

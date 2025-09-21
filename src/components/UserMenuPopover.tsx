@@ -71,7 +71,7 @@ export const UserMenuPopover = ({ user }: UserMenuPopoverProps) => {
             </Avatar>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">
-                {profile?.nickname || "Usuário"}
+                {profile?.nickname || "User"}
               </p>
               <p className="text-xs text-muted-foreground truncate">
                 {user.email}
@@ -84,7 +84,7 @@ export const UserMenuPopover = ({ user }: UserMenuPopoverProps) => {
           <Link to="/settings">
             <Button variant="ghost" size="sm" className="w-full justify-start h-8 px-2">
               <Settings className="h-4 w-4 mr-2" />
-              Configurações
+              Settings
             </Button>
           </Link>
           
@@ -95,7 +95,7 @@ export const UserMenuPopover = ({ user }: UserMenuPopoverProps) => {
             onClick={signOut}
           >
             <LogOut className="h-4 w-4 mr-2" />
-            Sair
+            Sign Out
           </Button>
         </div>
       </PopoverContent>

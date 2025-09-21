@@ -89,14 +89,14 @@ export const CommentsSection = ({
   return (
     <Card className="bg-gradient-card border-border/50 p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">Comentários ({comments.length})</h3>
+        <h3 className="font-semibold text-lg">Comments ({comments.length})</h3>
         <Select value={sortBy} onValueChange={(value: "recent" | "top") => setSortBy(value)}>
           <SelectTrigger className="w-[140px] bg-muted/50 border-border/50">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-card/95 backdrop-blur border-border/50">
-            <SelectItem value="recent">Recentes</SelectItem>
-            <SelectItem value="top">Mais curtidos</SelectItem>
+            <SelectItem value="recent">Recent</SelectItem>
+            <SelectItem value="top">Most liked</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -105,7 +105,7 @@ export const CommentsSection = ({
       <form onSubmit={handleSubmitComment} className="flex gap-3">
         <div className="flex-1 flex gap-2">
           <Input
-            placeholder="Adicione um comentário..."
+            placeholder="Add a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             className="bg-muted/50 border-border/50 focus:border-primary/50"
@@ -163,14 +163,14 @@ export const CommentsSection = ({
                           onClick={() => onDeleteComment(comment.id)}
                         >
                           <Trash2 className="h-3 w-3 mr-2" />
-                          Excluir comentário
+                          Delete comment
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem className="cursor-pointer">
-                        Reportar
+                        Report
                       </DropdownMenuItem>
                       <DropdownMenuItem className="cursor-pointer text-destructive">
-                        Bloquear usuário
+                        Block user
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -197,7 +197,7 @@ export const CommentsSection = ({
                     className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
                   >
-                    Responder
+                    Reply
                   </Button>
                 </div>
 
@@ -205,7 +205,7 @@ export const CommentsSection = ({
                 {replyingTo === comment.id && (
                   <form onSubmit={(e) => handleSubmitReply(e, comment.id)} className="mt-3 flex gap-2">
                     <Input
-                      placeholder="Escreva uma resposta..."
+                      placeholder="Write a reply..."
                       value={replyContent}
                       onChange={(e) => setReplyContent(e.target.value)}
                       className="bg-muted/50 border-border/50 focus:border-primary/50 text-sm"
@@ -277,7 +277,7 @@ export const CommentsSection = ({
                                 onClick={() => onDeleteComment(reply.id)}
                               >
                                 <Trash2 className="h-3 w-3 mr-2" />
-                                Excluir resposta
+                                Delete reply
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -293,7 +293,7 @@ export const CommentsSection = ({
         
         {comments.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
-            <p className="text-sm">Seja o primeiro a comentar!</p>
+            <p className="text-sm">Be the first to comment!</p>
           </div>
         )}
       </div>

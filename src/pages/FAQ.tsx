@@ -7,52 +7,48 @@ import { HelpCircle } from "lucide-react";
 const FAQ = () => {
   const faqData = [
     {
-      question: "O que é o Phindex?",
-      answer: "O Phindex é uma plataforma para classificação e discussão de fenótipos físicos. Os usuários podem criar perfis, votar em classificações e participar de discussões sobre diversidade fenotípica."
+      question: "What is Phindex?",
+      answer: "Phindex is a platform for classification and discussion of physical phenotypes. Users can create profiles, vote on classifications, and participate in discussions about phenotypic diversity."
     },
     {
-      question: "Como criar um perfil?",
-      answer: "Para criar um perfil, você precisa estar logado. Clique no botão 'Adicionar Perfil' no cabeçalho, preencha as informações solicitadas e faça upload das fotos necessárias."
+      question: "How to create a profile?",
+      answer: "To create a profile, you need to be logged in. Click the 'Classify Now!' button in the header, fill out the requested information, and upload the necessary photos."
     },
     {
-      question: "Como funciona o sistema de votação?",
-      answer: "Cada perfil pode receber votos em diferentes categorias fenotípicas. Os usuários podem votar uma vez por perfil em cada categoria, e os resultados são agregados para mostrar as classificações mais populares."
+      question: "How does the voting system work?",
+      answer: "Each profile can receive votes in different phenotypic categories. Users can vote once per profile in each category, and results are aggregated to show the most popular classifications."
     },
     {
-      question: "O que são regiões fenotípicas?",
-      answer: "As regiões fenotípicas organizam os perfis por origem geográfica e características físicas predominantes, como Europa, África, Ásia, Américas, Oriente Médio e Oceania."
+      question: "What are phenotypic regions?",
+      answer: "Phenotypic regions organize profiles by geographic origin and predominant physical characteristics, such as Europe, Africa, Asia, Americas, Middle East, and Oceania. Phenotypes classification refer to the human distribution around the year 1500 before the processes of colonisation and globalisation."
     },
     {
-      question: "Posso criar perfis anônimos?",
-      answer: "Sim, ao criar um perfil você pode escolher a opção 'Perfil Anônimo' para manter a privacidade da pessoa fotografada."
+      question: "Can I edit or delete a profile?",
+      answer: "You can edit or delete only the profiles that you created. On the profile page, there will be options to edit or delete if you are the creator."
     },
     {
-      question: "Como editar ou excluir meu perfil?",
-      answer: "Você pode editar ou excluir apenas os perfis que você criou. Na página do perfil, haverá opções para editar ou excluir se você for o criador."
+      question: "How does the comment system work?",
+      answer: "Each profile has a comments section where users can discuss classifications. Comments can be liked and organized by relevance."
     },
     {
-      question: "Como funciona o sistema de comentários?",
-      answer: "Cada perfil possui uma seção de comentários onde usuários podem discutir as classificações. Os comentários podem ser curtidos e organizados por relevância."
+      question: "What to do if I find inappropriate content?",
+      answer: "Contact us through the contact page informing the problematic profile or comment. We will review and take necessary measures."
     },
     {
-      question: "O que fazer se encontrar conteúdo inadequado?",
-      answer: "Entre em contato conosco através da página de contato informando o perfil ou comentário problemático. Revisaremos e tomaremos as medidas necessárias."
+      question: "How to change my photo and username?",
+      answer: "Access the Settings page through the top menu that appears when you click on your photo. There you can change your name and profile photo."
     },
     {
-      question: "Como alterar minha foto e nome de usuário?",
-      answer: "Acesse a página de Configurações através do menu lateral. Lá você pode alterar seu nome e foto de perfil."
+      question: "Is the platform free?",
+      answer: "Yes, Phindex is completely free to use. You can create profiles, vote, and comment at no cost."
     },
     {
-      question: "A plataforma é gratuita?",
-      answer: "Sim, o Phindex é completamente gratuito para uso. Você pode criar perfis, votar e comentar sem nenhum custo."
+      question: "How does profile search work?",
+      answer: "You can search for profiles by name in the search bar in the header. The search shows real-time results as you type."
     },
     {
-      question: "Como funciona a busca de perfis?",
-      answer: "Você pode buscar perfis pelo nome na barra de pesquisa no cabeçalho. A busca mostra resultados em tempo real conforme você digita."
-    },
-    {
-      question: "Posso baixar as fotos dos perfis?",
-      answer: "As fotos são propriedade dos usuários que as enviaram. Recomendamos respeitar os direitos autorais e não fazer download sem permissão."
+      question: "Can I download profile photos?",
+      answer: "Photos are property of the users who uploaded them. We recommend respecting copyright and not downloading without permission. Please do your best to check for duplicates, periodically, we will clean out inactive or duplicated profiles. If you would like to remove a profile, please report to contact@phindex.com."
     }
   ];
 
@@ -69,9 +65,9 @@ const FAQ = () => {
                   <HelpCircle className="h-8 w-8 text-primary" />
                 </div>
               </div>
-              <CardTitle className="text-3xl font-bold">Perguntas Frequentes</CardTitle>
+              <CardTitle className="text-3xl font-bold">Frequently Asked Questions</CardTitle>
               <CardDescription className="text-lg">
-                Encontre respostas para as dúvidas mais comuns sobre o Phindex
+                Find answers to the most common questions about Phindex
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -91,15 +87,15 @@ const FAQ = () => {
               {/* Contact Section */}
               <Card className="mt-8 bg-muted/50">
                 <CardContent className="p-6 text-center">
-                  <h3 className="font-semibold mb-2">Não encontrou sua resposta?</h3>
+                  <h3 className="font-semibold mb-2">Didn't find your answer?</h3>
                   <p className="text-muted-foreground mb-4">
-                    Entre em contato conosco e teremos prazer em ajudar!
+                    Contact us and we'll be happy to help!
                   </p>
                   <a 
                     href="/contact" 
                     className="text-primary hover:underline font-medium"
                   >
-                    Ir para a página de contato →
+                    Go to contact page →
                   </a>
                 </CardContent>
               </Card>
