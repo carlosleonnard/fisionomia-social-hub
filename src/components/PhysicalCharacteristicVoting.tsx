@@ -37,7 +37,7 @@ export const PhysicalCharacteristicVoting = ({
             </div>
           ))
         ) : (
-          <p className="text-sm text-muted-foreground">Nenhum voto ainda</p>
+          <p className="text-sm text-muted-foreground">No votes yet</p>
         )}
       </div>
     </div>
