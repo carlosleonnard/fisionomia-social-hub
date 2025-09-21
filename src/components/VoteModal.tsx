@@ -414,22 +414,33 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                       <SelectValue placeholder="Selecione Primary Phenotype" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border/50 z-50">
-                      {Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => (
-                        <div key={region}>
-                          <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
-                            {region}
-                          </div>
-                          {phenotypes.map((phenotype) => (
-                            <SelectItem 
-                              key={phenotype} 
-                              value={phenotype}
-                              className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
-                            >
-                              {phenotype}
-                            </SelectItem>
-                          ))}
-                        </div>
-                      ))}
+                      {(() => {
+                        const seen = new Set<string>();
+                        return Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => {
+                          const unique = phenotypes.filter((p) => {
+                            if (seen.has(p)) return false;
+                            seen.add(p);
+                            return true;
+                          });
+                          if (unique.length === 0) return null;
+                          return (
+                            <div key={region}>
+                              <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                                {region}
+                              </div>
+                              {unique.map((phenotype) => (
+                                <SelectItem
+                                  key={phenotype}
+                                  value={phenotype}
+                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                >
+                                  {phenotype}
+                                </SelectItem>
+                              ))}
+                            </div>
+                          );
+                        });
+                      })()}
                     </SelectContent>
                   </Select>
                 </div>
@@ -449,24 +460,34 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectValue placeholder="Selecione Secondary Phenotype" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
-                        {Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => (
-                          <div key={region}>
-                            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
-                              {region}
-                            </div>
-                            {phenotypes
-                              .filter(phenotype => getAvailablePhenotypeOptions('secondary').includes(phenotype))
-                              .map((phenotype) => (
-                                <SelectItem 
-                                  key={phenotype} 
-                                  value={phenotype}
-                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
-                                >
-                                  {phenotype}
-                                </SelectItem>
-                              ))}
-                          </div>
-                        ))}
+                         {(() => {
+                           const allowed = getAvailablePhenotypeOptions('secondary');
+                           const seen = new Set<string>();
+                           return Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => {
+                             const unique = phenotypes.filter((p) => {
+                               if (!allowed.includes(p) || seen.has(p)) return false;
+                               seen.add(p);
+                               return true;
+                             });
+                             if (unique.length === 0) return null;
+                             return (
+                               <div key={region}>
+                                 <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                                   {region}
+                                 </div>
+                                 {unique.map((phenotype) => (
+                                   <SelectItem
+                                     key={phenotype}
+                                     value={phenotype}
+                                     className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                   >
+                                     {phenotype}
+                                   </SelectItem>
+                                 ))}
+                               </div>
+                             );
+                           });
+                         })()}
                       </SelectContent>
                     </Select>
                   </div>
@@ -487,24 +508,34 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                         <SelectValue placeholder="Selecione Tertiary Phenotype" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border/50 z-50">
-                        {Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => (
-                          <div key={region}>
-                            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
-                              {region}
-                            </div>
-                            {phenotypes
-                              .filter(phenotype => getAvailablePhenotypeOptions('tertiary').includes(phenotype))
-                              .map((phenotype) => (
-                                <SelectItem 
-                                  key={phenotype} 
-                                  value={phenotype}
-                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
-                                >
-                                  {phenotype}
-                                </SelectItem>
-                              ))}
-                          </div>
-                        ))}
+                         {(() => {
+                           const allowed = getAvailablePhenotypeOptions('tertiary');
+                           const seen = new Set<string>();
+                           return Object.entries(specificPhenotypeOptions).map(([region, phenotypes]) => {
+                             const unique = phenotypes.filter((p) => {
+                               if (!allowed.includes(p) || seen.has(p)) return false;
+                               seen.add(p);
+                               return true;
+                             });
+                             if (unique.length === 0) return null;
+                             return (
+                               <div key={region}>
+                                 <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                                   {region}
+                                 </div>
+                                 {unique.map((phenotype) => (
+                                   <SelectItem
+                                     key={phenotype}
+                                     value={phenotype}
+                                     className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                   >
+                                     {phenotype}
+                                   </SelectItem>
+                                 ))}
+                               </div>
+                             );
+                           });
+                         })()}
                       </SelectContent>
                     </Select>
                   </div>
