@@ -455,6 +455,10 @@ export type Database = {
         Args: { comment_id_param: string }
         Returns: undefined
       }
+      generate_random_nickname: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       generate_unique_slug: {
         Args: { profile_id?: string; profile_name: string }
         Returns: string
