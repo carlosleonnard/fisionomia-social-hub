@@ -184,7 +184,7 @@ export default function UserProfileDetail() {
                             variant="outline"
                             className="bg-muted/10 text-muted-foreground"
                           >
-                            {category.label} Indefinido
+                            {category.label} Undefined
                           </Badge>
                         );
                       }
