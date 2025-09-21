@@ -14,7 +14,6 @@ import {
   Briefcase, 
   Building,
   GitBranch,
-  Settings,
   HelpCircle,
   LogOut,
   Mail
@@ -183,13 +182,6 @@ export const AppSidebar = () => {
                 <span className="text-base">Phenotype Flow</span>
               </button>
               
-              <button
-                className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-muted/50"
-                onClick={() => navigate('/settings')}
-              >
-                <Settings className="h-5 w-5" color="#007a75" />
-                <span className="text-base">Settings</span>
-              </button>
               
               <button
                 className="flex items-center gap-4 w-full text-left p-3 rounded-lg transition-colors hover:bg-muted/50"
