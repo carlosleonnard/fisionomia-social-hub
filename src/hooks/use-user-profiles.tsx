@@ -90,22 +90,23 @@ export const useUserProfiles = () => {
 
       if (profilesError) throw profilesError;
 
-      // 2. Para cada perfil, conta quantos usuários únicos votaram nele
+      // 2. Para cada perfil, conta os votos do Primary Geographic
       const profilesWithVotes = await Promise.all(
         (profilesData || []).map(async (profile) => {
-          // Busca todos os votos para este perfil específico (só user_id)
+          // Busca votos específicos do Primary Geographic
           const { data: votesData } = await supabase
             .from('votes')
-            .select('user_id')                 // Só precisa do user_id para contar únicos
-            .eq('profile_id', profile.slug);   // Filtra pelo slug do perfil
+            .select('classification')             // Só precisa da classificação
+            .eq('profile_id', profile.slug)      // Filtra pelo slug do perfil
+            .eq('characteristic_type', 'Primary Geographic'); // Só Primary Geographic
 
-          // Conta usuários únicos que votaram
-          const uniqueVoters = new Set(votesData?.map(vote => vote.user_id) || []);
+          // Conta votos do Primary Geographic
+          const voteCount = votesData?.length || 0;
 
-          // Retorna o perfil original + contagem de votantes únicos
+          // Retorna o perfil original + contagem de votos Primary Geographic
           return {
             ...profile,
-            vote_count: uniqueVoters.size   // Conta usuários únicos, não votos totais
+            vote_count: voteCount   // Conta votos do Primary Geographic
           };
         })
       );
@@ -125,20 +126,21 @@ export const useUserProfiles = () => {
 
       if (profilesError) throw profilesError;
 
-      // Get vote counts for each profile (unique voters only)
+      // Get vote counts for each profile (Primary Geographic votes only)
       const profilesWithVotes = await Promise.all(
         (profilesData || []).map(async (profile) => {
           const { data: votesData } = await supabase
             .from('votes')
-            .select('user_id')
-            .eq('profile_id', profile.slug);
+            .select('classification')
+            .eq('profile_id', profile.slug)
+            .eq('characteristic_type', 'Primary Geographic');
 
-          // Count unique voters
-          const uniqueVoters = new Set(votesData?.map(vote => vote.user_id) || []);
+          // Count votes for Primary Geographic
+          const voteCount = votesData?.length || 0;
 
           return {
             ...profile,
-            vote_count: uniqueVoters.size
+            vote_count: voteCount
           };
         })
       );
