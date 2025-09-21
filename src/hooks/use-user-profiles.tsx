@@ -97,7 +97,7 @@ export const useUserProfiles = () => {
           const { data: votesData } = await supabase
             .from('votes')
             .select('classification')             // Só precisa da classificação
-            .eq('profile_id', profile.slug)      // Filtra pelo slug do perfil
+            .eq('profile_id', profile.id)        // Usar profile.id em vez de profile.slug
             .eq('characteristic_type', 'Primary Geographic'); // Só Primary Geographic
 
           // Conta votos do Primary Geographic
@@ -132,7 +132,7 @@ export const useUserProfiles = () => {
           const { data: votesData } = await supabase
             .from('votes')
             .select('classification')
-            .eq('profile_id', profile.slug)
+            .eq('profile_id', profile.id)    // Usar profile.id em vez de profile.slug
             .eq('characteristic_type', 'Primary Geographic');
 
           // Count votes for Primary Geographic
