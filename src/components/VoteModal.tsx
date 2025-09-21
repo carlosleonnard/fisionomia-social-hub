@@ -269,6 +269,11 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
 
   const isComplete = votes["Primary Geographic"] !== undefined && votes["Primary Phenotype"] !== undefined;
 
+  // Sets to ensure phenotype options are not duplicated across regions in each dropdown
+  const seenPhenotypesPrimary = new Set<string>();
+  const seenPhenotypesSecondary = new Set<string>();
+  const seenPhenotypesTertiary = new Set<string>();
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl h-[85vh] flex flex-col bg-gradient-modal border-modal-accent/20 shadow-modal">
@@ -421,7 +426,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                           <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
                             {region}
                           </div>
-                          {phenotypes.map((phenotype) => (
+                          {phenotypes
+                            .filter((phenotype) => {
+                              if (seenPhenotypesPrimary.has(phenotype)) return false;
+                              seenPhenotypesPrimary.add(phenotype);
+                              return true;
+                            })
+                            .map((phenotype) => (
                             <SelectItem 
                               key={phenotype} 
                               value={phenotype}
@@ -456,8 +467,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                             <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
                               {region}
                             </div>
-                            {phenotypes
-                              .filter(phenotype => getAvailablePhenotypeOptions('secondary').includes(phenotype))
+                             {phenotypes
+                               .filter((phenotype) => getAvailablePhenotypeOptions('secondary').includes(phenotype))
+                               .filter((phenotype) => {
+                                 if (seenPhenotypesSecondary.has(phenotype)) return false;
+                                 seenPhenotypesSecondary.add(phenotype);
+                                 return true;
+                               })
                               .map((phenotype) => (
                                 <SelectItem 
                                   key={phenotype} 
@@ -494,8 +510,13 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
                             <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
                               {region}
                             </div>
-                            {phenotypes
-                              .filter(phenotype => getAvailablePhenotypeOptions('tertiary').includes(phenotype))
+                             {phenotypes
+                               .filter((phenotype) => getAvailablePhenotypeOptions('tertiary').includes(phenotype))
+                               .filter((phenotype) => {
+                                 if (seenPhenotypesTertiary.has(phenotype)) return false;
+                                 seenPhenotypesTertiary.add(phenotype);
+                                 return true;
+                               })
                               .map((phenotype) => (
                                 <SelectItem 
                                   key={phenotype} 
