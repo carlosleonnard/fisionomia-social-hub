@@ -6,6 +6,99 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Upload, Image as ImageIcon } from "lucide-react";
 
+const phenotypeData = {
+  "Northern America": [
+    "Eskimid",
+    "Margid", 
+    "Pacificid",
+    "Silvid"
+  ],
+  "Central America": [
+    "Centralid"
+  ],
+  "Southern America": [
+    "Amazonid",
+    "Andid",
+    "Lagid",
+    "Patagonid"
+  ],
+  "North Africa": [
+    "Mediterranid",
+    "Orientalid"
+  ],
+  "East Africa": [
+    "Ethiopid",
+    "Nilotid",
+    "Sudanid"
+  ],
+  "Sub-Saharan Africa": [
+    "Bambutid",
+    "Bantuid",
+    "Congoid",
+    "Khoid",
+    "Sanid"
+  ],
+  "Central Asia": [
+    "Tungid",
+    "Turanid"
+  ],
+  "Southern Asia": [
+    "Indid",
+    "Indo Melanin",
+    "Veddid"
+  ],
+  "Eastern Asia": [
+    "Ainuid",
+    "Sibirid",
+    "Sinid"
+  ],
+  "Southeastern Asia": [
+    "Negritid",
+    "South Mongoloid"
+  ],
+  "Eastern Europe": [
+    "Dinarid",
+    "East Europid",
+    "Turanid"
+  ],
+  "Southern Europe": [
+    "Mediterranid"
+  ],
+  "Central Europe": [
+    "Alpinid"
+  ],
+  "Northern Europe": [
+    "Lappid",
+    "Nordid"
+  ],
+  "Anatolia": [
+    "Alpinid",
+    "Armenoid",
+    "Mediterranid",
+    "Turanid"
+  ],
+  "Levant": [
+    "Armenoid",
+    "Mediterranid"
+  ],
+  "Arabian Peninsula": [
+    "Orientalid",
+    "Veddid"
+  ],
+  "Persian Plateau": [
+    "Orientalid"
+  ],
+  "Australia and New Zealand": [
+    "Australid"
+  ],
+  "Melanesia": [
+    "Melanesid"
+  ],
+  "Polynesia": [
+    "Polynesid"
+  ]
+};
+
 const phenotypeRegions = [
   {
     name: "Europe",
@@ -93,42 +186,48 @@ export default function PhenotypeFlowPage() {
                           {subregion}
                         </AccordionTrigger>
                         <AccordionContent>
-                          <div className="space-y-4">
-                            <p className="text-muted-foreground">
-                              Reference photos for {subregion} phenotypes
-                            </p>
-                            
-                            {/* Photo upload/display area */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                              {/* Placeholder for existing photos */}
-                              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-phindex-teal transition-colors">
-                                <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                                <p className="text-sm text-muted-foreground mb-4">
-                                  No reference photos yet
-                                </p>
-                                <Button variant="outline" size="sm">
-                                  <Upload className="h-4 w-4 mr-2" />
-                                  Upload Photo
-                                </Button>
+                          <div className="space-y-6">
+                            {phenotypeData[subregion as keyof typeof phenotypeData]?.map((phenotype, phenotypeIndex) => (
+                              <div key={phenotypeIndex} className="border rounded-lg p-4 bg-card">
+                                <h4 className="text-lg font-semibold text-foreground mb-4">{phenotype}</h4>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                  {/* Male section */}
+                                  <div className="space-y-3">
+                                    <h5 className="text-md font-medium text-muted-foreground">Male</h5>
+                                    <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
+                                      <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                                      <p className="text-sm text-muted-foreground mb-3">
+                                        No male reference photo
+                                      </p>
+                                      <Button variant="outline" size="sm">
+                                        <Upload className="h-4 w-4 mr-2" />
+                                        Upload Male Photo
+                                      </Button>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Female section */}
+                                  <div className="space-y-3">
+                                    <h5 className="text-md font-medium text-muted-foreground">Female</h5>
+                                    <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
+                                      <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                                      <p className="text-sm text-muted-foreground mb-3">
+                                        No female reference photo
+                                      </p>
+                                      <Button variant="outline" size="sm">
+                                        <Upload className="h-4 w-4 mr-2" />
+                                        Upload Female Photo
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              
-                              {/* Additional placeholder slots */}
-                              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-phindex-teal transition-colors opacity-50">
-                                <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                                <Button variant="outline" size="sm" disabled>
-                                  <Upload className="h-4 w-4 mr-2" />
-                                  Upload Photo
-                                </Button>
-                              </div>
-                              
-                              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-phindex-teal transition-colors opacity-50">
-                                <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                                <Button variant="outline" size="sm" disabled>
-                                  <Upload className="h-4 w-4 mr-2" />
-                                  Upload Photo
-                                </Button>
-                              </div>
-                            </div>
+                            )) || (
+                              <p className="text-muted-foreground text-center py-8">
+                                No phenotypes defined for this subregion
+                              </p>
+                            )}
                           </div>
                         </AccordionContent>
                       </AccordionItem>
