@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Upload, Image as ImageIcon, X } from "lucide-react";
+import { Upload, Image as ImageIcon } from "lucide-react";
 import { usePhenotypeReferences } from "@/hooks/use-phenotype-references";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
@@ -199,14 +199,6 @@ export default function PhenotypeFlowPage() {
     }
   };
 
-  const removeImage = async (phenotype: string, subregion: string, gender: 'male' | 'female') => {
-    const region = getRegionFromSubregion(subregion);
-    const success = await deleteImage(phenotype, subregion, region, gender);
-    if (success) {
-      toast.success(`${gender} photo removed for ${phenotype}`);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -248,24 +240,16 @@ export default function PhenotypeFlowPage() {
                                   {/* Male section */}
                                   <div className="space-y-3">
                                     <h5 className="text-md font-medium text-muted-foreground">Male</h5>
-                                    <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
-                                      {getImageUrl(phenotype, subregion, region.name, 'male') ? (
-                                        <div className="relative">
-                                          <img 
-                                            src={getImageUrl(phenotype, subregion, region.name, 'male')!} 
-                                            alt={`${phenotype} male reference`}
-                                            className="max-h-48 mx-auto rounded object-cover"
-                                          />
-                                          <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            className="absolute top-2 right-2"
-                                            onClick={() => removeImage(phenotype, subregion, 'male')}
-                                          >
-                                            <X className="h-4 w-4" />
-                                          </Button>
-                                        </div>
-                                      ) : (
+                                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
+                                       {getImageUrl(phenotype, subregion, region.name, 'male') ? (
+                                         <div className="relative">
+                                           <img 
+                                             src={getImageUrl(phenotype, subregion, region.name, 'male')!} 
+                                             alt={`${phenotype} male reference`}
+                                             className="max-h-48 mx-auto rounded object-cover"
+                                           />
+                                         </div>
+                                       ) : (
                                         <>
                                           <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
                                           <p className="text-sm text-muted-foreground mb-3">
@@ -295,24 +279,16 @@ export default function PhenotypeFlowPage() {
                                   {/* Female section */}
                                   <div className="space-y-3">
                                     <h5 className="text-md font-medium text-muted-foreground">Female</h5>
-                                    <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
-                                      {getImageUrl(phenotype, subregion, region.name, 'female') ? (
-                                        <div className="relative">
-                                          <img 
-                                            src={getImageUrl(phenotype, subregion, region.name, 'female')!} 
-                                            alt={`${phenotype} female reference`}
-                                            className="max-h-48 mx-auto rounded object-cover"
-                                          />
-                                          <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            className="absolute top-2 right-2"
-                                            onClick={() => removeImage(phenotype, subregion, 'female')}
-                                          >
-                                            <X className="h-4 w-4" />
-                                          </Button>
-                                        </div>
-                                      ) : (
+                                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
+                                       {getImageUrl(phenotype, subregion, region.name, 'female') ? (
+                                         <div className="relative">
+                                           <img 
+                                             src={getImageUrl(phenotype, subregion, region.name, 'female')!} 
+                                             alt={`${phenotype} female reference`}
+                                             className="max-h-48 mx-auto rounded object-cover"
+                                           />
+                                         </div>
+                                       ) : (
                                         <>
                                           <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
                                           <p className="text-sm text-muted-foreground mb-3">
