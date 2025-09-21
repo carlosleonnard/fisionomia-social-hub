@@ -100,6 +100,19 @@ const RegionPage = () => {
       <Header />
       
       <div className="container px-4 py-8">
+        {/* Botão de voltar fixo no topo */}
+        <div className="fixed top-20 left-4 z-50 lg:left-[340px]">
+          <Button 
+            onClick={() => navigate("/")} 
+            variant="secondary"
+            size="sm"
+            className="bg-card/90 backdrop-blur-sm border border-border/50 hover:bg-card shadow-lg"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar
+          </Button>
+        </div>
+
         <div className="lg:ml-80 pt-20">
           {/* Sidebar */}
           <AppSidebar />
@@ -107,14 +120,7 @@ const RegionPage = () => {
           {/* Main Content */}
           <div>
             <div className="mb-8">
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate("/")}
-                className="mb-4"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Voltar
-              </Button>
+              {/* Botão de voltar já foi movido para posição fixa no topo */}
               
               <h1 className="text-3xl font-bold text-foreground mb-2">{regionDisplayName}</h1>
               <p className="text-muted-foreground">
