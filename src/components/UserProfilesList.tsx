@@ -95,7 +95,7 @@ export const UserProfilesList = () => {
                     </Badge>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
-                      {new Date(profile.created_at).toLocaleDateString('pt-BR')}
+                      {new Date(profile.created_at).toLocaleDateString('en-US')}
                     </div>
                   </div>
                 </div>

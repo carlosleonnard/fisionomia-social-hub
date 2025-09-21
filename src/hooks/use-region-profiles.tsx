@@ -54,22 +54,22 @@ const countryToRegionMapping: Record<string, string[]> = {
  */
 const ancestryToRegionMapping: Record<string, string[]> = {
   "africa": [
-    "africana", "africano", "subsaariana", "nilótica", "bantu", "etíope"
+    "african", "sub-saharan", "nilotic", "bantu", "ethiopian"
   ],
   "asia": [
-    "asiática", "asiático", "chinesa", "japonesa", "coreana", "indiana",
-    "mongolóide", "sino", "tibetano", "malaio"
+    "asian", "chinese", "japanese", "korean", "indian",
+    "mongoloid", "sino", "tibetan", "malay"
   ],
   "europe": [
-    "europeia", "português", "portuguesa", "italiana", "alemã", "francesa",
-    "inglesa", "escocesa", "irlandesa", "espanhola", "grega", "bizantina",
-    "nórdica", "mediterrâneo", "alpino", "eslava"
+    "european", "portuguese", "italian", "german", "french",
+    "english", "scottish", "irish", "spanish", "greek", "byzantine",
+    "nordic", "mediterranean", "alpine", "slavic"
   ],
   "americas": [
-    "brasileira", "americana", "indígena", "ameríndia", "nativa americana"
+    "brazilian", "american", "indigenous", "amerindian", "native american"
   ],
   "middle-east": [
-    "árabe", "persa", "turca", "levantina", "mesopotâmica"
+    "arab", "persian", "turkish", "levantine", "mesopotamian"
   ],
   "oceania": [
     "australiana", "melanésia", "polinésia", "australóide"
