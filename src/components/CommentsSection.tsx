@@ -159,7 +159,7 @@ export const CommentsSection = ({
                     <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur border-border/50">
                       <DropdownMenuItem 
                         className="cursor-pointer"
-                        onClick={() => navigate('/faq')}
+                        onClick={() => navigate('/contact')}
                       >
                         <Flag className="h-3 w-3 mr-2" />
                         Report comment
@@ -274,7 +274,7 @@ export const CommentsSection = ({
                             <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur border-border/50">
                               <DropdownMenuItem 
                                 className="cursor-pointer"
-                                onClick={() => navigate('/faq')}
+                                onClick={() => navigate('/contact')}
                               >
                                 <Flag className="h-3 w-3 mr-2" />
                                 Report reply
