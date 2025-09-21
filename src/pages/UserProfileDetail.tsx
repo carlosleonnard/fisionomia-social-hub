@@ -112,7 +112,7 @@ export default function UserProfileDetail() {
           <AppSidebar />
 
           {/* Botão de voltar fixo acima do perfil */}
-          <div className="sticky top-20 z-40 mb-6">
+          <div className="fixed top-20 left-4 z-50 mb-6">
             <Button 
               onClick={() => navigate("/")} 
               variant="secondary"
