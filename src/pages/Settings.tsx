@@ -104,14 +104,36 @@ const Settings = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const imageUrl = await uploadImage(file, 'profile');
-    if (imageUrl) {
-      setProfileImage(imageUrl);
+    console.log('Iniciando upload da imagem:', file.name);
+    
+    try {
+      const imageUrl = await uploadImage(file, 'profile');
+      console.log('URL da imagem retornada:', imageUrl);
+      
+      if (imageUrl) {
+        setProfileImage(imageUrl);
+        toast({
+          title: "Imagem carregada",
+          description: "A imagem foi carregada com sucesso. Clique em salvar para aplicar as alterações.",
+        });
+      } else {
+        toast({
+          title: "Erro no upload",
+          description: "Não foi possível fazer upload da imagem. Tente novamente.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Erro no upload da imagem:', error);
       toast({
-        title: "Imagem carregada",
-        description: "A imagem foi carregada com sucesso. Clique em salvar para aplicar as alterações.",
+        title: "Erro no upload",
+        description: "Ocorreu um erro ao fazer upload da imagem. Tente novamente.",
+        variant: "destructive",
       });
     }
+    
+    // Limpar o input para permitir reselecionar a mesma imagem
+    event.target.value = '';
   };
 
   const handleSave = async () => {
@@ -223,10 +245,21 @@ const Settings = () => {
                         id="profile-image-upload"
                         disabled={isUploading}
                       />
-                      <Label htmlFor="profile-image-upload">
-                        <Button variant="outline" className="cursor-pointer" disabled={isUploading}>
-                          <Camera className="h-4 w-4 mr-2" />
-                          {isUploading ? "Enviando..." : "Alterar Foto"}
+                      <Label 
+                        htmlFor="profile-image-upload"
+                        className="cursor-pointer"
+                      >
+                        <Button 
+                          variant="outline" 
+                          className="cursor-pointer" 
+                          disabled={isUploading}
+                          type="button"
+                          asChild
+                        >
+                          <span>
+                            <Camera className="h-4 w-4 mr-2" />
+                            {isUploading ? "Enviando..." : "Alterar Foto"}
+                          </span>
                         </Button>
                       </Label>
                     </div>
