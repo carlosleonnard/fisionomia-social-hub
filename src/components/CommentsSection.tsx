@@ -126,7 +126,7 @@ export const CommentsSection = ({
         {sortedComments.map((comment) => (
           <div key={comment.id} className="space-y-3">
             {/* Main comment */}
-            <div className="flex gap-3 p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
+            <div id={`comment-${comment.id}`} className="flex gap-3 p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
               <Avatar className="h-8 w-8">
                 <AvatarFallback>{comment.user.nickname.charAt(0)}</AvatarFallback>
               </Avatar>
@@ -228,7 +228,7 @@ export const CommentsSection = ({
             {comment.replies && comment.replies.length > 0 && (
               <div className="ml-8 space-y-2">
                 {comment.replies.map((reply) => (
-                  <div key={reply.id} className="flex gap-3 p-2 rounded-lg bg-muted/10 hover:bg-muted/20 transition-colors">
+                  <div key={reply.id} id={`comment-${reply.id}`} className="flex gap-3 p-2 rounded-lg bg-muted/10 hover:bg-muted/20 transition-colors">
                     <Avatar className="h-6 w-6">
                       <AvatarFallback className="text-xs">{reply.user.nickname.charAt(0)}</AvatarFallback>
                     </Avatar>

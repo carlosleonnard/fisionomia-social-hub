@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface Notification {
   id: string;
@@ -22,6 +23,7 @@ export const NotificationBell = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const fetchNotifications = async () => {
     if (!user) return;
@@ -56,6 +58,24 @@ export const NotificationBell = () => {
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
       console.error('Error marking notification as read:', error);
+    }
+  };
+
+  const handleNotificationClick = async (notification: Notification) => {
+    if (!notification.is_read) {
+      await markAsRead(notification.id);
+    }
+    setIsOpen(false);
+
+    // Navigate to the profile and scroll to comment if available
+    if (notification.profile_id) {
+      const url = `/user-profile/${notification.profile_id}`;
+      if (notification.comment_id) {
+        // Add comment hash to URL for scrolling
+        navigate(`${url}#comment-${notification.comment_id}`);
+      } else {
+        navigate(url);
+      }
     }
   };
 
@@ -149,12 +169,7 @@ export const NotificationBell = () => {
                 className={`p-4 border-b border-border cursor-pointer hover:bg-muted/50 ${
                   !notification.is_read ? 'bg-primary/5' : ''
                 }`}
-                onClick={() => {
-                  if (!notification.is_read) {
-                    markAsRead(notification.id);
-                  }
-                  setIsOpen(false);
-                }}
+                onClick={() => handleNotificationClick(notification)}
               >
                 <p className="text-sm">{notification.message}</p>
                 <p className="text-xs text-muted-foreground mt-1">

@@ -168,50 +168,61 @@ export const useComments = (profileId: string) => {
     }
 
     try {
-      const comment = comments.find(c => c.id === commentId) || 
-                     comments.find(c => c.replies?.find(r => r.id === commentId))?.replies?.find(r => r.id === commentId);
-      if (!comment) return;
+      // Check if user has already liked this comment
+      const { data: existingLike } = await supabase
+        .from('comment_likes')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('comment_id', commentId)
+        .single();
 
-      if (comment.isLiked) {
+      // Get current comment data
+      const { data: commentData } = await supabase
+        .from('comments')
+        .select('likes_count, user_id')
+        .eq('id', commentId)
+        .single();
+
+      if (!commentData) return;
+
+      if (existingLike) {
         // Unlike the comment
-        const { error } = await supabase
+        const { error: deleteError } = await supabase
           .from('comment_likes')
           .delete()
           .eq('user_id', user.id)
           .eq('comment_id', commentId);
 
-        if (error) throw error;
+        if (deleteError) throw deleteError;
 
         // Update likes count
-        await supabase
+        const { error: updateError } = await supabase
           .from('comments')
-          .update({ likes_count: Math.max(0, comment.likes_count - 1) })
+          .update({ likes_count: Math.max(0, commentData.likes_count - 1) })
           .eq('id', commentId);
+
+        if (updateError) throw updateError;
       } else {
         // Like the comment
-        const { error } = await supabase
+        const { error: insertError } = await supabase
           .from('comment_likes')
           .insert({
             user_id: user.id,
             comment_id: commentId
           });
 
-        if (error) throw error;
+        if (insertError) throw insertError;
 
         // Update likes count
-        await supabase
+        const { error: updateError } = await supabase
           .from('comments')
-          .update({ likes_count: comment.likes_count + 1 })
+          .update({ likes_count: commentData.likes_count + 1 })
           .eq('id', commentId);
 
-        // Create notification for comment owner (using nickname for anonymity)
-        const { data: commentData } = await supabase
-          .from('comments')
-          .select('user_id')
-          .eq('id', commentId)
-          .single();
+        if (updateError) throw updateError;
 
-        if (commentData && commentData.user_id !== user.id) {
+        // Create notification for comment owner (using nickname for anonymity)
+        if (commentData.user_id !== user.id) {
           // Get the current user's nickname for notification
           const { data: currentUserProfile } = await supabase
             .rpc('get_public_profile_nickname', { p_user_id: user.id })
@@ -229,8 +240,10 @@ export const useComments = (profileId: string) => {
         }
       }
 
-      await fetchComments(); // Refresh comments
+      // Refresh comments to get updated data
+      await fetchComments();
     } catch (error: any) {
+      console.error('Error liking comment:', error);
       toast({
         title: "Erro",
         description: error.message,
