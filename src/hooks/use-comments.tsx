@@ -62,16 +62,16 @@ export const useComments = (profileId: string) => {
         // Get unique user IDs to fetch profile names securely
         const uniqueUserIds = [...new Set(commentsData.map(c => c.user_id))];
         
-        // Fetch profile names using secure RPC
-        const profileNamesPromises = uniqueUserIds.map(async (userId) => {
+        // Fetch profile nicknames using secure RPC
+        const profileNicknamesPromises = uniqueUserIds.map(async (userId) => {
           const { data } = await supabase
             .rpc('get_public_profile_name', { p_user_id: userId })
             .single();
-          return { userId, name: data?.name || 'Usuário' };
+          return { userId, nickname: data?.nickname || 'Usuário Anônimo' };
         });
         
-        const profileNames = await Promise.all(profileNamesPromises);
-        const profileNameMap = new Map(profileNames.map(p => [p.userId, p.name]));
+        const profileNicknames = await Promise.all(profileNicknamesPromises);
+        const profileNicknameMap = new Map(profileNicknames.map(p => [p.userId, p.nickname]));
 
         const formattedComments: Comment[] = commentsData
           .filter(comment => !comment.parent_comment_id) // Only get top-level comments
@@ -83,7 +83,7 @@ export const useComments = (profileId: string) => {
             parent_comment_id: comment.parent_comment_id,
             user_id: comment.user_id,
             user: {
-              name: profileNameMap.get(comment.user_id) || 'Usuário',
+              name: profileNicknameMap.get(comment.user_id) || 'Usuário Anônimo',
               email: '' // No longer expose emails for security
             },
             userVotes: userVotesMap.get(comment.user_id) || {},
@@ -98,7 +98,7 @@ export const useComments = (profileId: string) => {
                 parent_comment_id: reply.parent_comment_id,
                 user_id: reply.user_id,
                 user: {
-                  name: profileNameMap.get(reply.user_id) || 'Usuário',
+                  name: profileNicknameMap.get(reply.user_id) || 'Usuário Anônimo',
                   email: '' // No longer expose emails for security
                 },
                 userVotes: userVotesMap.get(reply.user_id) || {},
