@@ -100,13 +100,30 @@ export const useUserProfiles = () => {
             .eq('profile_id', profile.id)        // Usar profile.id em vez de profile.slug
             .eq('characteristic_type', 'Primary Geographic'); // Só Primary Geographic
 
+          // Busca votos do Primary Phenotype para obter o fenótipo específico mais votado
+          const { data: phenotypeVotesData } = await supabase
+            .from('votes')
+            .select('classification')
+            .eq('profile_id', profile.id)
+            .eq('characteristic_type', 'Primary Phenotype');
+
           // Conta votos do Primary Geographic
           const voteCount = votesData?.length || 0;
 
-          // Retorna o perfil original + contagem de votos Primary Geographic
+          // Calcula o fenótipo específico mais votado
+          const phenotypeCounts: Record<string, number> = {};
+          phenotypeVotesData?.forEach(vote => {
+            phenotypeCounts[vote.classification] = (phenotypeCounts[vote.classification] || 0) + 1;
+          });
+
+          const mostVotedPhenotype = Object.entries(phenotypeCounts)
+            .sort(([,a], [,b]) => b - a)[0]?.[0] || null;
+
+          // Retorna o perfil original + contagem de votos Primary Geographic + fenótipo mais votado
           return {
             ...profile,
-            vote_count: voteCount   // Conta votos do Primary Geographic
+            vote_count: voteCount,   // Conta votos do Primary Geographic
+            most_voted_phenotype: mostVotedPhenotype // Fenótipo específico mais votado
           };
         })
       );
@@ -135,12 +152,29 @@ export const useUserProfiles = () => {
             .eq('profile_id', profile.id)    // Usar profile.id em vez de profile.slug
             .eq('characteristic_type', 'Primary Geographic');
 
+          // Busca votos do Primary Phenotype para obter o fenótipo específico mais votado
+          const { data: phenotypeVotesData } = await supabase
+            .from('votes')
+            .select('classification')
+            .eq('profile_id', profile.id)
+            .eq('characteristic_type', 'Primary Phenotype');
+
           // Count votes for Primary Geographic
           const voteCount = votesData?.length || 0;
 
+          // Calcula o fenótipo específico mais votado
+          const phenotypeCounts: Record<string, number> = {};
+          phenotypeVotesData?.forEach(vote => {
+            phenotypeCounts[vote.classification] = (phenotypeCounts[vote.classification] || 0) + 1;
+          });
+
+          const mostVotedPhenotype = Object.entries(phenotypeCounts)
+            .sort(([,a], [,b]) => b - a)[0]?.[0] || null;
+
           return {
             ...profile,
-            vote_count: voteCount
+            vote_count: voteCount,
+            most_voted_phenotype: mostVotedPhenotype // Fenótipo específico mais votado
           };
         })
       );
