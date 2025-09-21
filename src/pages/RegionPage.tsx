@@ -14,10 +14,10 @@ import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 
 /**
- * PÁGINA DE PERFIS POR REGIÃO
+ * PROFILES BY REGION PAGE
  * 
- * Exibe perfis filtrados por região geográfica baseado nos dados
- * reais cadastrados no banco de dados.
+ * Displays profiles filtered by geographic region based on real data
+ * registered in the database.
  */
 
 const RegionPage = () => {
@@ -25,31 +25,31 @@ const RegionPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Buscar perfis reais do banco de dados filtrados por região baseado em votação geográfica
+  // Search for real profiles from database filtered by region based on geographic voting
   const { data: profiles, isLoading: profilesLoading, error: profilesError } = useGeographicRegionProfiles(region);
 
   /**
-   * MAPEAMENTO DE NOMES DE REGIÕES
+   * REGION NAMES MAPPING
    * 
-   * Converte os slugs das URLs para nomes de exibição das regiões.
+   * Converts URL slugs to region display names.
    */
   const regionNames: Record<string, string> = {
-    "africa": "África",
-    "asia": "Ásia", 
-    "europe": "Europa",
-    "americas": "Américas",
-    "middle-east": "Oriente Médio",
+    "africa": "Africa",
+    "asia": "Asia", 
+    "europe": "Europe",
+    "americas": "Americas",
+    "middle-east": "Middle East",
     "oceania": "Oceania"
   };
 
-  // Obter o nome de exibição da região atual
+  // Get display name for current region
   const regionKey = region?.toLowerCase() || "";
   const regionDisplayName = regionNames[regionKey] || region;
 
   /**
-   * TRATAMENTO DE ERRO NA BUSCA DE PERFIS
+   * ERROR HANDLING FOR PROFILE SEARCH
    * 
-   * Exibe mensagem de erro caso não consiga carregar os perfis do banco.
+   * Displays error message if unable to load profiles from database.
    */
   if (profilesError) {
     return (
@@ -57,13 +57,13 @@ const RegionPage = () => {
         <Header />
         <div className="container px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Erro ao carregar perfis</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-4">Error loading profiles</h1>
             <p className="text-muted-foreground mb-4">
-              Não foi possível carregar os perfis desta região.
+              Could not load profiles from this region.
             </p>
             <Button onClick={() => navigate("/")}>
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar ao início
+              Back to home
             </Button>
           </div>
         </div>
@@ -73,9 +73,9 @@ const RegionPage = () => {
   }
 
   /**
-   * VALIDAÇÃO DA REGIÃO
+   * REGION VALIDATION
    * 
-   * Verifica se a região da URL é válida antes de exibir o conteúdo.
+   * Checks if the URL region is valid before displaying content.
    */
   if (!regionKey || !regionNames[regionKey]) {
     return (
@@ -83,10 +83,10 @@ const RegionPage = () => {
         <Header />
         <div className="container px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Região não encontrada</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-4">Region not found</h1>
             <Button onClick={() => navigate("/")}>
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar ao início
+              Back to home
             </Button>
           </div>
         </div>
@@ -104,7 +104,7 @@ const RegionPage = () => {
           {/* Sidebar */}
           <AppSidebar />
 
-          {/* Botão de voltar fixo acima do perfil */}
+          {/* Fixed back button above profile */}
           <div className="sticky top-20 z-40 mb-6">
             <Button 
               onClick={() => navigate("/")} 
@@ -113,22 +113,22 @@ const RegionPage = () => {
               className="bg-card/95 backdrop-blur-sm border border-border/50 hover:bg-card shadow-lg"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              Back
             </Button>
           </div>
 
           {/* Main Content */}
           <div>
             <div className="mb-8">
-              {/* Botão de voltar já foi movido para posição fixa no topo */}
+              {/* Back button has already been moved to fixed position at top */}
               
               <h1 className="text-3xl font-bold text-foreground mb-2">{regionDisplayName}</h1>
               <p className="text-muted-foreground">
-                Explore os perfis da {regionDisplayName}
+                Explore {regionDisplayName} profiles
               </p>
             </div>
 
-            {/* Exibir loading enquanto carrega os perfis */}
+            {/* Display loading while loading profiles */}
             {profilesLoading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[...Array(8)].map((_, i) => (
@@ -143,27 +143,27 @@ const RegionPage = () => {
               </div>
             )}
 
-            {/* Exibir perfis se não estiver carregando */}
+            {/* Display profiles if not loading */}
             {!profilesLoading && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold text-foreground">
-                    Perfis da {regionDisplayName}
+                    {regionDisplayName} Profiles
                   </h2>
                   <Badge variant="secondary" className="px-3 py-1">
-                    {profiles?.length || 0} perfil{profiles?.length !== 1 ? 's' : ''}
+                    {profiles?.length || 0} profile{profiles?.length !== 1 ? 's' : ''}
                   </Badge>
                 </div>
 
-                {/* Verificar se há perfis para exibir */}
+                {/* Check if there are profiles to display */}
                 {!profiles || profiles.length === 0 ? (
                   <div className="text-center py-12">
                     <User className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-foreground mb-2">
-                      Nenhum perfil encontrado
+                      No profiles found
                     </h3>
                     <p className="text-muted-foreground">
-                      Não há perfis cadastrados para a região {regionDisplayName}.
+                      There are no profiles registered for {regionDisplayName} region.
                     </p>
                   </div>
                 ) : (
@@ -190,7 +190,7 @@ const RegionPage = () => {
                                   variant={profile.is_anonymous ? "secondary" : "default"} 
                                   className="text-xs"
                                 >
-                                  {profile.is_anonymous ? "Anônimo" : "Famoso"}
+                                  {profile.is_anonymous ? "Anonymous" : "Famous"}
                                 </Badge>
                               </div>
                             </div>

@@ -76,7 +76,7 @@ export default function UserProfileDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-bg flex items-center justify-center">
-        <div className="text-foreground">Carregando perfil...</div>
+        <div className="text-foreground">Loading profile...</div>
       </div>
     );
   }
@@ -97,20 +97,20 @@ export default function UserProfileDetail() {
       await deleteProfile.mutateAsync(profile.id);
       navigate('/');
     } catch (error) {
-      console.error('Erro ao excluir perfil:', error);
+      console.error('Error deleting profile:', error);
     }
   };
 
   // Preparar imagens para o carrossel
   const images = [
-    { src: profile.front_image_url, alt: `${profile.name} - frente`, label: "Frente" }
+    { src: profile.front_image_url, alt: `${profile.name} - front`, label: "Front" }
   ];
   
   if (profile.profile_image_url) {
     images.push({ 
       src: profile.profile_image_url, 
-      alt: `${profile.name} - perfil`, 
-      label: "Perfil" 
+      alt: `${profile.name} - profile`, 
+      label: "Profile"
     });
   }
 
@@ -129,7 +129,7 @@ export default function UserProfileDetail() {
             <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardContent className="p-6">
                 <div className="text-center">
-                  {/* Carrossel de fotos */}
+                  {/* Photo carousel */}
                   <div className="max-w-md mx-auto mb-4">
                     <Carousel className="w-full">
                       <CarouselContent>
@@ -220,7 +220,7 @@ export default function UserProfileDetail() {
                             variant="outline"
                             className="bg-muted/10 text-muted-foreground"
                           >
-                            {category.label} Indefinido
+                            {category.label} Undefined
                           </Badge>
                         );
                       }
@@ -249,7 +249,7 @@ export default function UserProfileDetail() {
                   {profile.ancestry && (
                     <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
                       <div className="p-4 bg-muted/30 rounded-lg text-left">
-                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
+                        <h3 className="text-sm font-semibold text-phindex-teal mb-2">Known Ancestry</h3>
                         <p className="text-sm text-foreground leading-relaxed">
                           {profile.ancestry}
                         </p>
@@ -259,7 +259,7 @@ export default function UserProfileDetail() {
                   
                   {/* Created By Information */}
                   <p className="text-xs text-muted-foreground text-center mb-6 -mt-2">
-                    Criado por <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'Usuário'}</span> em {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('pt-BR') : new Date(profile.created_at).toLocaleDateString('pt-BR')}
+                    Created by <span className="font-medium text-phindex-teal">{profileCreator?.creatorName || 'User'}</span> on {profileCreator?.createdAt ? new Date(profileCreator.createdAt).toLocaleDateString('en-US') : new Date(profile.created_at).toLocaleDateString('en-US')}
                   </p>
                   
                    <div className="flex justify-center gap-4 mb-6">
@@ -273,7 +273,7 @@ export default function UserProfileDetail() {
                        }}
                      >
                        <Vote className="h-4 w-4 text-phindex-teal" />
-                       <span>{primaryGeographicTotalVotes} votos</span>
+                       <span>{primaryGeographicTotalVotes} votes</span>
                      </div>
                      <div 
                        className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal"
@@ -285,31 +285,31 @@ export default function UserProfileDetail() {
                        }}
                      >
                        <MessageSquare className="h-4 w-4 text-blue-500" />
-                       <span>{realComments.length} comentários</span>
+                       <span>{realComments.length} comments</span>
                      </div>
                      {isOwner && (
                        <AlertDialog>
                          <AlertDialogTrigger asChild>
                            <div className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors">
                              <Trash2 className="h-4 w-4 text-red-500" />
-                             <span className="text-red-500">Excluir</span>
+                             <span className="text-red-500">Delete</span>
                            </div>
                          </AlertDialogTrigger>
                          <AlertDialogContent>
                            <AlertDialogHeader>
-                             <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
-                             <AlertDialogDescription>
-                               Tem certeza que deseja excluir este perfil? Esta ação não pode ser desfeita.
-                             </AlertDialogDescription>
+                              <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete this profile? This action cannot be undone.
+                              </AlertDialogDescription>
                            </AlertDialogHeader>
                            <AlertDialogFooter>
-                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                             <AlertDialogAction 
-                               onClick={handleDelete}
-                               className="bg-red-500 hover:bg-red-600"
-                             >
-                               Sim, excluir
-                             </AlertDialogAction>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={handleDelete}
+                                className="bg-red-500 hover:bg-red-600"
+                              >
+                                Yes, delete
+                              </AlertDialogAction>
                            </AlertDialogFooter>
                          </AlertDialogContent>
                        </AlertDialog>
@@ -326,7 +326,7 @@ export default function UserProfileDetail() {
                              variant="outline"
                            >
                              <Users className="mr-2 h-4 w-4" />
-                             Alterar voto
+                             Change vote
                            </Button>
                          </div>
                        ) : (
@@ -336,7 +336,7 @@ export default function UserProfileDetail() {
                            variant="default"
                          >
                            <Users className="mr-2 h-4 w-4" />
-                           Votar
+                           Vote
                          </Button>
                        )
                      ) : (
@@ -382,7 +382,7 @@ export default function UserProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                          <p className="text-xs text-muted-foreground">No votes yet</p>
                        )}
                      </div>
 
@@ -404,7 +404,7 @@ export default function UserProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                          <p className="text-xs text-muted-foreground">No votes yet</p>
                        )}
                      </div>
 
@@ -426,7 +426,7 @@ export default function UserProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                          <p className="text-xs text-muted-foreground">No votes yet</p>
                        )}
                      </div>
                    </div>
@@ -458,7 +458,7 @@ export default function UserProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                          <p className="text-xs text-muted-foreground">No votes yet</p>
                        )}
                      </div>
 
@@ -480,7 +480,7 @@ export default function UserProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                          <p className="text-xs text-muted-foreground">No votes yet</p>
                        )}
                      </div>
 
@@ -502,7 +502,7 @@ export default function UserProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
+                         <p className="text-xs text-muted-foreground">No votes yet</p>
                        )}
                      </div>
                    </div>
