@@ -259,6 +259,42 @@ export type Database = {
           },
         ]
       }
+      phenotype_reference_images: {
+        Row: {
+          created_at: string
+          gender: string
+          id: string
+          image_url: string
+          phenotype: string
+          region: string
+          subregion: string
+          updated_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          gender: string
+          id?: string
+          image_url: string
+          phenotype: string
+          region: string
+          subregion: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          gender?: string
+          id?: string
+          image_url?: string
+          phenotype?: string
+          region?: string
+          subregion?: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -446,6 +482,10 @@ export type Database = {
       compute_region_from_general: {
         Args: { primary_text: string }
         Returns: string
+      }
+      count_unique_voters_for_profile: {
+        Args: { profile_slug: string }
+        Returns: number
       }
       create_notification: {
         Args: {

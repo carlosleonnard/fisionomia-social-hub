@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Upload, Image as ImageIcon, X } from "lucide-react";
-import { useImageUpload } from "@/hooks/use-image-upload";
+import { usePhenotypeReferences } from "@/hooks/use-phenotype-references";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 
@@ -157,26 +157,26 @@ const phenotypeRegions = [
 ];
 
 export default function PhenotypeFlowPage() {
-  const { uploadImage, isUploading } = useImageUpload();
-  const [uploadedImages, setUploadedImages] = useState<Record<string, { male?: string; female?: string }>>({});
+  const { uploadImage, deleteImage, getImageUrl, isUploading } = usePhenotypeReferences();
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const getImageKey = (phenotype: string, gender: 'male' | 'female') => `${phenotype}-${gender}`;
 
-  const handleFileSelect = async (phenotype: string, gender: 'male' | 'female', file: File) => {
+  const getRegionFromSubregion = (subregion: string): string => {
+    for (const region of phenotypeRegions) {
+      if (region.subregions.includes(subregion)) {
+        return region.name;
+      }
+    }
+    return '';
+  };
+
+  const handleFileSelect = async (phenotype: string, subregion: string, gender: 'male' | 'female', file: File) => {
     try {
-      const imageUrl = await uploadImage(file, 'profile');
+      const region = getRegionFromSubregion(subregion);
+      const imageUrl = await uploadImage(file, phenotype, subregion, region, gender);
       if (imageUrl) {
-        setUploadedImages(prev => ({
-          ...prev,
-          [phenotype]: {
-            ...prev[phenotype],
-            [gender]: imageUrl
-          }
-        }));
         toast.success(`${gender} photo uploaded successfully for ${phenotype}`);
-      } else {
-        toast.error("Failed to upload image");
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -192,22 +192,19 @@ export default function PhenotypeFlowPage() {
     }
   };
 
-  const handleFileChange = (phenotype: string, gender: 'male' | 'female') => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (phenotype: string, subregion: string, gender: 'male' | 'female') => (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleFileSelect(phenotype, gender, file);
+      handleFileSelect(phenotype, subregion, gender, file);
     }
   };
 
-  const removeImage = (phenotype: string, gender: 'male' | 'female') => {
-    setUploadedImages(prev => ({
-      ...prev,
-      [phenotype]: {
-        ...prev[phenotype],
-        [gender]: undefined
-      }
-    }));
-    toast.success(`${gender} photo removed for ${phenotype}`);
+  const removeImage = async (phenotype: string, subregion: string, gender: 'male' | 'female') => {
+    const region = getRegionFromSubregion(subregion);
+    const success = await deleteImage(phenotype, subregion, region, gender);
+    if (success) {
+      toast.success(`${gender} photo removed for ${phenotype}`);
+    }
   };
 
   return (
@@ -252,10 +249,10 @@ export default function PhenotypeFlowPage() {
                                   <div className="space-y-3">
                                     <h5 className="text-md font-medium text-muted-foreground">Male</h5>
                                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
-                                      {uploadedImages[phenotype]?.male ? (
+                                      {getImageUrl(phenotype, subregion, region.name, 'male') ? (
                                         <div className="relative">
                                           <img 
-                                            src={uploadedImages[phenotype].male} 
+                                            src={getImageUrl(phenotype, subregion, region.name, 'male')!} 
                                             alt={`${phenotype} male reference`}
                                             className="max-h-48 mx-auto rounded object-cover"
                                           />
@@ -263,7 +260,7 @@ export default function PhenotypeFlowPage() {
                                             variant="destructive"
                                             size="sm"
                                             className="absolute top-2 right-2"
-                                            onClick={() => removeImage(phenotype, 'male')}
+                                            onClick={() => removeImage(phenotype, subregion, 'male')}
                                           >
                                             <X className="h-4 w-4" />
                                           </Button>
@@ -290,7 +287,7 @@ export default function PhenotypeFlowPage() {
                                         accept="image/*"
                                         className="hidden"
                                         ref={(el) => fileInputRefs.current[getImageKey(phenotype, 'male')] = el}
-                                        onChange={handleFileChange(phenotype, 'male')}
+                                        onChange={handleFileChange(phenotype, subregion, 'male')}
                                       />
                                     </div>
                                   </div>
@@ -299,10 +296,10 @@ export default function PhenotypeFlowPage() {
                                   <div className="space-y-3">
                                     <h5 className="text-md font-medium text-muted-foreground">Female</h5>
                                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-phindex-teal transition-colors">
-                                      {uploadedImages[phenotype]?.female ? (
+                                      {getImageUrl(phenotype, subregion, region.name, 'female') ? (
                                         <div className="relative">
                                           <img 
-                                            src={uploadedImages[phenotype].female} 
+                                            src={getImageUrl(phenotype, subregion, region.name, 'female')!} 
                                             alt={`${phenotype} female reference`}
                                             className="max-h-48 mx-auto rounded object-cover"
                                           />
@@ -310,7 +307,7 @@ export default function PhenotypeFlowPage() {
                                             variant="destructive"
                                             size="sm"
                                             className="absolute top-2 right-2"
-                                            onClick={() => removeImage(phenotype, 'female')}
+                                            onClick={() => removeImage(phenotype, subregion, 'female')}
                                           >
                                             <X className="h-4 w-4" />
                                           </Button>
@@ -337,7 +334,7 @@ export default function PhenotypeFlowPage() {
                                         accept="image/*"
                                         className="hidden"
                                         ref={(el) => fileInputRefs.current[getImageKey(phenotype, 'female')] = el}
-                                        onChange={handleFileChange(phenotype, 'female')}
+                                        onChange={handleFileChange(phenotype, subregion, 'female')}
                                       />
                                     </div>
                                   </div>
