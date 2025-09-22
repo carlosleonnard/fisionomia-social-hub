@@ -12,13 +12,13 @@ export const UserProfilesList = () => {
 
   if (profilesLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
         {[...Array(8)].map((_, i) => (
           <Card key={i} className="bg-gradient-card border-border/50 animate-pulse">
-            <CardContent className="p-4">
-              <div className="w-full h-48 bg-muted rounded-lg mb-4"></div>
-              <div className="h-4 bg-muted rounded mb-2"></div>
-              <div className="h-3 bg-muted rounded w-2/3"></div>
+            <CardContent className="p-2 md:p-4">
+              <div className="w-full h-32 md:h-48 bg-muted rounded-lg mb-2 md:mb-4"></div>
+              <div className="h-3 md:h-4 bg-muted rounded mb-1 md:mb-2"></div>
+              <div className="h-2 md:h-3 bg-muted rounded w-2/3"></div>
             </CardContent>
           </Card>
         ))}
@@ -49,7 +49,7 @@ export const UserProfilesList = () => {
         </Badge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
         {profiles.map((profile) => (
           <Link
             key={profile.id}
@@ -57,45 +57,46 @@ export const UserProfilesList = () => {
             className="group block"
           >
             <Card className="bg-gradient-card border-border/50 hover:border-primary/50 transition-all duration-300 group-hover:shadow-lg">
-              <CardContent className="p-4">
-                <div className="relative overflow-hidden rounded-lg mb-4">
+              <CardContent className="p-2 md:p-4">
+                <div className="relative overflow-hidden rounded-lg mb-2 md:mb-4">
                    <img
                      src={profile.front_image_url}
                      alt={profile.name}
                      className="profile-image-thumbnail rounded-lg transition-transform duration-300 group-hover:scale-105"
                    />
-                  <div className="absolute top-2 right-2">
+                  <div className="absolute top-1 md:top-2 right-1 md:right-2">
                     <Badge variant={profile.is_anonymous ? "secondary" : "default"} className="text-xs">
-                      {profile.is_anonymous ? "Anonymous" : "Famous"}
+                      {profile.is_anonymous ? "Anon" : "Famous"}
                     </Badge>
                   </div>
                 </div>
 
-                 <div className="space-y-2">
-                   <div className="flex items-center gap-2 mb-2">
-                     <span className="text-lg">🏳️</span>
-                     <span className="text-sm font-medium text-muted-foreground">{profile.country}</span>
+                 <div className="space-y-1 md:space-y-2">
+                   <div className="flex items-center gap-1 md:gap-2 mb-1 md:mb-2">
+                     <span className="text-sm md:text-lg">🏳️</span>
+                     <span className="text-xs md:text-sm font-medium text-muted-foreground truncate">{profile.country}</span>
                    </div>
                    
-                   <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+                   <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors text-sm md:text-base">
                      {profile.name}
                    </h3>
                    
                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                     <span className="flex items-center gap-1">
-                       <span className="w-3 h-3 rounded-full bg-primary/20"></span>
-                       {profile.ancestry}
+                     <span className="flex items-center gap-1 truncate">
+                       <span className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-primary/20 flex-shrink-0"></span>
+                       <span className="truncate">{profile.ancestry}</span>
                      </span>
-                     <span>{profile.height}m</span>
+                     <span className="flex-shrink-0">{profile.height}m</span>
                    </div>
 
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-xs truncate">
                       {profile.category}
                     </Badge>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Calendar className="h-3 w-3" />
-                      {new Date(profile.created_at).toLocaleDateString('en-US')}
+                      <Calendar className="h-2 w-2 md:h-3 md:w-3" />
+                      <span className="hidden md:inline">{new Date(profile.created_at).toLocaleDateString('en-US')}</span>
+                      <span className="md:hidden">{new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     </div>
                   </div>
                 </div>

@@ -74,7 +74,7 @@ export const VotingSection = ({ profileId, votes, onVote, hasUserVoted }: Voting
         {!hasUserVoted && (
           <div className="border-t pt-3">
             <p className="text-xs text-muted-foreground mb-3">Vote for the phenotype you identify:</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {classifications.map((classification) => {
                 const voteData = getVoteData(classification);
                 return (
@@ -82,12 +82,12 @@ export const VotingSection = ({ profileId, votes, onVote, hasUserVoted }: Voting
                     key={classification}
                     variant={selectedClassification === classification ? "default" : "outline"}
                     size="sm"
-                    className="text-xs h-8 hover:bg-phindex-teal hover:text-white transition-colors"
+                    className="text-xs h-8 hover:bg-phindex-teal hover:text-white transition-colors justify-start"
                     onClick={() => handleVote(classification)}
                   >
-                    {classification}
+                    <span className="truncate">{classification}</span>
                     {voteData.count > 0 && (
-                      <Badge variant="secondary" className="ml-1 text-xs bg-white/20">
+                      <Badge variant="secondary" className="ml-1 text-xs bg-white/20 flex-shrink-0">
                         {voteData.count}
                       </Badge>
                     )}
