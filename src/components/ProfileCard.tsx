@@ -73,17 +73,17 @@ export const ProfileCard = ({
              alt={name}
              className="profile-image-thumbnail w-full transition-transform duration-300 group-hover:scale-105 border-2 border-primary rounded-lg"
            />
-          <div className="absolute top-1 md:top-2 left-1 md:left-2 text-sm md:text-lg">
+          <div className="absolute top-2 left-2 text-lg">
             {countryFlags[country] || "🌎"}
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       </div>
 
-      <div className="p-2 md:p-3 space-y-2 md:space-y-3">
+      <div className="p-3 space-y-3">
         {/* Nome e informações básicas */}
         <div className="text-center">
-          <h3 className="font-semibold text-phindex-dark text-xs md:text-sm">Profile {id}</h3>
+          <h3 className="font-semibold text-phindex-dark text-sm">Profile {id}</h3>
           <p className="text-xs text-muted-foreground">{name}, {age}</p>
           {topVote && (
             <Badge variant="secondary" className="text-xs mt-1 bg-phindex-teal/10 text-phindex-teal">
@@ -93,31 +93,31 @@ export const ProfileCard = ({
         </div>
 
         {/* Ações */}
-        <div className="flex items-center justify-center gap-2 md:gap-4 pt-2 border-t">
+        <div className="flex items-center justify-center gap-4 pt-2 border-t">
           <Button
             variant="ghost"
             size="sm"
-            className={`gap-1 text-xs h-6 md:h-7 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
+            className={`gap-1 text-xs h-7 ${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500 transition-colors`}
             onClick={(e) => {
               e.stopPropagation();
               handleLike();
             }}
           >
             <Heart className={`h-3 w-3 ${isLiked ? 'fill-current' : ''}`} />
-            <span className="hidden md:inline">{likes + (isLiked ? 1 : 0)}</span>
+            {likes + (isLiked ? 1 : 0)}
           </Button>
 
           <Button
             variant="ghost"
             size="sm"
-            className="gap-1 text-xs h-6 md:h-7 text-muted-foreground hover:text-foreground transition-colors"
+            className="gap-1 text-xs h-7 text-muted-foreground hover:text-foreground transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               onComment(id);
             }}
           >
             <MessageCircle className="h-3 w-3" />
-            <span className="hidden md:inline">{comments}</span>
+            {comments}
           </Button>
         </div>
       </div>
