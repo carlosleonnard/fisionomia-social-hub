@@ -13,6 +13,8 @@ const ANCESTRY_OPTIONS = [
   'Chinese', 'Koreans', 'Japanese', 'Mongols', 'Manchus', 'Vietnamese', 'Filipinos',
   'Indonesians', 'Malays', 'Tatars', 'Afghans', 'Native Americans', 'Inuit',
   'Mestizos', 'Afro-Caribbeans', 'Aboriginals', 'Maori', 'Polynesians', 'Melanesians', 'Gypsies',
+
+  // --- Lista expandida de países/gentílicos ---
   'Afghan', 'Albanian', 'Algerian', 'Andorran', 'Angolan', 'Antiguan or Barbudan', 'Argentine',
   'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi',
   'Barbadian', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian',
@@ -42,14 +44,69 @@ const ANCESTRY_OPTIONS = [
   'Ukrainian', 'Emirati', 'British', 'American', 'Uruguayan', 'Uzbek', 'Ni-Vanuatu',
   'Vatican citizen', 'Venezuelan', 'Vietnamese', 'Yemeni', 'Zambian', 'Zimbabwean',
   'Palestinian', 'Taiwanese',
+
+  // --- Étnicos adicionais ---
   'Han Chinese', 'Pashtuns', 'Uzbeks', 'Turks', 'Hausa', 'Xhosa', 'Oromo', 'Amhara',
   'Ashanti', 'Javanese', 'Malay', 'Thai', 'Kinh', 'Sindhi', 'Baloch', 'Quechua', 'Aymara',
   'Maya', 'Māori', 'Aboriginal Australians', 'Romani', 'Mizrahi Jews', 'Ethiopian Jews',
   'Yemenite Jews', 'Karaite Jews', 'Maronites', 'Copts', 'Chaldeans', 'Armenian Apostolic',
   'Sunnis', 'Shias', 'Alawites', 'Druze', 'Ibadis', 'Ahmadis', 'Jains', 'Parsis',
   'Yazidis', 'Samaritans', 'Shintoists', 'Baháʼís', 'Rastafarians', 'Amazonian groups',
-  'Andean groups'
+  'Andean groups',
+
+  // --- Grupos novos adicionados ---
+  // Europa
+  'Bretons', 'Gaels',
+  'Northern Italians', 'Southern Italians', 'Sardinians', 'Corsicans',
+  'Anglo-Saxons', 'Normans', 'Frisians',
+  'Rusyns', 'Sorbs', 'Kashubians',
+  'Sami', 'Basques', 'Gagauz', 'Circassians', 'Chechens', 'Ingush',
+  'Karaim', 'Krymchaks',
+
+  // África
+  'Beja', 'Mozabite',
+  'Fulani', 'Mandinka', 'Wolof', 'Dogon', 'Akan', 'Ewe', 'Fon',
+  'Kongo', 'Luba', 'Mongo',
+  'Swahili', 'Tigrinya', 'Afar',
+  'Khoisan', 'San', 'Khoikhoi', 'Herero', 'Tswana', 'Shona', 'Venda',
+
+  // Oriente Médio / Ásia Ocidental
+  'Bedouins', 'Turkmen', 'Azeris', 'Mandeans', 'Sabians',
+  'Lurs', 'Gilaks', 'Mazandarani',
+
+  // Ásia Central
+  'Karakalpak', 'Uyghurs', 'Hazara',
+
+  // Sul da Ásia
+  'Rajputs', 'Marathas', 'Adivasi', 'Dalits',
+  'Sinhalese', 'Veddas',
+  'Sherpas', 'Newars', 'Gurkhas',
+
+  // Sudeste Asiático
+  'Lao', 'Shan',
+  'Karen', 'Rohingya', 'Chin', 'Kachin',
+  'Visayans', 'Tagalogs', 'Igorot', 'Moro',
+  'Balinese', 'Dayak', 'Bugis', 'Toraja', 'Papuan peoples',
+  'Montagnards', 'Hmong', 'Tay', 'Nung',
+
+  // Leste Asiático
+  'Zhuang', 'Tibetans', 'Hani', 'Yi', 'Dai', 'Hui',
+  'Jeju islanders',
+  'Ainu', 'Ryukyuan',
+
+  // Oceania
+  'Marquesan', 'Tahitian', 'Rapa Nui',
+  'Kanak', 'Tolai', 'Motu',
+  'Yolngu', 'Noongar', 'Arrernte', 'Torres Strait Islanders',
+
+  // Américas
+  'Cherokee', 'Sioux', 'Lakota', 'Apache', 'Navajo', 'Hopi', 'Cree', 'Métis',
+  'Nahua', 'Mixtec', 'Zapotec', 'Totonac',
+  'Mapuche', 'Chachapoya',
+  'Taíno', 'Carib', 'Arawak', 'Garifuna',
+  'Yanomami', 'Kayapó', 'Tikuna', 'Munduruku', 'Guarani', 'Tupinambá'
 ];
+
 
 
 interface CountrySelectorProps {
