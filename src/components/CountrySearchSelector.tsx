@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { X } from 'lucide-react';
 
@@ -92,30 +90,23 @@ export const CountrySearchSelector: React.FC<CountrySearchSelectorProps> = ({
   };
 
   return (
-    <div className="relative" ref={containerRef}>
-      {/* Hidden input for HTML5 validation */}
-      <input
-        type="text"
-        value={selectedCountry}
-        onChange={() => {}} // Controlled by the component
-        required={required}
-        style={{ display: 'none' }}
-        tabIndex={-1}
-      />
-      
+    <div className="relative">
       <div className="relative">
-        <Input
-          type="text"
-          placeholder={selectedCountry || placeholder}
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setIsOpen(true);
-          }}
-          onFocus={() => setIsOpen(true)}
-          onKeyDown={handleKeyDown}
-          className="pr-8"
-        />
+        <select
+          value={selectedCountry}
+          onChange={(e) => handleCountrySelect(e.target.value)}
+          required={required}
+          className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <option value="" disabled>
+            {placeholder}
+          </option>
+          {COUNTRY_OPTIONS.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
         {selectedCountry && (
           <button
             type="button"
@@ -140,31 +131,6 @@ export const CountrySearchSelector: React.FC<CountrySearchSelectorProps> = ({
             </button>
           </Badge>
         </div>
-      )}
-
-      {isOpen && (
-        <Card className="absolute top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto z-50 bg-popover border shadow-md">
-          <div className="p-2">
-            {filteredCountries.length === 0 ? (
-              <div className="text-sm text-muted-foreground text-center py-2">
-                No countries found
-              </div>
-            ) : (
-              <div className="space-y-1">
-                {filteredCountries.map((country) => (
-                  <button
-                    key={country}
-                    type="button"
-                    onClick={() => handleCountrySelect(country)}
-                    className="w-full text-left px-3 py-2 text-sm rounded hover:bg-accent hover:text-accent-foreground transition-colors"
-                  >
-                    {country}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </Card>
       )}
     </div>
   );
