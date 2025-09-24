@@ -52,7 +52,7 @@ const FAQ = () => {
     },
     {
       question: "Can I download profile photos?",
-      answer: "Photos are property of the users who uploaded them. We recommend respecting copyright and not downloading without permission. Please do your best to check for duplicates, periodically, we will clean out inactive or duplicated profiles. If you would like to remove a profile, please report to contact@phindex.com."
+      answer: "Photos are property of the users who uploaded them. We recommend respecting copyright and not downloading without permission. Please do your best to check for duplicates, periodically, we will clean out inactive or duplicated profiles. If you would like to remove a profile, please report to contact@phenotypeindex.com."
     }
   ];
 
