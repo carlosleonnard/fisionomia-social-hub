@@ -437,7 +437,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                 placeholder="Type to search ancestry countries..."
                 maxCountries={5}
               />
-              <p className="text-xs text-muted-foreground">Select up to 5 countries that represent known ancestry</p>
+              <p className="text-xs text-muted-foreground">Select up to 5 groups that represent known ancestry</p>
             </div>
 
             <div className="flex gap-2 pt-4">
