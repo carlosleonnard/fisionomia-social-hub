@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { CountrySelector } from "@/components/CountrySelector";
 import { CountrySearchSelector } from "@/components/CountrySearchSelector";
+import { GenderSelector } from "@/components/GenderSelector";
+import { CategorySelector } from "@/components/CategorySelector";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { useImageUpload } from "@/hooks/use-image-upload";
@@ -406,47 +408,24 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="gender">Gender *</Label>
-                <select
-                  id="gender"
-                  value={formData.gender}
-                  onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
-                  className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                <GenderSelector
+                  selectedGender={formData.gender}
+                  onGenderChange={(gender) => setFormData(prev => ({ ...prev, gender }))}
+                  placeholder="Search and select gender"
                   required
-                >
-                  <option value="">Select</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
-                <select
-                  id="category"
-                  value={formData.category}
-                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                  className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                <CategorySelector
+                  selectedCategory={formData.category}
+                  onCategoryChange={(category) => setFormData(prev => ({ ...prev, category }))}
+                  placeholder="Search and select category"
                   disabled={formData.isAnonymous === true}
+                  isAnonymous={formData.isAnonymous === true}
                   required
-                >
-                  <option value="">Select category</option>
-                  {formData.isAnonymous !== true && (
-                    <>
-                      <option value="Pop Culture">Pop Culture</option>
-                      <option value="Music and Entertainment">Music and Entertainment</option>
-                      <option value="Arts">Arts</option>
-                      <option value="Philosophy">Philosophy</option>
-                      <option value="Sciences">Sciences</option>
-                      <option value="Sports">Sports</option>
-                      <option value="Business">Business</option>
-                      <option value="Politics">Politics</option>
-                    </>
-                  )}
-                  {formData.isAnonymous === true && (
-                    <option value="User Profiles">User Profiles</option>
-                  )}
-                </select>
+                />
               </div>
             </div>
 
