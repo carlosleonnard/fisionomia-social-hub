@@ -93,6 +93,16 @@ export const CountrySearchSelector: React.FC<CountrySearchSelectorProps> = ({
 
   return (
     <div className="relative" ref={containerRef}>
+      {/* Hidden input for HTML5 validation */}
+      <input
+        type="text"
+        value={selectedCountry}
+        onChange={() => {}} // Controlled by the component
+        required={required}
+        style={{ display: 'none' }}
+        tabIndex={-1}
+      />
+      
       <div className="relative">
         <Input
           type="text"
@@ -105,7 +115,6 @@ export const CountrySearchSelector: React.FC<CountrySearchSelectorProps> = ({
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           className="pr-8"
-          required={required}
         />
         {selectedCountry && (
           <button

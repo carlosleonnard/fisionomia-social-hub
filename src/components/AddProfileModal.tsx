@@ -61,24 +61,27 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('Current formData state:', formData);
-    console.log('All validation checks:', {
-      name: !!formData.name,
-      country: !!formData.country,
-      gender: !!formData.gender,
-      category: !!formData.category,
-      height: !!formData.height,
-      ancestry: formData.ancestry.length > 0,
-      frontImageUrl: !!formData.frontImageUrl,
-      isAnonymous: formData.isAnonymous !== null
-    });
-    
     if (!user) {
       alert('You need to be logged in to create a profile.');
       return;
     }
     
-    console.log('Form validation - country value:', formData.country);
+    // Custom validation with specific error messages
+    const missingFields = [];
+    if (!formData.name) missingFields.push('Name');
+    if (!formData.country) missingFields.push('Country');
+    if (!formData.gender) missingFields.push('Gender');
+    if (!formData.category) missingFields.push('Category');
+    if (!formData.height) missingFields.push('Height');
+    if (formData.ancestry.length === 0) missingFields.push('Ancestry');
+    if (!formData.frontImageUrl) missingFields.push('Front Image');
+    if (formData.isAnonymous === null) missingFields.push('Anonymous status');
+    
+    if (missingFields.length > 0) {
+      alert(`Please fill in the following required fields: ${missingFields.join(', ')}`);
+      return;
+    }
+    
     if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry.length > 0 && formData.frontImageUrl && formData.isAnonymous !== null) {
       try {
         const newProfile = await createProfile.mutateAsync({
@@ -411,10 +414,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                 <Label htmlFor="country">Country *</Label>
                 <CountrySearchSelector
                   selectedCountry={formData.country}
-                  onCountryChange={(country) => {
-                    console.log('Country changed in modal:', country);
-                    setFormData(prev => ({ ...prev, country }));
-                  }}
+                  onCountryChange={(country) => setFormData(prev => ({ ...prev, country }))}
                   placeholder="Search and select country"
                   required
                 />
