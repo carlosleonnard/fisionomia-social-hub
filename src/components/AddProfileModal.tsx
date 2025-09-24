@@ -66,6 +66,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
       return;
     }
     
+    console.log('Form validation - country value:', formData.country);
     if (formData.name && formData.country && formData.gender && formData.category && formData.height && formData.ancestry.length > 0 && formData.frontImageUrl && formData.isAnonymous !== null) {
       try {
         const newProfile = await createProfile.mutateAsync({

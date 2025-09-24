@@ -69,6 +69,7 @@ export const CountrySearchSelector: React.FC<CountrySearchSelectorProps> = ({
   }, []);
 
   const handleCountrySelect = (country: string) => {
+    console.log('Country selected:', country);
     onCountryChange(country);
     setSearchTerm('');
     setIsOpen(false);
