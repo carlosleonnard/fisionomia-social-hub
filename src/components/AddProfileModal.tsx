@@ -61,6 +61,18 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Current formData state:', formData);
+    console.log('All validation checks:', {
+      name: !!formData.name,
+      country: !!formData.country,
+      gender: !!formData.gender,
+      category: !!formData.category,
+      height: !!formData.height,
+      ancestry: formData.ancestry.length > 0,
+      frontImageUrl: !!formData.frontImageUrl,
+      isAnonymous: formData.isAnonymous !== null
+    });
+    
     if (!user) {
       alert('You need to be logged in to create a profile.');
       return;
@@ -399,7 +411,10 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                 <Label htmlFor="country">Country *</Label>
                 <CountrySearchSelector
                   selectedCountry={formData.country}
-                  onCountryChange={(country) => setFormData(prev => ({ ...prev, country }))}
+                  onCountryChange={(country) => {
+                    console.log('Country changed in modal:', country);
+                    setFormData(prev => ({ ...prev, country }));
+                  }}
                   placeholder="Search and select country"
                   required
                 />
