@@ -144,9 +144,9 @@ export const AncestrySelector = ({
 
       {isOpen && selectedAncestries.length < maxAncestries && (
         <Card className="absolute z-50 w-full mt-1 p-2 bg-background border border-border shadow-lg">
-          <ScrollArea className="max-h-32">
+          <ScrollArea className="max-h-48">
             {filteredAncestries.length > 0 ? (
-              <div className="space-y-1">
+              <div className="space-y-1 pr-2">
                 {filteredAncestries.map((ancestry) => (
                   <div
                     key={ancestry}
