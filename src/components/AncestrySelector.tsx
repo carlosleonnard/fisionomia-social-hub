@@ -116,19 +116,23 @@ export const AncestrySelector = ({
       </div>
 
       {selectedAncestries.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1">
-          {selectedAncestries.map((ancestry) => (
-            <Badge key={ancestry} variant="secondary" className="mr-1">
-              {ancestry}
-              <button
-                type="button"
-                onClick={() => handleAncestryRemove(ancestry)}
-                className="ml-1 hover:bg-muted rounded-sm"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </Badge>
-          ))}
+        <div className="mt-2">
+          <ScrollArea className="max-h-24 w-full">
+            <div className="flex flex-wrap gap-1 pr-2">
+              {selectedAncestries.map((ancestry) => (
+                <Badge key={ancestry} variant="secondary" className="mr-1 mb-1">
+                  {ancestry}
+                  <button
+                    type="button"
+                    onClick={() => handleAncestryRemove(ancestry)}
+                    className="ml-1 hover:bg-muted rounded-sm"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
       )}
 
