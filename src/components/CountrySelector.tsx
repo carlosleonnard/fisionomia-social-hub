@@ -12,9 +12,18 @@ const ANCESTRY_OPTIONS = [
   'Hindus', 'Sikhs', 'Punjabis', 'Bengalis', 'Gujaratis', 'Tamils', 'Nepalese',
   'Chinese', 'Korean', 'Japanese', 'Mongol', 'Manchus', 'Vietnamese', 'Filipino',
   'Indonesian', 'Malays', 'Tatars', 'Afghans', 'Native Americans', 'Inuit',
-  'Mestizos', 'Afro-Caribbeans', 'Aboriginals', 'Maori', 'Polynesians', 'Melanesians', 'Gypsies', 'Scottish',
-  'Welsh','Hawaiian','African-American','North African','West African',
-  'East African','Sub-Saharan African','Scandinavian','Southeast Asian','East Asian','Siberian'
+  'Mestizos', 'Afro-Caribbeans', 'Aboriginals', 'Maori', 'Polynesians', 'Melanesians', 'Gypsies','Scottish',
+  'Welsh',
+  'Hawaiian',
+  'African-American',
+  'North African',
+  'West African',
+  'East African',
+  'Sub-Saharan African',
+  'Scandinavian',
+  'Southeast Asian',
+  'East Asian',
+  'Siberian',
 
   // --- Lista expandida de países/gentílicos ---
   'Albanian', 'Algerian', 'Andorran', 'Angolan', 'Antiguan or Barbudan', 'Argentine', 
