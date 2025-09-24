@@ -40,7 +40,7 @@ const geographicToRegionMapping: Record<string, string[]> = {
   "americas": [
     "Northern America",
     "Central America",
-    "Southern América"
+    "Southern America"
   ],
   "oceania": [
     "Australia and New Zealand",

@@ -132,7 +132,7 @@ const geographicOptions = {
   "Americas": [
     "Northern America",
     "Central America",
-    "Southern América"
+    "Southern America"
   ],
   "Oceania": [
     "Australia and New Zealand",
