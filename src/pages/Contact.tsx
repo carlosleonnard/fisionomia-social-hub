@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Mail, ExternalLink } from "lucide-react";
 
 const Contact = () => {
-  const email = "contato@phindex.com";
+  const email = "contact@phenotypeindex.com";
 
   const handleEmailClick = () => {
     window.open(`mailto:${email}`, '_blank');
