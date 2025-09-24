@@ -10,6 +10,7 @@ import { CountrySelector } from "@/components/CountrySelector";
 import { CountrySearchSelector } from "@/components/CountrySearchSelector";
 import { GenderSelector } from "@/components/GenderSelector";
 import { CategorySelector } from "@/components/CategorySelector";
+import { AncestrySelector } from "@/components/AncestrySelector";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 import { useAuth } from "@/hooks/use-auth";
 import { useImageUpload } from "@/hooks/use-image-upload";
@@ -431,13 +432,14 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
 
             <div className="space-y-2">
               <Label htmlFor="ancestry">Known Ancestry *</Label>
-              <CountrySelector
-                selectedCountries={formData.ancestry}
-                onCountriesChange={(countries) => setFormData(prev => ({ ...prev, ancestry: countries }))}
-                placeholder="Type to search ancestry countries..."
-                maxCountries={5}
+              <AncestrySelector
+                selectedAncestries={formData.ancestry}
+                onAncestriesChange={(ancestries) => setFormData(prev => ({ ...prev, ancestry: ancestries }))}
+                placeholder="Search and select ancestries..."
+                maxAncestries={5}
+                required
               />
-              <p className="text-xs text-muted-foreground">Select up to 5 countries that represent known ancestry</p>
+              <p className="text-xs text-muted-foreground">Select up to 5 ancestries</p>
             </div>
 
             <div className="flex gap-2 pt-4">
