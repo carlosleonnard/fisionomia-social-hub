@@ -197,7 +197,6 @@ const RegionPage = () => {
 
                             <div className="space-y-2">
                               <div className="flex items-center gap-2 mb-2">
-                                <span className="text-lg">🏳️</span>
                                 <span className="text-sm font-medium text-muted-foreground">
                                   {profile.country}
                                 </span>
@@ -207,12 +206,12 @@ const RegionPage = () => {
                                 {profile.name}
                               </h3>
                               
-                              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                <span className="flex items-center gap-1">
-                                  <span className="w-3 h-3 rounded-full bg-primary/20"></span>
-                                  {profile.ancestry}
+                              <div className="flex items-center justify-between text-xs text-muted-foreground min-h-[20px]">
+                                <span className="flex items-center gap-1 flex-1 truncate">
+                                  <span className="w-3 h-3 rounded-full bg-primary/20 flex-shrink-0"></span>
+                                  <span className="truncate">{profile.ancestry}</span>
                                 </span>
-                                <span>{profile.height}m</span>
+                                <span className="flex-shrink-0 ml-2">{profile.height}m</span>
                               </div>
 
                               <div className="flex items-center justify-between">
