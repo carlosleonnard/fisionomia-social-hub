@@ -199,7 +199,7 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
                   Please do your best to check for duplicates, periodically, we will clean out inactive or duplicated profiles
                 </p>
                 <p className="text-xs">
-                  If you would like to remove a profile, please report to contact@phindex.com
+                  If you would like to remove a profile, please report to contact@phenotypeindex.com
                 </p>
               </div>
               
