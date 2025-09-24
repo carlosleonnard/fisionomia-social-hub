@@ -114,7 +114,7 @@ const Index = () => {
                                )}
                                 </div>
                                <h3 className="font-medium text-foreground mb-0.5 text-center text-xs">{profile.name}</h3>
-                               <p className="text-xs text-muted-foreground text-center">{(profile as any).most_voted_phenotype || profile.category}</p>
+                                <p className="text-xs text-muted-foreground text-center">{profile.category}</p>
                              </div>
                            </div>
                          </div>
