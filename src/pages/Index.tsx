@@ -208,7 +208,7 @@ const Index = () => {
                   <Vote className="h-4 w-4 text-primary" />
                 </div>
                 <h2 className="text-2xl font-bold text-foreground">Recent Profiles</h2>
-                 <Badge variant="outline" className="px-3 py-1">
+                 <Badge variant="outline" className="px-1 py-1">
                    {(userProfiles?.filter(profile => profile.is_anonymous) || []).length} novos
                  </Badge>
               </div>
