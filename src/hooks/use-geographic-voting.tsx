@@ -4,7 +4,20 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/use-auth';
 
 export const useGeographicVoting = (profileId: string) => {
-  const [userGeographicVotes, setUserGeographicVotes] = useState<{ [key: string]: string }>({});
+  const [userGeographicVotes, setUserGeographicVotes] = useState<{ [key: string]: string }>(() => {
+    // Load pending votes from localStorage
+    if (typeof window !== 'undefined') {
+      const pendingVotes = localStorage.getItem(`pendingGeographicVotes_${profileId}`);
+      if (pendingVotes) {
+        try {
+          return JSON.parse(pendingVotes);
+        } catch {
+          return {};
+        }
+      }
+    }
+    return {};
+  });
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { toast } = useToast();
@@ -33,6 +46,18 @@ export const useGeographicVoting = (profileId: string) => {
         userVoteData?.forEach(vote => {
           votes[vote.characteristic_type] = vote.classification;
         });
+        
+        // Merge with any pending votes from localStorage
+        const pendingVotes = localStorage.getItem(`pendingGeographicVotes_${profileId}`);
+        if (pendingVotes) {
+          try {
+            const parsedPendingVotes = JSON.parse(pendingVotes);
+            Object.assign(votes, parsedPendingVotes);
+          } catch {
+            // Invalid JSON, ignore
+          }
+        }
+        
         setUserGeographicVotes(votes);
       }
     } catch (error) {
@@ -44,6 +69,11 @@ export const useGeographicVoting = (profileId: string) => {
 
   const castGeographicVote = async (characteristicType: string, classification: string) => {
     if (!user) {
+      // Store pending vote in localStorage for non-logged users
+      const newVotes = { ...userGeographicVotes, [characteristicType]: classification };
+      setUserGeographicVotes(newVotes);
+      localStorage.setItem(`pendingGeographicVotes_${profileId}`, JSON.stringify(newVotes));
+      
       toast({
         title: "Login required",
         description: "You need to be logged in to vote",
@@ -66,7 +96,11 @@ export const useGeographicVoting = (profileId: string) => {
 
       if (error) throw error;
 
-      setUserGeographicVotes(prev => ({ ...prev, [characteristicType]: classification }));
+      const newVotes = { ...userGeographicVotes, [characteristicType]: classification };
+      setUserGeographicVotes(newVotes);
+      
+      // Update localStorage with current votes
+      localStorage.setItem(`pendingGeographicVotes_${profileId}`, JSON.stringify(newVotes));
 
       return true;
     } catch (error: any) {

@@ -16,7 +16,20 @@ interface PhysicalCharacteristic {
 
 export const usePhysicalVoting = (profileId: string) => {
   const [characteristics, setCharacteristics] = useState<PhysicalCharacteristic[]>([]);
-  const [userVotes, setUserVotes] = useState<{ [key: string]: string }>({});
+  const [userVotes, setUserVotes] = useState<{ [key: string]: string }>(() => {
+    // Load pending votes from localStorage
+    if (typeof window !== 'undefined') {
+      const pendingVotes = localStorage.getItem(`pendingPhysicalVotes_${profileId}`);
+      if (pendingVotes) {
+        try {
+          return JSON.parse(pendingVotes);
+        } catch {
+          return {};
+        }
+      }
+    }
+    return {};
+  });
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { toast } = useToast();
@@ -80,6 +93,18 @@ export const usePhysicalVoting = (profileId: string) => {
         userVoteData?.forEach(vote => {
           votes[vote.characteristic_type] = vote.classification;
         });
+        
+        // Merge with any pending votes from localStorage
+        const pendingVotes = localStorage.getItem(`pendingPhysicalVotes_${profileId}`);
+        if (pendingVotes) {
+          try {
+            const parsedPendingVotes = JSON.parse(pendingVotes);
+            Object.assign(votes, parsedPendingVotes);
+          } catch {
+            // Invalid JSON, ignore
+          }
+        }
+        
         setUserVotes(votes);
       }
     } catch (error) {
@@ -91,6 +116,11 @@ export const usePhysicalVoting = (profileId: string) => {
 
   const castVote = async (characteristicType: string, classification: string) => {
     if (!user) {
+      // Store pending vote in localStorage for non-logged users
+      const newVotes = { ...userVotes, [characteristicType]: classification };
+      setUserVotes(newVotes);
+      localStorage.setItem(`pendingPhysicalVotes_${profileId}`, JSON.stringify(newVotes));
+      
       toast({
         title: "Login required",
         description: "You need to be logged in to vote",
@@ -113,7 +143,12 @@ export const usePhysicalVoting = (profileId: string) => {
 
       if (error) throw error;
 
-      setUserVotes(prev => ({ ...prev, [characteristicType]: classification }));
+      const newVotes = { ...userVotes, [characteristicType]: classification };
+      setUserVotes(newVotes);
+      
+      // Update localStorage with current votes
+      localStorage.setItem(`pendingPhysicalVotes_${profileId}`, JSON.stringify(newVotes));
+      
       await fetchPhysicalVotes();
 
       return true;
