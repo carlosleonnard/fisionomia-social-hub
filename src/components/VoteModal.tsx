@@ -145,11 +145,11 @@ const geographicOptions = {
 const characteristics = [
   {
     category: "Skin Color",
-    options: ["Pale", "Fair", "Light brown", "Medium brown", "Dark brown", "Black"]
+    options: ["Pale", "Fair", "Light brown", "Olive Skin", "Medium brown", "Dark brown", "Black"]
   },
   {
     category: "Hair Color",
-    options: ["Light Blonde", "Blonde", "Red", "Light Brown", "Brown", "Dark Brown", "Black"]
+    options: ["Light Blonde", "Blonde", "Dark Blonde", "Red", "Light Brown", "Brown", "Dark Brown", "Black"]
   },
   {
     category: "Hair Texture", 
@@ -157,7 +157,7 @@ const characteristics = [
   },
   {
     category: "Head Type",
-    options: ["Hyperdolichocephalic", "Dolichocephalic", "Mesocephalic", "Brachycephalic", "Hyperbrachycephalic"]
+    options: ["Hyperdolichocephalic (Very Long)", "Dolichocephalic (Long)", "Mesocephalic (Medium)", "Brachycephalic (Short)", "Hyperbrachycephalic (Very Short)"]
   },
   {
     category: "Body Type",
@@ -169,19 +169,19 @@ const characteristics = [
   },
   {
     category: "Facial Breadth",
-    options: ["Leptoprosop", "Mesoprosop", "Euryprosop"]
+    options: ["Leptoprosop (Long)", "Mesoprosop (Medium)", "Euryprosop (Brod)"]
   },
   {
     category: "Jaw Type",
-    options: ["Orthognathous", "Prognathous"]
+    options: ["Orthognathous (Straight)", "Prognathous (Projecting)"]
   },
   {
     category: "Eye Color",
-    options: ["Pale-blue iris", "Light-blue iris", "Sky-blue iris", "Blue iris", "Dark-blue iris", "Blue-gray iris", "Light-gray iris", "Dark-gray iris", "Blue-gray iris with yellow/brown spots", "Gray-green iris with yellow/brown spots", "Green iris", "Green iris with yellow/brown spots", "Amber iris", "Hazel iris", "Light-brown iris", "Medium-brown iris", "Dark-brown iris", "Mahogany iris", "Black-brown iris", "Black iris"]
+    options: ["Light-blue", "Blue", "Dark-blue", "Gray", "Green", "Hazel", "Light-brown", "Medium-brown", "Dark-brown", "Black-brown", "Black"]
   },
   {
     category: "Head Breadth",
-    options: ["Small-headed", "Large-headed"]
+    options: ["Small-headed","Medium-headed", "Large-headed"]
   }
 ];
 
