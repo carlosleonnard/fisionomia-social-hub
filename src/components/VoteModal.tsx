@@ -10,6 +10,7 @@ interface VoteModalProps {
   onClose: () => void;
   onSubmit: (votes: Record<string, string>) => void;
   existingVotes?: Record<string, string>;
+  profileId: string;
 }
 
 const specificPhenotypeOptions = {
@@ -184,12 +185,36 @@ const characteristics = [
   }
 ];
 
-export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: VoteModalProps) => {
-  const [votes, setVotes] = useState<Record<string, string>>(existingVotes);
+export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profileId }: VoteModalProps) => {
+  const storageKey = `pendingVotes_${profileId}`;
+  const [votes, setVotes] = useState<Record<string, string>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return existingVotes;
+  });
 
   useEffect(() => {
-    setVotes(existingVotes);
-  }, [existingVotes]);
+    if (!isOpen) return;
+    let saved: Record<string, string> = {};
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) saved = JSON.parse(raw);
+      } catch {}
+    }
+    // Merge saved in-progress selections with any existingVotes from backend
+    setVotes({ ...existingVotes, ...saved });
+  }, [existingVotes, isOpen]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(votes));
+    } catch {}
+  }, [votes, storageKey]);
 
   const handleVoteChange = (category: string, value: string) => {
     setVotes(prev => {
@@ -214,6 +239,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {} }: Vot
 
   const handleSubmit = () => {
     onSubmit(votes);
+    try { localStorage.removeItem(storageKey); } catch {}
     setVotes({});
     onClose();
   };

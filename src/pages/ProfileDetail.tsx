@@ -646,6 +646,7 @@ export default function ProfileDetail() {
               <VoteModal
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
+                profileId={sanitizedProfile.id}
                 existingVotes={{
                   "Primary Phenotype": userVote || "",
                   ...physicalUserVotes,
