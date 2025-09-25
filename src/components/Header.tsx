@@ -7,11 +7,10 @@
  */
 
 // Ícones do Lucide React (biblioteca de ícones SVG otimizada)
-import { Search, User, Bell, Plus, HelpCircle, Settings, LogOut, Menu, X } from "lucide-react";
+import { Search, User, Bell, Plus, HelpCircle, Settings, LogOut } from "lucide-react";
 // Componentes de UI reutilizáveis do sistema de design
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 // Link do React Router para navegação sem reload da página
 import { Link } from "react-router-dom";
 // Modais específicos da aplicação
@@ -31,10 +30,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
 // Link para navegação entre páginas
 import { useNavigate } from "react-router-dom";
-// Hook para detectar dispositivos móveis
-import { useIsMobile } from "@/hooks/use-mobile";
-// Componente do sidebar para mobile
-import { AppSidebar } from "./AppSidebar";
 
 /**
  * COMPONENTE HEADER
@@ -53,14 +48,12 @@ export const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");        // Termo digitado pelo usuário
   const [searchResults, setSearchResults] = useState<any[]>([]); // Resultados da busca
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Controla se o dropdown está aberto
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false); // Controla se a busca mobile está aberta
   const searchRef = useRef<HTMLDivElement>(null);          // Referência para detectar cliques fora
   
   // Hooks para navegação e dados
   const navigate = useNavigate();
   const { user, signOut, loading } = useAuth();
   const { profiles } = useUserProfiles();
-  const isMobile = useIsMobile();
   
   /**
    * FUNÇÃO DE BUSCA
@@ -135,154 +128,6 @@ export const Header = () => {
   const handleSignOut = async () => {
     await signOut();
   };
-
-  // Layout para Mobile
-  if (isMobile) {
-    return (
-      <>
-        <header className="fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-          <div className="px-4 h-16 flex items-center justify-between">
-            {/* Menu hambúrguer e Logo */}
-            <div className="flex items-center gap-3">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="lg:hidden">
-                    <Menu className="h-5 w-5" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-80">
-                  <AppSidebar />
-                </SheetContent>
-              </Sheet>
-              
-              <Link to="/" className="cursor-pointer">
-                <img 
-                  src="/phindex-uploads/39fe11bc-0ec1-4dad-8877-0789763891df.png" 
-                  alt="Phindex Logo" 
-                  className="h-10 object-contain"
-                />
-              </Link>
-            </div>
-
-            {/* Busca Mobile - Botão que abre modal */}
-            {!isMobileSearchOpen && (
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setIsMobileSearchOpen(true)}
-                >
-                  <Search className="h-5 w-5" />
-                </Button>
-                
-                <AddProfileModal>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                  >
-                    <Plus className="h-5 w-5" />
-                  </Button>
-                </AddProfileModal>
-                
-                <NotificationBell />
-                
-                {user ? (
-                  <UserMenuPopover user={user} />
-                ) : (
-                  <Button 
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsLoginModalOpen(true)}
-                    disabled={loading}
-                  >
-                    <User className="h-5 w-5" />
-                  </Button>
-                )}
-              </div>
-            )}
-
-            {/* Busca Mobile Expandida */}
-            {isMobileSearchOpen && (
-              <div className="flex-1 flex items-center gap-2 ml-2">
-                <div className="relative flex-1" ref={searchRef}>
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                  <Input 
-                    placeholder="Buscar pessoas famosas..." 
-                    className="pl-10 pr-4 h-10 bg-muted/30 border-border/30 focus:border-primary/50 rounded-full"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onFocus={() => searchTerm && setIsSearchOpen(searchResults.length > 0)}
-                    autoFocus
-                  />
-                  
-                  {/* DROPDOWN DE SUGESTÕES MOBILE */}
-                  {isSearchOpen && searchResults.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                      {searchResults.map((profile) => (
-                        <div
-                          key={profile.id}
-                          className="p-3 hover:bg-muted/50 cursor-pointer border-b border-border last:border-b-0 flex items-center gap-3"
-                          onClick={() => {
-                            handleProfileSelect(profile);
-                            setIsMobileSearchOpen(false);
-                          }}
-                        >
-                          <div className="w-8 h-8 rounded-full overflow-hidden bg-muted flex-shrink-0">
-                            <img 
-                              src={profile.front_image_url} 
-                              alt={profile.name}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = '/placeholder.svg';
-                              }}
-                            />
-                          </div>
-                          
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-foreground truncate text-sm">
-                              {profile.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {profile.category} • {profile.country}
-                            </p>
-                          </div>
-                          
-                          {profile.is_anonymous && (
-                            <div className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                              Anônimo
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => {
-                    setIsMobileSearchOpen(false);
-                    setSearchTerm("");
-                    setIsSearchOpen(false);
-                  }}
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-            )}
-          </div>
-        </header>
-
-        <LoginModal 
-          open={isLoginModalOpen} 
-          onOpenChange={setIsLoginModalOpen} 
-        />
-      </>
-    );
-  }
-
-  // Layout para Desktop (mantido exatamente igual)
   return (
     <header className="fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="px-4 h-16 flex items-center justify-between">
