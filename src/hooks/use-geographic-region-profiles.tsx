@@ -125,7 +125,7 @@ export const useGeographicRegionProfiles = (region: string | undefined) => {
       const { data: specificVotes, error: specificVotesError } = await supabase
         .from("votes")
         .select("profile_id, classification")
-        .eq("characteristic_type", "Primary Specific");
+        .eq("characteristic_type", "Primary Phenotype");
 
       if (geographicVotesError || specificVotesError) {
         console.error("Erro ao buscar votações:", geographicVotesError || specificVotesError);
