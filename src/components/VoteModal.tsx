@@ -169,11 +169,11 @@ const characteristics = [
   },
   {
     category: "Facial Breadth",
-    options: ["Leptoprosop (Long)", "Mesoprosop (Medium)", "Euryprosop (Brod)"]
+    options: ["Leptoprosop (Long)", "Mesoprosop (Medium)", "Euryprosop (Broad)"]
   },
   {
     category: "Jaw Type",
-    options: ["Orthognathous (Straight)", "Prognathous (Projecting)"]
+    options: ["Retrognathous (Backward)","Orthognathous (Straight)", "Prognathous (Projecting)"]
   },
   {
     category: "Eye Color",
