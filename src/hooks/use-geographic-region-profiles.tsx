@@ -68,6 +68,7 @@ export interface GeographicRegionProfile {
   updated_at: string;
   user_id: string;
   most_voted_geographic?: string;
+  most_voted_specific_phenotype?: string;
 }
 
 /**
@@ -115,40 +116,60 @@ export const useGeographicRegionProfiles = (region: string | undefined) => {
         return [];
       }
 
-      // Buscar todas as votações "Primary Geographic"
-      const { data: votes, error: votesError } = await supabase
+      // Buscar todas as votações "Primary Geographic" e "Primary Specific"
+      const { data: geographicVotes, error: geographicVotesError } = await supabase
         .from("votes")
         .select("profile_id, classification")
         .eq("characteristic_type", "Primary Geographic");
 
-      if (votesError) {
-        console.error("Erro ao buscar votações:", votesError);
-        throw votesError;
+      const { data: specificVotes, error: specificVotesError } = await supabase
+        .from("votes")
+        .select("profile_id, classification")
+        .eq("characteristic_type", "Primary Specific");
+
+      if (geographicVotesError || specificVotesError) {
+        console.error("Erro ao buscar votações:", geographicVotesError || specificVotesError);
+        throw geographicVotesError || specificVotesError;
       }
 
-      if (!votes) {
+      if (!geographicVotes) {
         return [];
       }
 
-      // Agrupar votações por profile_id e contar classificações
-      const voteCounts: Record<string, Record<string, number>> = {};
+      // Agrupar votações geográficas por profile_id e contar classificações
+      const geographicVoteCounts: Record<string, Record<string, number>> = {};
       
-      votes.forEach(vote => {
-        if (!voteCounts[vote.profile_id]) {
-          voteCounts[vote.profile_id] = {};
+      geographicVotes.forEach(vote => {
+        if (!geographicVoteCounts[vote.profile_id]) {
+          geographicVoteCounts[vote.profile_id] = {};
         }
         
-        if (!voteCounts[vote.profile_id][vote.classification]) {
-          voteCounts[vote.profile_id][vote.classification] = 0;
+        if (!geographicVoteCounts[vote.profile_id][vote.classification]) {
+          geographicVoteCounts[vote.profile_id][vote.classification] = 0;
         }
         
-        voteCounts[vote.profile_id][vote.classification]++;
+        geographicVoteCounts[vote.profile_id][vote.classification]++;
       });
 
-      // Encontrar a classificação mais votada para cada perfil
+      // Agrupar votações específicas por profile_id e contar classificações
+      const specificVoteCounts: Record<string, Record<string, number>> = {};
+      
+      (specificVotes || []).forEach(vote => {
+        if (!specificVoteCounts[vote.profile_id]) {
+          specificVoteCounts[vote.profile_id] = {};
+        }
+        
+        if (!specificVoteCounts[vote.profile_id][vote.classification]) {
+          specificVoteCounts[vote.profile_id][vote.classification] = 0;
+        }
+        
+        specificVoteCounts[vote.profile_id][vote.classification]++;
+      });
+
+      // Encontrar a classificação geográfica mais votada para cada perfil
       const mostVotedGeographic: Record<string, string> = {};
       
-      Object.entries(voteCounts).forEach(([profileId, classifications]) => {
+      Object.entries(geographicVoteCounts).forEach(([profileId, classifications]) => {
         let maxVotes = 0;
         let mostVoted = "";
         
@@ -164,13 +185,33 @@ export const useGeographicRegionProfiles = (region: string | undefined) => {
         }
       });
 
+      // Encontrar o phenotype específico mais votado para cada perfil
+      const mostVotedSpecificPhenotype: Record<string, string> = {};
+      
+      Object.entries(specificVoteCounts).forEach(([profileId, classifications]) => {
+        let maxVotes = 0;
+        let mostVoted = "";
+        
+        Object.entries(classifications).forEach(([classification, count]) => {
+          if (count > maxVotes) {
+            maxVotes = count;
+            mostVoted = classification;
+          }
+        });
+        
+        if (mostVoted) {
+          mostVotedSpecificPhenotype[profileId] = mostVoted;
+        }
+      });
+
       // Filtrar perfis que pertencem à região baseado na classificação mais votada
       const filteredProfiles = profiles.filter((profile) => {
         const profileMostVoted = mostVotedGeographic[profile.id];
         return belongsToRegion(profileMostVoted, region);
       }).map(profile => ({
         ...profile,
-        most_voted_geographic: mostVotedGeographic[profile.id]
+        most_voted_geographic: mostVotedGeographic[profile.id],
+        most_voted_specific_phenotype: mostVotedSpecificPhenotype[profile.id]
       }));
 
       return filteredProfiles as GeographicRegionProfile[];

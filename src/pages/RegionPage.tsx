@@ -214,6 +214,14 @@ const RegionPage = () => {
                                 <span className="flex-shrink-0 ml-2">{profile.height}m</span>
                               </div>
 
+                              {profile.most_voted_specific_phenotype && (
+                                <div className="flex items-center justify-center mt-2">
+                                  <Badge variant="secondary" className="text-xs truncate max-w-full bg-accent/50 text-accent-foreground">
+                                    {profile.most_voted_specific_phenotype}
+                                  </Badge>
+                                </div>
+                              )}
+
                               <div className="flex items-center justify-between mt-auto">
                                 <Badge variant="outline" className="text-xs truncate max-w-[120px]">
                                   {profile.category}
