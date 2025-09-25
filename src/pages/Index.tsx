@@ -83,8 +83,8 @@ const Index = () => {
                   
                    <Carousel className="w-full" opts={{ align: "start", loop: false }}>
                     <div className="relative group">
-                     <CarouselContent className="ml-0">
-                      {(profilesByVotes?.filter(profile => !profile.is_anonymous) || []).map((profile, index) => (
+                      <CarouselContent className="ml-0">
+                       {(profilesByVotes?.filter(profile => !profile.is_anonymous) || []).slice(0, 12).map((profile, index) => (
                       <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                          <div className="flex-shrink-0 group/item">
                            <div 
@@ -150,8 +150,8 @@ const Index = () => {
                   
                   <Carousel className="w-full" opts={{ align: "start", loop: false }}>
                     <div className="relative group">
-                     <CarouselContent className="ml-0">
-                      {(profilesByVotes?.filter(profile => profile.category === "User Profiles") || []).map((profile, index) => (
+                      <CarouselContent className="ml-0">
+                       {(profilesByVotes?.filter(profile => profile.category === "User Profiles") || []).slice(0, 12).map((profile, index) => (
                       <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                          <div className="flex-shrink-0 group/item">
                            <div 
@@ -218,7 +218,7 @@ const Index = () => {
                   <Carousel className="w-full" opts={{ align: "start", loop: false }}>
                     <div className="relative group">
                      <CarouselContent className="ml-0">
-                       {(userProfiles?.filter(profile => profile.is_anonymous) || []).slice(0, 20).map((profile, index) => (
+                       {(userProfiles?.filter(profile => profile.is_anonymous) || []).slice(0, 12).map((profile, index) => (
                          <CarouselItem key={profile.id} className="pl-1 basis-1/10">
                            <div className="flex-shrink-0 group/item">
                              <div 
