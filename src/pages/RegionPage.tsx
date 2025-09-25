@@ -174,8 +174,8 @@ const RegionPage = () => {
                         to={`/user-profile/${profile.slug}`}
                         className="group block"
                       >
-                        <Card className="bg-gradient-card border-border/50 hover:border-primary/50 transition-all duration-300 group-hover:shadow-lg">
-                          <CardContent className="p-4">
+                        <Card className="bg-gradient-card border-border/50 hover:border-primary/50 transition-all duration-300 group-hover:shadow-lg h-full">
+                          <CardContent className="p-4 h-full flex flex-col">
                             <div className="relative overflow-hidden rounded-lg mb-4">
                                <img
                                  src={profile.front_image_url}
@@ -195,7 +195,7 @@ const RegionPage = () => {
                               </div>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 flex-1 flex flex-col">
                               <div className="flex items-center gap-2 mb-2">
                                 <span className="text-sm font-medium text-muted-foreground">
                                   {profile.country}
@@ -214,11 +214,11 @@ const RegionPage = () => {
                                 <span className="flex-shrink-0 ml-2">{profile.height}m</span>
                               </div>
 
-                              <div className="flex items-center justify-between">
-                                <Badge variant="outline" className="text-xs">
+                              <div className="flex items-center justify-between mt-auto">
+                                <Badge variant="outline" className="text-xs truncate max-w-[120px]">
                                   {profile.category}
                                 </Badge>
-                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1 text-xs text-muted-foreground flex-shrink-0">
                                   <Calendar className="h-3 w-3" />
                                   {new Date(profile.created_at).toLocaleDateString('en-US')}
                                 </div>
