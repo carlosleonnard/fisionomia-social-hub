@@ -193,15 +193,14 @@ const RegionPage = () => {
                                    {profile.is_anonymous ? "Anonymous" : "Famous"}
                                  </Badge>
                                </div>
+                               {profile.most_voted_specific_phenotype && (
+                                 <div className="absolute top-10 right-2">
+                                   <Badge variant="secondary" className="text-xs truncate max-w-[100px] bg-accent/50 text-accent-foreground">
+                                     {profile.most_voted_specific_phenotype}
+                                   </Badge>
+                                 </div>
+                               )}
                              </div>
-
-                             {profile.most_voted_specific_phenotype && (
-                               <div className="flex items-center justify-center mb-3">
-                                 <Badge variant="secondary" className="text-xs truncate max-w-full bg-accent/50 text-accent-foreground">
-                                   {profile.most_voted_specific_phenotype}
-                                 </Badge>
-                               </div>
-                             )}
 
                              <div className="space-y-2 flex-1 flex flex-col">
                                <div className="flex items-center gap-2 mb-2">
