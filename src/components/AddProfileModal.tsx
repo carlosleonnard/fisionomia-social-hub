@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Upload, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,11 @@ import { useImageUpload } from "@/hooks/use-image-upload";
 import { supabase } from "@/integrations/supabase/client";
 
 interface AddProfileModalProps {
-  // Remove onAddProfile prop as we'll handle it internally
+  triggerExternal?: boolean;
+  onTriggerExternalChange?: (value: boolean) => void;
 }
 
-export const AddProfileModal = ({}: AddProfileModalProps) => {
+export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChange }: AddProfileModalProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { createProfile } = useUserProfiles();
@@ -48,6 +49,14 @@ export const AddProfileModal = ({}: AddProfileModalProps) => {
   const handleTriggerClick = () => {
     setShowGuidelines(true);
   };
+
+  // Effect para controlar abertura externa do modal
+  useEffect(() => {
+    if (triggerExternal) {
+      setShowGuidelines(true);
+      onTriggerExternalChange?.(false);
+    }
+  }, [triggerExternal, onTriggerExternalChange]);
 
   const handleAnonymousChange = (value: string) => {
     const isAnonymous = value === "yes";

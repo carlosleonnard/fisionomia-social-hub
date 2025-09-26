@@ -47,8 +47,10 @@ import mobileLogo from "@/assets/mobile-logo.png";
 export const Header = () => {
   // Estado local para controlar abertura/fechamento do modal de login
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  // Estado para controlar abertura/fechamento do sidebar mobile
+  // Estado para controlar abertura/fechamento do sidebar mobile/tablet
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Estado para controlar abertura do modal de adicionar perfil
+  const [isAddProfileOpen, setIsAddProfileOpen] = useState(false);
   
   // Estados para funcionalidade de busca
   const [searchTerm, setSearchTerm] = useState("");        // Termo digitado pelo usuário
@@ -62,6 +64,18 @@ export const Header = () => {
   const { user, signOut, loading } = useAuth();
   const { profiles } = useUserProfiles();
   const isMobile = useIsMobile();
+  
+  // Check for tablet/mobile breakpoint (anything below 1024px gets mobile layout)
+  const [isTabletOrMobile, setIsTabletOrMobile] = useState(window.innerWidth < 1024);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTabletOrMobile(window.innerWidth < 1024);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   /**
    * FUNÇÃO DE BUSCA
@@ -140,18 +154,27 @@ export const Header = () => {
   /**
    * FUNÇÃO PARA ENVIAR BUSCA COM ENTER
    * 
-   * Permite buscar pressionando Enter no campo de busca mobile.
+   * Permite buscar pressionando Enter no campo de busca mobile/tablet.
    */
   const handleSearchKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
       handleSearch(searchTerm);
     }
   };
+
+  /**
+   * FUNÇÃO PARA ABRIR MODAL DE ADICIONAR PERFIL
+   * 
+   * Abre o modal de classificação com guidelines e criação de perfis.
+   */
+  const handleAddProfileClick = () => {
+    setIsAddProfileOpen(true);
+  };
   return (
     <>
       <header className="fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
         {/* Desktop Header */}
-        {!isMobile && (
+        {!isTabletOrMobile && (
           <div className="px-4 h-16 flex items-center justify-between">
             <div className="flex items-center gap-6 lg:w-80 lg:justify-center">
               <div className="flex items-center gap-3">
@@ -261,8 +284,8 @@ export const Header = () => {
           </div>
         )}
 
-        {/* Mobile Header */}
-        {isMobile && (
+        {/* Mobile/Tablet Header */}
+        {isTabletOrMobile && (
           <div className="px-4 h-16 flex items-center justify-between">
             {/* Left side - Menu button and Logo */}
             <div className="flex items-center gap-3">
@@ -353,7 +376,7 @@ export const Header = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => {/* Add profile action */}}
+                onClick={handleAddProfileClick}
                 className="h-8 w-8"
               >
                 <Plus className="h-4 w-4" />
@@ -379,8 +402,8 @@ export const Header = () => {
         )}
       </header>
 
-      {/* Mobile Sidebar Overlay */}
-      {isMobile && isSidebarOpen && (
+      {/* Mobile/Tablet Sidebar Overlay */}
+      {isTabletOrMobile && isSidebarOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-50"
           onClick={() => setIsSidebarOpen(false)}
@@ -406,6 +429,14 @@ export const Header = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Add Profile Modal - para mobile/tablet controlado externamente */}
+      {isTabletOrMobile && (
+        <AddProfileModal 
+          triggerExternal={isAddProfileOpen}
+          onTriggerExternalChange={(value) => setIsAddProfileOpen(value)}
+        />
       )}
       
       <LoginModal 
