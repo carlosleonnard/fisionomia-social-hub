@@ -40,6 +40,18 @@ export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChan
   });
 
   const [dragActive, setDragActive] = useState(false);
+  
+  // Check for tablet/mobile breakpoint (hide button on screens smaller than 1024px)
+  const [isTabletOrMobile, setIsTabletOrMobile] = useState(window.innerWidth < 1024);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTabletOrMobile(window.innerWidth < 1024);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleGuidelinesAccept = () => {
     setShowGuidelines(false);
@@ -187,17 +199,20 @@ export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChan
     <>
       {/* Guidelines Modal */}
       <Dialog open={showGuidelines} onOpenChange={setShowGuidelines}>
-        <DialogTrigger asChild>
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9"
-            onClick={handleTriggerClick}
-          >
-            <Plus className="mr-1 h-4 w-4" />
-            Classify Now!
-          </Button>
-        </DialogTrigger>
+        {/* Only show trigger button on desktop (screens 1024px and larger) */}
+        {!isTabletOrMobile && (
+          <DialogTrigger asChild>
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="bg-phindex-teal hover:bg-phindex-teal/90 px-4 py-2 h-9"
+              onClick={handleTriggerClick}
+            >
+              <Plus className="mr-1 h-4 w-4" />
+              Classify Now!
+            </Button>
+          </DialogTrigger>
+        )}
         
         <DialogContent className="bg-gradient-card border-border/50 max-w-md">
           <DialogHeader>
