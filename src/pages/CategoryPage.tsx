@@ -8,8 +8,6 @@ import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileCard } from "@/components/ProfileCard";
 import { useUserProfiles } from "@/hooks/use-user-profiles";
-import { GoogleAdsense } from "@/components/GoogleAdsense";
-import { Helmet } from "react-helmet-async";
 
 interface Profile {
   id: string;
@@ -99,11 +97,6 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-phindex-dark/20 flex flex-col">
-      <Helmet>
-        <title>{categoryName} Category | Phindex</title>
-        <meta name="description" content={`${categoryDescription}. Browse profiles, vote on classifications and explore phenotypic diversity.`} />
-        <meta name="keywords" content={`${categoryName}, phenotype classification, ${category}, facial features, diversity`} />
-      </Helmet>
       <Header />
       
       <div className="container mx-auto px-4 py-8 flex-1">
@@ -126,11 +119,6 @@ export default function CategoryPage() {
 
           {/* Main Content */}
           <div>
-            {/* Google AdSense */}
-            <div className="mb-8">
-              <GoogleAdsense className="w-full" />
-            </div>
-
             {/* Category Header */}
             <Card className="bg-gradient-card border-phindex-teal/20 mb-8">
               <CardHeader>
@@ -213,11 +201,6 @@ export default function CategoryPage() {
                 </CardContent>
               </Card>
             )}
-          </div>
-
-          {/* Google AdSense */}
-          <div className="mb-8">
-            <GoogleAdsense className="w-full" />
           </div>
         </div>
       </div>

@@ -9,10 +9,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
 import { CommentsSection } from "@/components/CommentsSection";
+
 import { VoteModal } from "@/components/VoteModal";
-import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
-import { GoogleAdsense } from "@/components/GoogleAdsense";
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useVoting } from "@/hooks/use-voting";
@@ -20,6 +18,7 @@ import { useComments } from "@/hooks/use-comments";
 import { usePhysicalVoting } from "@/hooks/use-physical-voting";
 import { useGeographicVoting } from "@/hooks/use-geographic-voting";
 import { useGeographicVoteCounts } from "@/hooks/use-geographic-vote-counts";
+import { PhysicalCharacteristicVoting } from "@/components/PhysicalCharacteristicVoting";
 import { useProfileCreator } from "@/hooks/use-profile-creator";
 
 interface Vote {
@@ -228,11 +227,6 @@ export default function ProfileDetail() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-phindex-dark/20 flex flex-col">
-      <Helmet>
-        <title>{sanitizedProfile.name} - Profile | Phindex</title>
-        <meta name="description" content={`View ${sanitizedProfile.name}'s phenotype classification profile. Age: ${sanitizedProfile.age}, Category: ${sanitizedProfile.category}. Join the phenotype classification community.`} />
-        <meta name="keywords" content={`${sanitizedProfile.name}, phenotype, classification, ${sanitizedProfile.category}, facial features, ancestry`} />
-      </Helmet>
       <Header />
       
       <div className="container mx-auto px-4 py-8 flex-1">
@@ -255,11 +249,6 @@ export default function ProfileDetail() {
 
           {/* Main Content */}
           <div>
-            {/* Google AdSense */}
-            <div className="mb-6">
-              <GoogleAdsense className="w-full" />
-            </div>
-
             {/* Profile Images and Basic Info - Full width */}
             <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardContent className="p-6">
@@ -425,13 +414,13 @@ export default function ProfileDetail() {
                       }}
                     >
                       <MessageSquare className="h-4 w-4 text-blue-500" />
-                      <span>{realComments.length} comentários</span>
+                      <span>{realComments.length} comments</span>
                     </div>
                   </div>
 
                    <div className="space-y-2">
                      {user ? (
-                       hasUserVotedAny ? (
+                       hasUserVoted ? (
                           <div className="space-y-2">
                            <Button 
                              onClick={() => setShowVoteModal(true)}
@@ -439,7 +428,7 @@ export default function ProfileDetail() {
                              variant="outline"
                            >
                              <Users className="mr-2 h-4 w-4" />
-                             Change vote
+                             Alterar voto
                            </Button>
                          </div>
                        ) : (
@@ -449,7 +438,7 @@ export default function ProfileDetail() {
                            variant="default"
                          >
                            <Users className="mr-2 h-4 w-4" />
-                           Vote
+                           Votar
                          </Button>
                        )
                      ) : (
@@ -469,7 +458,7 @@ export default function ProfileDetail() {
             </Card>
 
             {/* Two-column layout for classifications - Each 50% width */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6" data-voting-section>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               {/* General Phenotype Classification */}
               <Card className="bg-gradient-card border-phindex-teal/20">
                 <CardHeader>
@@ -495,7 +484,7 @@ export default function ProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                          <p className="text-xs text-muted-foreground">No votes yet</p>
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
                        )}
                      </div>
 
@@ -517,7 +506,7 @@ export default function ProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                          <p className="text-xs text-muted-foreground">No votes yet</p>
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
                        )}
                      </div>
 
@@ -539,7 +528,7 @@ export default function ProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">No votes yet</p>
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
                        )}
                      </div>
                    </div>
@@ -571,7 +560,7 @@ export default function ProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                          <p className="text-xs text-muted-foreground">No votes yet</p>
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
                        )}
                      </div>
 
@@ -593,7 +582,7 @@ export default function ProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                          <p className="text-xs text-muted-foreground">No votes yet</p>
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
                        )}
                      </div>
 
@@ -615,7 +604,7 @@ export default function ProfileDetail() {
                            ))}
                          </div>
                        ) : (
-                         <p className="text-xs text-muted-foreground">No votes yet</p>
+                         <p className="text-xs text-muted-foreground">Nenhum voto ainda</p>
                        )}
                      </div>
                    </div>
@@ -643,7 +632,7 @@ export default function ProfileDetail() {
             {/* Comments Section */}
             <div data-comments-section>
               <CommentsSection 
-                profileId={profile.id}
+                profileId={sanitizedProfile.id}
                 onAddComment={addComment}
                 onLikeComment={likeComment}
                 onDeleteComment={deleteComment}
@@ -657,7 +646,7 @@ export default function ProfileDetail() {
               <VoteModal
                 isOpen={showVoteModal}
                 onClose={() => setShowVoteModal(false)}
-                profileId={profile.id}
+                profileId={sanitizedProfile.id}
                 existingVotes={{
                   "Primary Phenotype": userVote || "",
                   ...physicalUserVotes,
@@ -680,12 +669,12 @@ export default function ProfileDetail() {
                      }
                    }
                   
-                   // Cast physical characteristics votes
-                   const physicalCharacteristics = [
-                     'Skin Color', 'Hair Color', 'Hair Texture', 'Head Breadth',
-                     'Body Type', 'Nasal Breadth', 'Facial Breadth', 'Jaw Type',
-                     'Eye Color'
-                   ];
+                  // Cast physical characteristics votes
+                  const physicalCharacteristics = [
+                    'Hair Color', 'Hair Texture', 'Eye Color', 'Skin Tone',
+                    'Nasal Breadth', 'Facial Breadth', 'Body Type', 'Jaw Type',
+                    'Head Breadth', 'Face Shape'
+                  ];
                   
                   for (const characteristic of physicalCharacteristics) {
                     if (votes[characteristic]) {
@@ -705,11 +694,6 @@ export default function ProfileDetail() {
                 }}
               />
             )}
-          </div>
-
-          {/* Google AdSense */}
-          <div className="mb-6">
-            <GoogleAdsense className="w-full" />
           </div>
         </div>
       </div>

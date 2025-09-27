@@ -13,9 +13,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 // React Query para gerenciamento de estado assíncrono e cache de dados da API
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// Sistema de roteamento do React Router para navegação entre páginas
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Vercel Analytics para monitoramento de visitantes e page views
 import { Analytics } from "@vercel/analytics/react";
-import { HelmetProvider } from "react-helmet-async";
 // Importa todas as páginas da aplicação
 import Index from "./pages/Index"; // Página inicial com lista de perfis
 import ProfileDetail from "./pages/ProfileDetail"; // Página de detalhes de um perfil específico
@@ -48,10 +49,8 @@ const queryClient = new QueryClient();
 const App = () => (
   // Provider para React Query - gerencia todo o estado assíncrono da aplicação
   <QueryClientProvider client={queryClient}>
-    {/* Provider para Helmet - gerencia meta tags SEO */}
-    <HelmetProvider>
-      {/* Provider para tooltips - permite usar tooltips em qualquer componente filho */}
-      <TooltipProvider>
+    {/* Provider para tooltips - permite usar tooltips em qualquer componente filho */}
+    <TooltipProvider>
       {/* Sistema de notificações Toast - feedback visual para ações do usuário */}
       <Toaster />
       {/* Sistema Sonner alternativo para notificações mais modernas */}
@@ -95,8 +94,7 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-  </HelmetProvider>
-</QueryClientProvider>
+  </QueryClientProvider>
 );
 
 // Exporta o componente App como padrão para ser usado no main.tsx
