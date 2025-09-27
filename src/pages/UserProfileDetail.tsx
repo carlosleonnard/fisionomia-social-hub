@@ -24,6 +24,8 @@ import { useProfileCreator } from "@/hooks/use-profile-creator";
 import { useState } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
 import { supabase } from "@/integrations/supabase/client";
+import { GoogleAdsense } from "@/components/GoogleAdsense";
+import { Helmet } from "react-helmet-async";
 
 export default function UserProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -116,6 +118,11 @@ export default function UserProfileDetail() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-phindex-dark/20 flex flex-col">
+      <Helmet>
+        <title>{profile.name} - Profile Detail | Phindex</title>
+        <meta name="description" content={`View ${profile.name}'s detailed phenotype profile. ${profile.ancestry} ancestry, ${profile.country}. Join the phenotype classification community.`} />
+        <meta name="keywords" content={`${profile.name}, phenotype profile, ${profile.category}, ${profile.country}, ancestry, classification`} />
+      </Helmet>
       <Header />
       
       <div className="container mx-auto px-4 py-8 flex-1">
@@ -125,6 +132,11 @@ export default function UserProfileDetail() {
 
           {/* Main Content */}
           <div>
+            {/* Google AdSense */}
+            <div className="mb-6">
+              <GoogleAdsense className="w-full" />
+            </div>
+
             {/* Profile Images and Basic Info - Full width */}
             <Card className="bg-gradient-card border-phindex-teal/20 mb-6">
               <CardContent className="p-6">
@@ -592,6 +604,11 @@ export default function UserProfileDetail() {
                 }}
               />
             )}
+          </div>
+
+          {/* Google AdSense */}
+          <div className="mb-6">
+            <GoogleAdsense className="w-full" />
           </div>
         </div>
       </div>

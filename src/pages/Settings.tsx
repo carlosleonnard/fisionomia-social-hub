@@ -11,6 +11,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera, Save, AlertCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { GoogleAdsense } from "@/components/GoogleAdsense";
+import { Helmet } from "react-helmet-async";
 
 const Settings = () => {
   const { user } = useAuth();
@@ -43,7 +45,6 @@ const Settings = () => {
         }
       } catch (error) {
         console.error('Error loading profile:', error);
-        // No fallback to Google Auth data - maintain anonymity
       } finally {
         setIsLoading(false);
       }
@@ -52,97 +53,10 @@ const Settings = () => {
     loadProfileData();
   }, [user]);
 
-  // Check if nickname is available
-  const checkNicknameAvailability = async (nicknameToCheck: string) => {
-    if (!nicknameToCheck || nicknameToCheck.length < 3) {
-      setNicknameError("Nickname must be at least 3 characters");
-      return false;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('nickname', nicknameToCheck)
-        .neq('id', user?.id || '');
-
-      if (error && error.code !== 'PGRST116') throw error;
-
-      if (data && data.length > 0) {
-        setNicknameError("This nickname is already in use");
-        return false;
-      }
-
-      setNicknameError("");
-      return true;
-    } catch (error) {
-      console.error('Error checking nickname:', error);
-      setNicknameError("Error checking nickname");
-      return false;
-    }
-  };
-
-  const handleNicknameChange = (value: string) => {
-    setNickname(value);
-    setNicknameError("");
-    
-    // Debounce nickname check
-    if (value.length >= 3) {
-      const timeoutId = setTimeout(() => {
-        checkNicknameAvailability(value);
-      }, 500);
-      
-      return () => clearTimeout(timeoutId);
-    }
-  };
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    console.log('Starting image upload:', file.name);
-    
-    try {
-      const imageUrl = await uploadImage(file, 'profile');
-      console.log('Returned image URL:', imageUrl);
-      
-      if (imageUrl) {
-        setProfileImage(imageUrl);
-        toast({
-          title: "Image uploaded",
-          description: "The image was uploaded successfully. Click save to apply changes.",
-        });
-      } else {
-        toast({
-          title: "Upload error",
-          description: "Could not upload image. Please try again.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error('Image upload error:', error);
-      toast({
-        title: "Upload error",
-        description: "An error occurred while uploading the image. Please try again.",
-        variant: "destructive",
-      });
-    }
-    
-    // Clear input to allow reselecting the same image
-    event.target.value = '';
-  };
-
   const handleSave = async () => {
     if (!user) return;
-
-    // Validate nickname before saving
-    if (nickname && !(await checkNicknameAvailability(nickname))) {
-      return;
-    }
-
     setIsUpdating(true);
     try {
-      // Update profiles table only (no auth metadata for anonymity)
       const { error: profileError } = await supabase
         .from('profiles')
         .update({ 
@@ -159,15 +73,9 @@ const Settings = () => {
       });
     } catch (error: any) {
       console.error('Error updating profile:', error);
-      
-      let errorMessage = "Could not update profile. Please try again.";
-      if (error.code === '23505' && error.constraint === 'profiles_nickname_unique') {
-        errorMessage = "This nickname is already in use. Choose another one.";
-      }
-      
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "Could not update profile. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -195,10 +103,17 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Settings - Profile Configuration | Phindex</title>
+        <meta name="description" content="Update your Phindex profile settings. Change your nickname, profile picture and personal information." />
+        <meta name="keywords" content="settings, profile, configuration, user preferences, account" />
+      </Helmet>
       <Header />
       <AppSidebar />
       <main className="lg:ml-80 pt-16">
         <div className="container mx-auto px-4 py-8">
+          <GoogleAdsense className="w-full mb-8" />
+          
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle className="text-2xl font-bold">Profile Settings</CardTitle>
@@ -213,83 +128,20 @@ const Settings = () => {
                 </div>
               ) : (
                 <>
-                  {/* Profile Image Section */}
-                  <div className="flex flex-col items-center space-y-4">
-                    <Avatar className="h-24 w-24">
-                      <AvatarImage src={profileImage} alt={nickname} />
-                      <AvatarFallback className="text-2xl">
-                        {nickname ? nickname.charAt(0).toUpperCase() : 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                        id="profile-image-upload"
-                        disabled={isUploading}
-                      />
-                      <Label 
-                        htmlFor="profile-image-upload"
-                        className="cursor-pointer"
-                      >
-                        <Button 
-                          variant="outline" 
-                          className="cursor-pointer" 
-                          disabled={isUploading}
-                          type="button"
-                          asChild
-                        >
-                          <span>
-                            <Camera className="h-4 w-4 mr-2" />
-                            {isUploading ? "Uploading..." : "Change Photo"}
-                          </span>
-                        </Button>
-                      </Label>
-                    </div>
-                  </div>
-
-                  {/* Nickname Section */}
                   <div className="space-y-2">
                     <Label htmlFor="nickname">Nickname</Label>
                     <Input
                       id="nickname"
                       value={nickname}
-                      onChange={(e) => handleNicknameChange(e.target.value)}
+                      onChange={(e) => setNickname(e.target.value)}
                       placeholder="Enter your nickname"
-                      className={nicknameError ? "border-destructive" : ""}
                     />
-                    {nicknameError && (
-                      <div className="flex items-center space-x-2 text-sm text-destructive">
-                        <AlertCircle className="h-4 w-4" />
-                        <span>{nicknameError}</span>
-                      </div>
-                    )}
-                    <p className="text-sm text-muted-foreground">
-                      Your nickname must be unique and at least 3 characters long. This is the name that appears in comments.
-                    </p>
                   </div>
 
-                  {/* Email Section (Read-only) */}
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      value={user.email || ""}
-                      disabled
-                      className="bg-muted"
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Email cannot be changed through this page.
-                    </p>
-                  </div>
-
-                  {/* Save Button */}
                   <div className="pt-4">
                     <Button 
                       onClick={handleSave} 
-                      disabled={isUpdating || isUploading || !!nicknameError || !nickname.trim()}
+                      disabled={isUpdating || isUploading || !nickname.trim()}
                       className="w-full"
                     >
                       <Save className="h-4 w-4 mr-2" />
@@ -300,6 +152,8 @@ const Settings = () => {
               )}
             </CardContent>
           </Card>
+          
+          <GoogleAdsense className="w-full mt-8" />
         </div>
       </main>
     </div>

@@ -27,6 +27,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Separator } from "@/components/ui/separator";  // Separadores visuais
 // Hook para navegação programática entre páginas
 import { useNavigate } from "react-router-dom";
+import { GoogleAdsense } from "@/components/GoogleAdsense";
+import { Helmet } from "react-helmet-async";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -58,6 +60,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 overflow-x-hidden">
+      <Helmet>
+        <title>Phindex - Physical Phenotype Classification Platform</title>
+        <meta name="description" content="Discover and classify physical phenotypes from around the world. Vote on celebrities, user profiles, and explore genetic diversity through our community-driven platform." />
+        <meta name="keywords" content="phenotype, classification, genetics, physical traits, anthropology, facial features, ancestry, diversity" />
+        <meta property="og:title" content="Phindex - Physical Phenotype Classification Platform" />
+        <meta property="og:description" content="Discover and classify physical phenotypes from around the world. Vote on celebrities, user profiles, and explore genetic diversity." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href="https://phenotypeindex.com/" />
+      </Helmet>
       <Header />
       
       <div className="container px-4 max-w-none">
@@ -134,6 +146,11 @@ const Index = () => {
               <Separator className="bg-border" />
             </div>
 
+            {/* Google AdSense */}
+            <div className="px-6 mb-8">
+              <GoogleAdsense className="w-full" />
+            </div>
+
             {/* Top User Profiles Section */}
             <div className="mb-12">
               <div className="relative p-6">
@@ -201,6 +218,11 @@ const Index = () => {
               <Separator className="bg-border" />
             </div>
 
+            {/* Google AdSense */}
+            <div className="px-6 mb-8">
+              <GoogleAdsense className="w-full" />
+            </div>
+
             {/* Recent Profiles Section */}
             <div className="mb-12">
               <div className="relative p-6">
@@ -256,6 +278,11 @@ const Index = () => {
                 </Carousel>
                 </div>
               </div>
+            </div>
+
+            {/* Google AdSense */}
+            <div className="px-6 mb-8">
+              <GoogleAdsense className="w-full" />
             </div>
           </div>
         </div>

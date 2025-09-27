@@ -3,6 +3,8 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
+import { GoogleAdsense } from "@/components/GoogleAdsense";
+import { Helmet } from "react-helmet-async";
 
 const FAQ = () => {
   const faqData = [
@@ -58,10 +60,20 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>FAQ - Frequently Asked Questions | Phindex</title>
+        <meta name="description" content="Find answers to common questions about Phindex, the physical phenotype classification platform. Learn how to use our features and community." />
+        <meta name="keywords" content="FAQ, help, phenotype classification, questions, answers, support" />
+      </Helmet>
       <Header />
       <AppSidebar />
       <main className="lg:ml-80 pt-16">
         <div className="container mx-auto px-4 py-8">
+          {/* Google AdSense */}
+          <div className="mb-8">
+            <GoogleAdsense className="w-full" />
+          </div>
+
           <Card className="max-w-4xl mx-auto">
             <CardHeader className="text-center">
               <div className="flex justify-center mb-4">
@@ -105,6 +117,11 @@ const FAQ = () => {
               </Card>
             </CardContent>
           </Card>
+
+          {/* Google AdSense */}
+          <div className="mt-8">
+            <GoogleAdsense className="w-full" />
+          </div>
         </div>
       </main>
     </div>

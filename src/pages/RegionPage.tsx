@@ -4,6 +4,8 @@ import { ArrowLeft, User } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AppSidebar } from "@/components/AppSidebar";
+import { GoogleAdsense } from "@/components/GoogleAdsense";
+import { Helmet } from "react-helmet-async";
 import { CommentsSection } from "@/components/CommentsSection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -97,6 +99,11 @@ const RegionPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{regionDisplayName} Profiles | Phindex</title>
+        <meta name="description" content={`Explore phenotype profiles from ${regionDisplayName}. Discover genetic diversity and physical characteristics from this geographic region.`} />
+        <meta name="keywords" content={`${regionDisplayName}, phenotype, geographic, classification, ancestry, ethnic groups`} />
+      </Helmet>
       <Header />
       
       <div className="container px-4 py-8">
@@ -119,6 +126,11 @@ const RegionPage = () => {
 
           {/* Main Content */}
           <div>
+            {/* Google AdSense */}
+            <div className="mb-8">
+              <GoogleAdsense className="w-full" />
+            </div>
+
             <div className="mb-8">
               {/* Back button has already been moved to fixed position at top */}
               
@@ -239,6 +251,11 @@ const RegionPage = () => {
                 )}
               </div>
             )}
+          </div>
+
+          {/* Google AdSense */}
+          <div className="mb-8">
+            <GoogleAdsense className="w-full" />
           </div>
         </div>
       </div>
