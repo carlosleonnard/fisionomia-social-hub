@@ -252,7 +252,6 @@ export const Header = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <AddProfileModal />
               <Button 
                 variant="outline" 
                 size="icon"
