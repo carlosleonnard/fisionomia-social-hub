@@ -393,7 +393,7 @@ export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChan
 
             {/* Campo sim/não para perfil anônimo */}
             <div className="space-y-2">
-              <Label htmlFor="anonymousSelect">Is this an anonymous person? *</Label>
+              <Label htmlFor="anonymousSelect">Is this classification for you or for someone you know personally? (Non-famous person) *</Label>
               <select
                 id="anonymousSelect"
                 value={formData.isAnonymous === true ? "yes" : formData.isAnonymous === false ? "no" : ""}
