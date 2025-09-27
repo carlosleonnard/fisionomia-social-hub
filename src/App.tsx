@@ -15,6 +15,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Sistema de roteamento do React Router para navegação entre páginas
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Vercel Analytics para monitoramento de visitantes e page views
+import { Analytics } from "@vercel/analytics/react";
 // Importa todas as páginas da aplicação
 import Index from "./pages/Index"; // Página inicial com lista de perfis
 import ProfileDetail from "./pages/ProfileDetail"; // Página de detalhes de um perfil específico
@@ -53,6 +55,8 @@ const App = () => (
       <Toaster />
       {/* Sistema Sonner alternativo para notificações mais modernas */}
       <Sonner />
+      {/* Vercel Analytics para monitoramento de page views e visitantes */}
+      <Analytics />
       {/* Router principal - habilita navegação entre páginas */}
       <BrowserRouter>
         {/* Container de todas as rotas da aplicação */}
