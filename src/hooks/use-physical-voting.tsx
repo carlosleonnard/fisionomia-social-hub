@@ -39,6 +39,7 @@ export const usePhysicalVoting = (profileId: string) => {
     'Hair Color',
     'Hair Texture', 
     'Head Breadth',
+    'Head Type',
     'Body Type',
     'Nasal Breadth',
     'Facial Breadth',
@@ -47,7 +48,13 @@ export const usePhysicalVoting = (profileId: string) => {
   ];
 
   const fetchPhysicalVotes = async () => {
+    if (!profileId) {
+      setLoading(false);
+      return;
+    }
+    
     try {
+      setLoading(true);
       const characteristicsData: PhysicalCharacteristic[] = [];
 
       for (const characteristicType of physicalCharacteristicTypes) {
@@ -163,7 +170,9 @@ export const usePhysicalVoting = (profileId: string) => {
   };
 
   useEffect(() => {
-    fetchPhysicalVotes();
+    if (profileId) {
+      fetchPhysicalVotes();
+    }
   }, [profileId, user]);
 
   return {
