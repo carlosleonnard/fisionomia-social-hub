@@ -80,10 +80,7 @@ export default function ProfileDetail() {
   const { geographicVotes, phenotypeVotes, refetchVoteCounts } = useGeographicVoteCounts(id || '');
   const { data: profileCreator } = useProfileCreator(id || '');
 
-  const profile = mockProfiles.find(p => p.id === id);
-  
-  // Check if current user is the profile owner (for future database integration)
-  // For now, using mock logic - in real app this would check against profiles_data.user_id
+
   const isProfileOwner = user && profile && user.id === `user_${profile.id}`;
   
   // Filter sensitive data for non-owners
