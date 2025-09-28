@@ -23,7 +23,7 @@ const ANCESTRY_OPTIONS = [
   'Scandinavian',
   'Southeast Asian',
   'East Asian',
-  'Siberian',
+  'Siberian', 'Basque', 'Galician', 'Catalonian', 'Occitan',
 
   // --- Lista expandida de países/gentílicos ---
   'Albanian', 'Algerian', 'Andorran', 'Angolan', 'Antiguan or Barbudan', 'Argentine', 
