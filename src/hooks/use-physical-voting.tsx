@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/use-auth';
@@ -14,10 +14,55 @@ interface PhysicalCharacteristic {
   votes: PhysicalVote[];
 }
 
+interface PhysicalVotesResponse {
+  characteristics: PhysicalCharacteristic[];
+  userVotes: { [key: string]: string };
+}
+
+const fetchPhysicalVotes = async (profileId: string, userId?: string): Promise<PhysicalVotesResponse> => {
+  const params = new URLSearchParams({ profileId });
+  if (userId) {
+    params.append('userId', userId);
+  }
+
+  try {
+    // Try using supabase.functions.invoke first
+    const { data, error } = await supabase.functions.invoke('physical-votes', {
+      body: { profileId, userId },
+    });
+
+    if (!error && data) {
+      return data;
+    }
+  } catch (invokeError) {
+    console.warn('Functions invoke failed, falling back to fetch:', invokeError);
+  }
+
+  // Fallback to direct URL call
+  const response = await fetch(
+    `https://jmygqrqfzglbislftczz.supabase.co/functions/v1/physical-votes?${params.toString()}`,
+    {
+      headers: {
+        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpteWdxcnFmemdsYmlzbGZ0Y3p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4NjEyMTIsImV4cCI6MjA3MDQzNzIxMn0.-SATJkWJNhgpGY8g1o_REhIy-xhaKWIN8_Yrxrzzd1A`,
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpteWdxcnFmemdsYmlzbGZ0Y3p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4NjEyMTIsImV4cCI6MjA3MDQzNzIxMn0.-SATJkWJNhgpGY8g1o_REhIy-xhaKWIN8_Yrxrzzd1A',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+};
+
 export const usePhysicalVoting = (profileId: string) => {
-  const [characteristics, setCharacteristics] = useState<PhysicalCharacteristic[]>([]);
-  const [userVotes, setUserVotes] = useState<{ [key: string]: string }>(() => {
-    // Load pending votes from localStorage
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Get pending votes from localStorage
+  const getPendingVotes = (): { [key: string]: string } => {
     if (typeof window !== 'undefined') {
       const pendingVotes = localStorage.getItem(`pendingPhysicalVotes_${profileId}`);
       if (pendingVotes) {
@@ -29,114 +74,30 @@ export const usePhysicalVoting = (profileId: string) => {
       }
     }
     return {};
-  });
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
-  const { toast } = useToast();
-
-  const physicalCharacteristicTypes = [
-    'Skin Color',
-    'Hair Color',
-    'Hair Texture', 
-    'Head Breadth',
-    'Head Type',
-    'Body Type',
-    'Nasal Breadth',
-    'Facial Breadth',
-    'Jaw Type',
-    'Eye Color'
-  ];
-
-  const fetchPhysicalVotes = async () => {
-    if (!profileId) {
-      setLoading(false);
-      return;
-    }
-    
-    try {
-      setLoading(true);
-      const characteristicsData: PhysicalCharacteristic[] = [];
-
-      for (const characteristicType of physicalCharacteristicTypes) {
-        // Fetch all votes for this characteristic
-        const { data: allVotes } = await supabase
-          .from('votes')
-          .select('classification')
-          .eq('profile_id', profileId)
-          .eq('characteristic_type', characteristicType);
-
-        // Count votes by classification
-        const voteCounts: { [key: string]: number } = {};
-        allVotes?.forEach(vote => {
-          voteCounts[vote.classification] = (voteCounts[vote.classification] || 0) + 1;
-        });
-
-        // Calculate total and percentages
-        const total = allVotes?.length || 0;
-        const voteData: PhysicalVote[] = Object.entries(voteCounts).map(([option, count]) => ({
-          option,
-          count,
-          percentage: total > 0 ? (count / total) * 100 : 0
-        })).sort((a, b) => b.count - a.count);
-
-        characteristicsData.push({
-          name: characteristicType,
-          votes: voteData
-        });
-      }
-
-      setCharacteristics(characteristicsData);
-
-      // Fetch user's votes if logged in
-      if (user) {
-        const { data: userVoteData } = await supabase
-          .from('votes')
-          .select('characteristic_type, classification')
-          .eq('profile_id', profileId)
-          .eq('user_id', user.id)
-          .in('characteristic_type', physicalCharacteristicTypes);
-
-        const votes: { [key: string]: string } = {};
-        userVoteData?.forEach(vote => {
-          votes[vote.characteristic_type] = vote.classification;
-        });
-        
-        // Merge with any pending votes from localStorage
-        const pendingVotes = localStorage.getItem(`pendingPhysicalVotes_${profileId}`);
-        if (pendingVotes) {
-          try {
-            const parsedPendingVotes = JSON.parse(pendingVotes);
-            Object.assign(votes, parsedPendingVotes);
-          } catch {
-            // Invalid JSON, ignore
-          }
-        }
-        
-        setUserVotes(votes);
-      }
-    } catch (error) {
-      console.error('Error fetching physical votes:', error);
-    } finally {
-      setLoading(false);
-    }
   };
 
-  const castVote = async (characteristicType: string, classification: string) => {
-    if (!user) {
-      // Store pending vote in localStorage for non-logged users
-      const newVotes = { ...userVotes, [characteristicType]: classification };
-      setUserVotes(newVotes);
-      localStorage.setItem(`pendingPhysicalVotes_${profileId}`, JSON.stringify(newVotes));
-      
-      toast({
-        title: "Login required",
-        description: "You need to be logged in to vote",
-        variant: "destructive",
-      });
-      return false;
-    }
+  // React Query for fetching physical votes
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['physicalVotes', profileId, user?.id],
+    queryFn: () => fetchPhysicalVotes(profileId, user?.id),
+    enabled: !!profileId,
+    staleTime: 30000, // 30 seconds
+    refetchOnWindowFocus: false,
+  });
 
-    try {
+  // Merge server data with pending votes
+  const userVotes = {
+    ...data?.userVotes,
+    ...getPendingVotes(),
+  };
+
+  // Mutation for casting votes
+  const castVoteMutation = useMutation({
+    mutationFn: async ({ characteristicType, classification }: { characteristicType: string; classification: string }) => {
+      if (!user) {
+        throw new Error('User must be logged in to vote');
+      }
+
       const { error } = await supabase
         .from('votes')
         .upsert({
@@ -150,36 +111,115 @@ export const usePhysicalVoting = (profileId: string) => {
 
       if (error) throw error;
 
-      const newVotes = { ...userVotes, [characteristicType]: classification };
-      setUserVotes(newVotes);
-      
-      // Update localStorage with current votes
-      localStorage.setItem(`pendingPhysicalVotes_${profileId}`, JSON.stringify(newVotes));
-      
-      await fetchPhysicalVotes();
+      return { characteristicType, classification };
+    },
+    onMutate: async ({ characteristicType, classification }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['physicalVotes', profileId, user?.id] });
 
-      return true;
-    } catch (error: any) {
+      // Snapshot the previous value
+      const previousData = queryClient.getQueryData<PhysicalVotesResponse>(['physicalVotes', profileId, user?.id]);
+
+      // Optimistically update the cache
+      if (previousData) {
+        const updatedData = { ...previousData };
+        updatedData.userVotes = { ...updatedData.userVotes, [characteristicType]: classification };
+
+        // Update the vote counts optimistically
+        updatedData.characteristics = updatedData.characteristics.map(characteristic => {
+          if (characteristic.name === characteristicType) {
+            const existingVote = previousData.userVotes[characteristicType];
+            
+            // Create a copy of votes
+            let updatedVotes = [...characteristic.votes];
+            
+            // Remove previous vote if exists
+            if (existingVote) {
+              updatedVotes = updatedVotes.map(vote => 
+                vote.option === existingVote 
+                  ? { ...vote, count: Math.max(0, vote.count - 1) }
+                  : vote
+              );
+            }
+            
+            // Add new vote
+            const existingIndex = updatedVotes.findIndex(vote => vote.option === classification);
+            if (existingIndex >= 0) {
+              updatedVotes[existingIndex] = {
+                ...updatedVotes[existingIndex],
+                count: updatedVotes[existingIndex].count + 1
+              };
+            } else {
+              updatedVotes.push({ option: classification, count: 1, percentage: 0 });
+            }
+
+            // Recalculate percentages
+            const total = updatedVotes.reduce((sum, vote) => sum + vote.count, 0);
+            updatedVotes = updatedVotes.map(vote => ({
+              ...vote,
+              percentage: total > 0 ? (vote.count / total) * 100 : 0
+            })).sort((a, b) => b.count - a.count);
+
+            return { ...characteristic, votes: updatedVotes };
+          }
+          return characteristic;
+        });
+
+        queryClient.setQueryData(['physicalVotes', profileId, user?.id], updatedData);
+      }
+
+      return { previousData };
+    },
+    onError: (error, variables, context) => {
+      // Rollback the optimistic update
+      if (context?.previousData) {
+        queryClient.setQueryData(['physicalVotes', profileId, user?.id], context.previousData);
+      }
+      
       toast({
         title: "Voting error",
-        description: error.message,
+        description: error.message || "Failed to cast vote",
+        variant: "destructive",
+      });
+    },
+    onSuccess: ({ characteristicType, classification }) => {
+      // Update localStorage
+      const newVotes = { ...userVotes, [characteristicType]: classification };
+      localStorage.setItem(`pendingPhysicalVotes_${profileId}`, JSON.stringify(newVotes));
+      
+      // Invalidate and refetch to ensure consistency
+      queryClient.invalidateQueries({ queryKey: ['physicalVotes', profileId, user?.id] });
+    },
+  });
+
+  const castVote = async (characteristicType: string, classification: string) => {
+    if (!user) {
+      // Store pending vote in localStorage for non-logged users
+      const newVotes = { ...userVotes, [characteristicType]: classification };
+      localStorage.setItem(`pendingPhysicalVotes_${profileId}`, JSON.stringify(newVotes));
+      
+      toast({
+        title: "Login required",
+        description: "You need to be logged in to vote",
         variant: "destructive",
       });
       return false;
     }
+
+    try {
+      await castVoteMutation.mutateAsync({ characteristicType, classification });
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
-  useEffect(() => {
-    if (profileId) {
-      fetchPhysicalVotes();
-    }
-  }, [profileId, user]);
-
   return {
-    characteristics,
+    characteristics: data?.characteristics || [],
     userVotes,
-    loading,
+    loading: isLoading,
     castVote,
-    hasUserVoted: (characteristicType: string) => !!userVotes[characteristicType]
+    hasUserVoted: (characteristicType: string) => !!userVotes[characteristicType],
+    error,
   };
 };
