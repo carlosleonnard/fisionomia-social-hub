@@ -75,10 +75,10 @@ const Index = () => {
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
                       <Vote className="h-4 w-4 text-primary" />
                     </div>
-                    <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
+                    <h2 className="text-2xl font-bold text-foreground">POPULAR CELEBRITIES</h2>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Discover and classify the most voted public figures in our phenotyping community
+                    Use Phindex to discover and classify the most voted public figures in our phenotype community
                   </p>
                   
                    <Carousel className="w-full" opts={{ align: "start", loop: false }}>
@@ -145,7 +145,7 @@ const Index = () => {
                     <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Most voted user-created profiles in our community
+                    Most voted user-created profiles in our Phenotype Index
                   </p>
                   
                   <Carousel className="w-full" opts={{ align: "start", loop: false }}>
