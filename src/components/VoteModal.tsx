@@ -104,43 +104,6 @@ const specificPhenotypeOptions = {
   "Polynesia": [
     "Polynesid"
   ]
-};
-
-const geographicOptions = {
-  "Europe": [
-    "Eastern Europe",
-    "Central Europe", 
-    "Southern Europe",
-    "Northern Europe"
-  ],
-  "Africa": [
-    "North Africa",
-    "East Africa",
-    "Sub-Saharan Africa"
-  ],
-  "Middle East": [
-    "Levant",
-    "Anatolia", 
-    "Arabian Peninsula",
-    "Persian Plateau"
-  ],
-  "Asia": [
-    "Central Asia",
-    "Eastern Asia",
-    "Southern Asia",
-    "Southeastern Asia"
-  ],
-  "Americas": [
-    "Northern America",
-    "Central America",
-    "Southern America"
-  ],
-  "Oceania": [
-    "Australia and New Zealand",
-    "Melanesia",
-    "Polynesia"
-  ]
-};
 
 const characteristics = [
   {
