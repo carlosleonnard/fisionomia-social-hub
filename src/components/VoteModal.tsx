@@ -529,7 +529,6 @@ const specificPhenotypeOptions = {
     ]
   }
 }
-
 ;
 
 const geographicOptions = {
