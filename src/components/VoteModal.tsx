@@ -103,7 +103,7 @@ const specificPhenotypeOptions = {
   ],
   "Polynesia": [
     "Polynesid"
-  ];
+  ]};
 
 const characteristics = [
   {
