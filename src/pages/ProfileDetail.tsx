@@ -12,6 +12,8 @@ import { CommentsSection } from "@/components/CommentsSection";
 
 import { VoteModal } from "@/components/VoteModal";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useVoting } from "@/hooks/use-voting";
 import { useComments } from "@/hooks/use-comments";
@@ -73,6 +75,24 @@ export default function ProfileDetail() {
   const [showVoteModal, setShowVoteModal] = useState(false);
   
   const { user } = useAuth();
+  
+  // Fetch profile data
+  const { data: profile } = useQuery({
+    queryKey: ['profile', id],
+    queryFn: async () => {
+      if (!id) return null;
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id
+  });
+  
   const { votes: realVotes, castVote, changeVote, hasUserVoted, userVote } = useVoting(id || '');
   const { comments: realComments, addComment, likeComment, deleteComment } = useComments(id || '');
   const { characteristics: physicalCharacteristics, userVotes: physicalUserVotes, castVote: castPhysicalVote } = usePhysicalVoting(id || '');
@@ -86,8 +106,8 @@ export default function ProfileDetail() {
   // Filter sensitive data for non-owners
   const sanitizedProfile = profile ? {
     ...profile,
-    location: isProfileOwner ? profile.location : undefined,
-    description: isProfileOwner ? profile.description : undefined
+    location: isProfileOwner ? profile.country : undefined,
+    description: isProfileOwner ? profile.ancestry : undefined
   } : null;
 
   if (!sanitizedProfile) {
@@ -143,7 +163,7 @@ export default function ProfileDetail() {
                         <CarouselItem>
                           <div className="text-center">
                             <img 
-                              src={sanitizedProfile.frontImage} 
+                              src={sanitizedProfile.front_image_url} 
                               alt={`${sanitizedProfile.name} - frente`}
                               className="w-full max-w-sm mx-auto rounded-lg"
                             />
@@ -153,7 +173,7 @@ export default function ProfileDetail() {
                         <CarouselItem>
                           <div className="text-center">
                             <img 
-                              src={sanitizedProfile.sideImage} 
+                              src={sanitizedProfile.profile_image_url || sanitizedProfile.front_image_url} 
                               alt={`${sanitizedProfile.name} - perfil`}
                               className="w-full max-w-sm mx-auto rounded-lg"
                             />
@@ -233,7 +253,7 @@ export default function ProfileDetail() {
                   </div>
                   
                   <p className="text-muted-foreground mb-2">
-                    {sanitizedProfile.age} anos • {sanitizedProfile.gender} • {sanitizedProfile.height}
+                    {sanitizedProfile.gender} • {sanitizedProfile.height}cm • {sanitizedProfile.category}
                   </p>
                   
                   {/* Location - Only show to profile owner */}
@@ -256,13 +276,13 @@ export default function ProfileDetail() {
                     </div>
                   )}
                   
-                  {/* Show ancestry for all users from the mock profile description */}
-                  {!sanitizedProfile.description && profile?.description && (
+                  {/* Show ancestry for all users from the profile ancestry */}
+                  {!sanitizedProfile.description && profile?.ancestry && (
                     <div className="mb-6 p-3 bg-gradient-to-br from-border/20 to-border/10 border border-border/40 rounded-xl shadow-sm">
                       <div className="p-4 bg-muted/30 rounded-lg text-left">
                         <h3 className="text-sm font-semibold text-phindex-teal mb-2">Ancestralidade Conhecida</h3>
                         <p className="text-sm text-foreground leading-relaxed">
-                          {profile.description}
+                          {profile.ancestry}
                         </p>
                       </div>
                     </div>
