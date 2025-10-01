@@ -13,97 +13,258 @@ interface VoteModalProps {
   profileId: string;
 }
 
-const specificPhenotypeOptions = {
-  "Northern America": {
-    "Eskimid": ["Inuid", "Bering Sea"],
-    "Margid": ["Mexicid", "Sonorid", "Californid"],
-    "Pacificid": ["Pacifid", "California Pacifid", "Athabaskid", "Arizonid"],
-    "Silvid": ["Planid", "Appalacid"]
-  },
-  "Central America": {
-    "Centralid": ["Isthmid", "Maya", "Pueblid"]
-  },
-  "Southern America": {
-    "Amazonid": ["North Amazonid", "South Amazonid", "West Amazonid", "Chocó-Motilon"],
-    "Andid": ["North Andid", "Central Andid", "South Andid"],
-    "Lagid": ["Lagoa Santa", "South Fuegid", "Huarpid", "Botocudo"],
-    "Patagonid": ["Patagonid", "Bororo", "Pampid"]
-  },
-  "North Africa": {
-    "Mediterranid": ["Paleo Sardinian", "Canarid", "Berberid", "Eurafricanid", "Proto Iranid", "Trans Mediterranid", "Gracile Mediterranid", "Pontid", "North Pontid", "Paleo Atlantid", "North Atlantid", "Fezzanid", "Moorish", "Siwa", "Targid", "Egyptid", "Litorid"],
-    "Orientalid": ["Arabid", "Iranid", "Libyid", "Targid", "Egyptid", "Transcaspian", "Yemenid", "Middle Nile", "Proto Iranid", "Indo Iranid"]
-  },
-  "East Africa": {
-    "Ethiopid": ["Proto Ethiopid", "Omotic", "East Ethiopid", "North Ethiopid", "South Ethiopid", "Maasai", "Central Ethiopid", "Saharan Ethiopid", "West Ethiopid", "Danakil", "Moorish", "Siwa", "Nilo Hamitic"],
-    "Nilotid": ["Pre Nilotid", "Dinkaid", "Shillukid", "South Nilotid", "Nilo Hamitic", "Shari"],
-    "Sudanid": ["Sudanid", "East Sudanid", "Bobo", "Senegalid", "Middle Nile", "Fezzanid", "Shari", "Sudano Guinesid", "Equatorial Sudanid", "Casamance"]
-  },
-  "Sub-Saharan Africa": {
-    "Bambutid": ["East Bambutid", "West Bambutid", "Twa-Cwa"],
-    "Bantuid": ["North Bantuid", "Central Bantuid", "Chopi-Tswana", "South Bantuid", "Fengu-Pondo", "Xhosaid", "Malagasid"],
-    "Congoid": ["Mountain Dama", "Congolesid", "Mundu Mangbeto", "West Congolesid", "Guineo Camerunian", "Guinesid", "Sudano Guinesid", "Equatorial Sudanid", "Casamance"],
-    "Khoid": ["Khoid", "Sandawe"],
-    "Sanid": ["Kalaharid", "Karroid"]
-  },
-  "Central Asia": {
-    "Tungid": ["Gobid", "Baykal", "Amur-Sakhalin", "Katanga", "Mountain Aralid", "Aralid"],
-    "Turanid": ["East Pamirid", "Central Pamirid", "Plains Pamirid", "Andronovo-Turanid", "Alföld", "Transcaspian", "Indo Iranid", "Indo Brachid", "Central Brachid", "Mountain Aralid", "Aralid"]
-  },
-  "Southern Asia": {
-    "Indid": ["Gracile Indid", "Mountain Indid", "Sinhalesid", "Keralid", "North Indid", "Toda", "Indo Brachid", "Central Brachid", "East Brachid", "Indo Nordic", "Tibetid", "Malabarese", "Indo Iranid"],
-    "Indo Melanin": ["Karnatid", "Kolid"],
-    "Veddid": ["Malid", "Vedda", "North Gondid", "South Gondid", "Toalid", "Senoid", "Arabian Veddoid", "Khmerid", "Yemenid", "Malabarese"]
-  },
-  "East Asia": {
-    "Ainuid": ["Aoshima", "Chikuzen", "Ishikawa"],
-    "Sibirid": ["Uralid", "Yenisey", "Samoyedic", "Chukchid", "Volgid", "Ladogan"],
-    "Sinid": ["Huanghoid", "Manchu-Korean", "Changkiangid", "Chukiangid", "Tonkinesid", "Annamid", "Kham", "Choshiu", "Yakonin", "Tibetid"]
-  },
-  "Southeastern Asia": {
-    "Negritid": ["North Andamanid", "South Andamanid", "Aetid", "Semangid", "Jahai Semangid"],
-    "South Mongoloid": ["Palaungid", "South Palaungid", "East Palaungid", "Proto Malayid", "Dayakid", "Kachinid", "Shanid", "East Shanid", "Deutero Malayid", "Satsuma", "Chikuzen", "Ishikawa", "Annamid", "Khmerid", "East Brachid"]
-  },
-  "Eastern Europe": {
-    "Dinarid": ["Dinarid", "Norid", "Litorid", "Mtebid", "Carpathid"],
-    "East Europid": ["Tavastid", "Savolaxid", "Neo Danubian", "Pre Slavic", "Volgid", "Ladogan", "North Pontid", "Fenno Nordid", "Borreby", "Carpathid"],
-    "Turanid": ["East Pamirid", "Central Pamirid", "Plains Pamirid", "Andronovo-Turanid", "Alföld", "Transcaspian", "Indo Iranid", "Indo Brachid", "Central Brachid", "Mountain Aralid", "Aralid"]
-  },
-  "Southern Europe": {
-    "Mediterranid": ["Paleo Sardinian", "Canarid", "Berberid", "Eurafricanid", "Proto Iranid", "Trans Mediterranid", "Gracile Mediterranid", "Pontid", "North Pontid", "Paleo Atlantid", "North Atlantid", "Fezzanid", "Moorish", "Siwa", "Targid", "Egyptid", "Litorid", "Baskid"]
-  },
-  "Central Europe": {
-    "Alpinid": ["West Alpinid", "Strandid", "East Alpinid", "Gorid", "African Alpinoid", "Central Brachid", "Mtebid", "Borreby", "Baskid"]
-  },
-  "Northern Europe": {
-    "Lappid": ["Scando Lappid", "North Lappid", "Samoyedic"],
-    "Nordid": ["Proto Nordid", "Aisto Nordid", "Hallstatt", "Anglo-Saxon", "Trønder", "Dalofaelid", "Fenno Nordid", "Borreby", "Indo Nordic", "North Pontid", "Paleo Atlantid", "North Atlantid", "Canarid"]
-  },
-  "Anatolia": {
-    "Alpinid": ["West Alpinid", "Strandid", "East Alpinid", "Gorid", "African Alpinoid", "Central Brachid", "Mtebid", "Borreby", "Baskid"],
-    "Armenoid": ["Armenid", "Anatolid", "Assyroid", "Yemenid", "Litorid", "Mtebid", "Carpathid"],
-    "Mediterranid": ["Paleo Sardinian", "Canarid", "Berberid", "Eurafricanid", "Proto Iranid", "Trans Mediterranid", "Gracile Mediterranid", "Pontid", "North Pontid", "Paleo Atlantid", "North Atlantid", "Fezzanid", "Moorish", "Siwa", "Targid", "Egyptid", "Litorid", "Baskid"],
-    "Turanid": ["East Pamirid", "Central Pamirid", "Plains Pamirid", "Andronovo-Turanid", "Alföld", "Transcaspian", "Indo Iranid", "Indo Brachid", "Central Brachid", "Mountain Aralid", "Aralid"]
-  },
-  "Levant": {
-    "Armenoid": ["Armenid", "Anatolid", "Assyroid", "Yemenid", "Litorid", "Mtebid", "Carpathid"],
-    "Mediterranid": ["Paleo Sardinian", "Canarid", "Berberid", "Eurafricanid", "Proto Iranid", "Trans Mediterranid", "Gracile Mediterranid", "Pontid", "North Pontid", "Paleo Atlantid", "North Atlantid", "Fezzanid", "Moorish", "Siwa", "Targid", "Egyptid", "Litorid", "Baskid"]
-  },
-  "Arabian Peninsula": {
-    "Orientalid": ["Arabid", "Iranid", "Libyid", "Targid", "Egyptid", "Transcaspian", "Yemenid", "Middle Nile", "Proto Iranid", "Indo Iranid"],
-    "Veddid": ["Malid", "Vedda", "North Gondid", "South Gondid", "Toalid", "Senoid", "Arabian Veddoid", "Khmerid", "Yemenid", "Malabarese"]
-  },
-  "Persian Plateau": {
-    "Orientalid": ["Arabid", "Iranid", "Libyid", "Targid", "Egyptid", "Transcaspian", "Yemenid", "Middle Nile", "Proto Iranid", "Indo Iranid"]
-  },
-  "Australia and New Zealand": {
-    "Australid": ["Barrinean", "North Australid", "Desert Australid", "South Australid", "Tasmanid", "Paleo Melanesid"]
-  },
-  "Melanesia": {
-    "Melanesid": ["Paleo Melanesid", "Insular Melanesid", "Neo Melanesid", "Mountain Melanesid", "Tapirid", "Bukaid", "Brachio Melanesid", "Fijid"]
-  },
-  "Polynesia": {
-    "Polynesid": ["South Polynesid", "Nesiotid", "Micronesid", "Robust Polynesid", "Fijid"]
-  }
+const specificPhenotypeOptions: { [division: string]: string[] } = {
+  "Capoid": [
+    "Strandlooper",
+    "Khoid",
+    "Sandawe",
+    "Sanid",
+    "Kalaharid",
+    "Karroid"
+  ],
+  "Negroid": [
+    "Katangid",
+    "Hadza",
+    "Bantuid",
+    "North Bantuid",
+    "Central Bantuid",
+    "Chopi-Tswana",
+    "South Bantuid",
+    "Fengu-Pondo",
+    "Xhosaid",
+    "Malagasid",
+    "Bambutid",
+    "East Bambutid",
+    "West Bambutid",
+    "Twa-Cwa",
+    "Congolid",
+    "Mountain Dama",
+    "Congolesid",
+    "Mundu Mangbeto",
+    "West Congolesid",
+    "Guineo Camerunian",
+    "Guinesid",
+    "Sudano Guinesid",
+    "Equatorial Sudanid",
+    "Casamance",
+    "Sudanid",
+    "East Sudanid",
+    "Bobo",
+    "Senegalid",
+    "Middle Nile",
+    "Fezzanid",
+    "Shari",
+    "Nilotid",
+    "Pre Nilotid",
+    "Dinkaid",
+    "Shillukid",
+    "South Nilotid",
+    "Nilo Hamitic"
+  ],
+  "Caucasoid": [
+    "Ethiopid",
+    "Proto Ethiopid",
+    "Omotic",
+    "East Ethiopid",
+    "North Ethiopid",
+    "South Ethiopid",
+    "Maasai",
+    "Central Ethiopid",
+    "Saharan Ethiopid",
+    "West Ethiopid",
+    "Danakil",
+    "Moorish",
+    "Siwa",
+    "Orientalid",
+    "Arabid",
+    "Iranid",
+    "Libyid",
+    "Targid",
+    "Egyptid",
+    "Transcaspian",
+    "Yemenid",
+    "Assyroid",
+    "Indo Iranid",
+    "Indid",
+    "Gracile Indid",
+    "Mountain Indid",
+    "Sinhalesid",
+    "Keralid",
+    "North Indid",
+    "Toda",
+    "Indo Brachid",
+    "Central Brachid",
+    "East Brachid",
+    "Indo Nordic",
+    "Tibetid",
+    "Malabarese",
+    "Indo Melanid",
+    "Karnatid",
+    "Kolid",
+    "Mediterranid",
+    "Paleo Sardinian",
+    "Canarid",
+    "Berberid",
+    "Eurafricanid",
+    "Proto Iranid",
+    "Trans Mediterranid",
+    "Gracile Mediterranid",
+    "Pontid",
+    "North Pontid",
+    "Paleo Atlantid",
+    "North Atlantid",
+    "Nordid",
+    "Proto Nordid",
+    "Aisto Nordid",
+    "Hallstatt",
+    "Anglo-Saxon",
+    "Trønder",
+    "Dalofaelid",
+    "Fenno Nordid",
+    "Borreby",
+    "East Europid",
+    "Tavastid",
+    "Savolaxid",
+    "Neo Danubian",
+    "Pre Slavic",
+    "Volgid",
+    "Ladogan",
+    "Lappid",
+    "Scando Lappid",
+    "North Lappid",
+    "Alpinid",
+    "West Alpinid",
+    "Strandid",
+    "East Alpinid",
+    "Gorid",
+    "African Alpinoid",
+    "Baskid",
+    "Dinarid",
+    "Norid",
+    "Litorid",
+    "Mtebid",
+    "Carpathid",
+    "Armenoid",
+    "Armenid",
+    "Anatolid",
+    "Turanid",
+    "East Pamirid",
+    "Central Pamirid",
+    "Plains Pamirid",
+    "Andronovo-Turanid",
+    "Alföld"
+  ],
+  "Australoid": [
+    "Veddid",
+    "Malid",
+    "Vedda",
+    "North Gondid",
+    "South Gondid",
+    "Toalid",
+    "Senoid",
+    "Arabian Veddoid",
+    "Khmerid",
+    "Negritid",
+    "North Andamanid",
+    "South Andamanid",
+    "Aetid",
+    "Semangid",
+    "Jahai Semangid",
+    "Australid",
+    "Barrinean",
+    "North Australid",
+    "Desert Australid",
+    "South Australid",
+    "Tasmanid",
+    "Melanesid",
+    "Paleo Melanesid",
+    "Insular Melanesid",
+    "Neo Melanesid",
+    "Mountain Melanesid",
+    "Tapirid",
+    "Bukaid",
+    "Brachio Melanesid",
+    "Fijid"
+  ],
+  "Mongoloid": [
+    "Polynesid",
+    "South Polynesid",
+    "Nesiotid",
+    "Micronesid",
+    "Robust Polynesid",
+    "Ainuid",
+    "Aoshima",
+    "Chikuzen",
+    "Ishikawa",
+    "South Mongolid",
+    "Palaungid",
+    "South Palaungid",
+    "East Palaungid",
+    "Proto Malayid",
+    "Dayakid",
+    "Kachinid",
+    "Shanid",
+    "East Shanid",
+    "Deutero Malayid",
+    "Satsuma",
+    "Sinid",
+    "Huanghoid",
+    "Manchu-Korean",
+    "Changkiangid",
+    "Chukiangid",
+    "Tonkinesid",
+    "Annamid",
+    "Kham",
+    "Choshiu",
+    "Yakonin",
+    "Tungid",
+    "Gobid",
+    "Baykal",
+    "Amur-Sakhalin",
+    "Katanga",
+    "Mountain Aralid",
+    "Aralid",
+    "Sibirid",
+    "Uralid",
+    "Yenisey",
+    "Samoyedic",
+    "Chukchid",
+    "Eskimid",
+    "Inuid",
+    "Bering Sea",
+    "Pacifid",
+    "California Pacifid",
+    "Athabaskid",
+    "Arizonid",
+    "Silvid",
+    "Planid",
+    "Appalacid",
+    "Margid",
+    "Mexicid",
+    "Sonorid",
+    "Californid",
+    "Centralid",
+    "Isthmid",
+    "Maya",
+    "Pueblid",
+    "Amazonid",
+    "North Amazonid",
+    "South Amazonid",
+    "West Amazonid",
+    "Chocó-Motilon",
+    "Lagid",
+    "Lagoa Santa",
+    "South Fuegid",
+    "Huarpid",
+    "Botocudo",
+    "Patagonid",
+    "Bororo",
+    "Pampid",
+    "Andid",
+    "North Andid",
+    "Central Andid",
+    "South Andid"
+  ]
 };
 
 const geographicOptions = {
@@ -268,13 +429,11 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
     });
   };
 
-  // Função para obter todas as opções de fenótipo (subgroups)
+  // Função para obter todas as opções de fenótipo
   const getAllPhenotypeOptions = () => {
     const allOptions: string[] = [];
-    Object.entries(specificPhenotypeOptions).forEach(([region, groups]) => {
-      Object.entries(groups).forEach(([group, subgroups]) => {
-        allOptions.push(...subgroups);
-      });
+    Object.values(specificPhenotypeOptions).forEach(phenotypes => {
+      allOptions.push(...phenotypes);
     });
     return allOptions;
   };
@@ -441,44 +600,38 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                     <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
                       <SelectValue placeholder="Select Primary Phenotype" />
                     </SelectTrigger>
-                    <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
-                      {(() => {
-                        const seen = new Set<string>();
-                        return Object.entries(specificPhenotypeOptions).map(([region, groups]) => {
-                          return (
-                            <div key={region}>
-                              <div className="px-2 py-1.5 text-sm font-bold text-muted-foreground bg-muted/70">
-                                {region}
+                      <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
+                        {(() => {
+                          const seen = new Set<string>();
+                          return Object.entries(specificPhenotypeOptions).map(([division, phenotypes]) => {
+                            const uniquePhenotypes = phenotypes.filter((phenotype) => {
+                              if (seen.has(phenotype)) return false;
+                              seen.add(phenotype);
+                              return true;
+                            });
+                            if (uniquePhenotypes.length === 0) return null;
+                            
+                            return (
+                              <div key={division}>
+                                <div className="px-2 py-1.5 text-sm font-bold text-primary bg-muted/70">
+                                  {division}
+                                </div>
+                                <div className="ml-2">
+                                  {uniquePhenotypes.map((phenotype) => (
+                                    <SelectItem
+                                      key={phenotype}
+                                      value={phenotype}
+                                      className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                    >
+                                      {phenotype}
+                                    </SelectItem>
+                                  ))}
+                                </div>
                               </div>
-                              {Object.entries(groups).map(([group, subgroups]) => {
-                                const uniqueSubgroups = subgroups.filter((sg) => {
-                                  if (seen.has(sg)) return false;
-                                  seen.add(sg);
-                                  return true;
-                                });
-                                if (uniqueSubgroups.length === 0) return null;
-                                return (
-                                  <div key={`${region}-${group}`}>
-                                    <div className="px-4 py-1 text-xs font-semibold text-phindex-teal bg-muted/30">
-                                      {group}
-                                    </div>
-                                    {uniqueSubgroups.map((subgroup) => (
-                                      <SelectItem
-                                        key={subgroup}
-                                        value={subgroup}
-                                        className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-8"
-                                      >
-                                        {subgroup}
-                                      </SelectItem>
-                                    ))}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          );
-                        });
-                      })()}
-                    </SelectContent>
+                            );
+                          });
+                        })()}
+                      </SelectContent>
                   </Select>
                 </div>
 
@@ -496,51 +649,43 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
                         <SelectValue placeholder="Select Secondary Phenotype" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
-                         {(() => {
+                        <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
+                          {(() => {
                             const allowed = getAvailablePhenotypeOptions('secondary');
                             const seen = new Set<string>();
-                            return Object.entries(specificPhenotypeOptions).map(([region, groups]) => {
-                              // Check if this region has any allowed subgroups
-                              const hasAllowedSubgroups = Object.values(groups).some(subgroups => 
-                                subgroups.some(sg => allowed.includes(sg))
-                              );
-                              if (!hasAllowedSubgroups) return null;
+                            return Object.entries(specificPhenotypeOptions).map(([division, phenotypes]) => {
+                              // Check if this division has any allowed phenotypes
+                              const hasAllowedPhenotypes = phenotypes.some(p => allowed.includes(p));
+                              if (!hasAllowedPhenotypes) return null;
+                              
+                              const uniquePhenotypes = phenotypes.filter((phenotype) => {
+                                if (!allowed.includes(phenotype) || seen.has(phenotype)) return false;
+                                seen.add(phenotype);
+                                return true;
+                              });
+                              if (uniquePhenotypes.length === 0) return null;
                               
                               return (
-                                <div key={region}>
-                                  <div className="px-2 py-1.5 text-sm font-bold text-muted-foreground bg-muted/70">
-                                    {region}
+                                <div key={division}>
+                                  <div className="px-2 py-1.5 text-sm font-bold text-primary bg-muted/70">
+                                    {division}
                                   </div>
-                                  {Object.entries(groups).map(([group, subgroups]) => {
-                                    const uniqueSubgroups = subgroups.filter((sg) => {
-                                      if (!allowed.includes(sg) || seen.has(sg)) return false;
-                                      seen.add(sg);
-                                      return true;
-                                    });
-                                    if (uniqueSubgroups.length === 0) return null;
-                                    return (
-                                      <div key={`${region}-${group}`}>
-                                        <div className="px-4 py-1 text-xs font-semibold text-phindex-teal bg-muted/30">
-                                          {group}
-                                        </div>
-                                        {uniqueSubgroups.map((subgroup) => (
-                                          <SelectItem
-                                            key={subgroup}
-                                            value={subgroup}
-                                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-8"
-                                          >
-                                            {subgroup}
-                                          </SelectItem>
-                                        ))}
-                                      </div>
-                                    );
-                                  })}
+                                  <div className="ml-2">
+                                    {uniquePhenotypes.map((phenotype) => (
+                                      <SelectItem
+                                        key={phenotype}
+                                        value={phenotype}
+                                        className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                      >
+                                        {phenotype}
+                                      </SelectItem>
+                                    ))}
+                                  </div>
                                 </div>
                               );
                             });
                           })()}
-                      </SelectContent>
+                        </SelectContent>
                     </Select>
                   </div>
                 )}
@@ -563,42 +708,34 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                          {(() => {
                             const allowed = getAvailablePhenotypeOptions('tertiary');
                             const seen = new Set<string>();
-                            return Object.entries(specificPhenotypeOptions).map(([region, groups]) => {
-                              // Check if this region has any allowed subgroups
-                              const hasAllowedSubgroups = Object.values(groups).some(subgroups => 
-                                subgroups.some(sg => allowed.includes(sg))
-                              );
-                              if (!hasAllowedSubgroups) return null;
+                            return Object.entries(specificPhenotypeOptions).map(([division, phenotypes]) => {
+                              // Check if this division has any allowed phenotypes
+                              const hasAllowedPhenotypes = phenotypes.some(p => allowed.includes(p));
+                              if (!hasAllowedPhenotypes) return null;
+                              
+                              const uniquePhenotypes = phenotypes.filter((phenotype) => {
+                                if (!allowed.includes(phenotype) || seen.has(phenotype)) return false;
+                                seen.add(phenotype);
+                                return true;
+                              });
+                              if (uniquePhenotypes.length === 0) return null;
                               
                               return (
-                                <div key={region}>
-                                  <div className="px-2 py-1.5 text-sm font-bold text-muted-foreground bg-muted/70">
-                                    {region}
+                                <div key={division}>
+                                  <div className="px-2 py-1.5 text-sm font-bold text-primary bg-muted/70">
+                                    {division}
                                   </div>
-                                  {Object.entries(groups).map(([group, subgroups]) => {
-                                    const uniqueSubgroups = subgroups.filter((sg) => {
-                                      if (!allowed.includes(sg) || seen.has(sg)) return false;
-                                      seen.add(sg);
-                                      return true;
-                                    });
-                                    if (uniqueSubgroups.length === 0) return null;
-                                    return (
-                                      <div key={`${region}-${group}`}>
-                                        <div className="px-4 py-1 text-xs font-semibold text-phindex-teal bg-muted/30">
-                                          {group}
-                                        </div>
-                                        {uniqueSubgroups.map((subgroup) => (
-                                          <SelectItem
-                                            key={subgroup}
-                                            value={subgroup}
-                                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-8"
-                                          >
-                                            {subgroup}
-                                          </SelectItem>
-                                        ))}
-                                      </div>
-                                    );
-                                  })}
+                                  <div className="ml-2">
+                                    {uniquePhenotypes.map((phenotype) => (
+                                      <SelectItem
+                                        key={phenotype}
+                                        value={phenotype}
+                                        className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
+                                      >
+                                        {phenotype}
+                                      </SelectItem>
+                                    ))}
+                                  </div>
                                 </div>
                               );
                             });
