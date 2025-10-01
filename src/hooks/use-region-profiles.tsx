@@ -156,7 +156,7 @@ export const useRegionProfiles = (region: string | undefined) => {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Erro ao buscar perfis:", error);
+        console.error("Error searching profiles:", error);
         throw error;
       }
 

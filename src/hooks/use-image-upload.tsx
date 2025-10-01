@@ -42,7 +42,7 @@ export const useImageUpload = () => {
 
       if (error) {
         console.error('Upload error:', error);
-        toast.error('Erro ao fazer upload da imagem. Tente novamente.');
+        toast.error('Error uploading images. Try again.');
         return null;
       }
 

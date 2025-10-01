@@ -61,7 +61,7 @@ export const EditUserProfileModal = ({ profile, open, onClose }: EditUserProfile
       });
       onClose();
     } catch (error) {
-      console.error('Erro ao atualizar perfil:', error);
+      console.error('Error updating profile:', error);
     }
   };
 

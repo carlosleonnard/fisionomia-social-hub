@@ -108,7 +108,7 @@ export const useGeographicRegionProfiles = (region: string | undefined) => {
         .order("created_at", { ascending: false });
 
       if (profilesError) {
-        console.error("Erro ao buscar perfis:", profilesError);
+        console.error("Error searching profiles:", profilesError);
         throw profilesError;
       }
 
@@ -128,7 +128,7 @@ export const useGeographicRegionProfiles = (region: string | undefined) => {
         .eq("characteristic_type", "Primary Phenotype");
 
       if (geographicVotesError || specificVotesError) {
-        console.error("Erro ao buscar votações:", geographicVotesError || specificVotesError);
+        console.error("Error searching votes:", geographicVotesError || specificVotesError);
         throw geographicVotesError || specificVotesError;
       }
 
