@@ -268,12 +268,12 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
     });
   };
 
-  // Função para obter todas as opções de fenótipo
+  // Função para obter todas as opções de fenótipo (subgroups)
   const getAllPhenotypeOptions = () => {
     const allOptions: string[] = [];
     Object.entries(specificPhenotypeOptions).forEach(([region, groups]) => {
-      Object.keys(groups).forEach(group => {
-        allOptions.push(group);
+      Object.entries(groups).forEach(([group, subgroups]) => {
+        allOptions.push(...subgroups);
       });
     });
     return allOptions;
@@ -441,30 +441,39 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                     <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
                       <SelectValue placeholder="Select Primary Phenotype" />
                     </SelectTrigger>
-                    <SelectContent className="bg-background border-border/50 z-50">
+                    <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
                       {(() => {
                         const seen = new Set<string>();
                         return Object.entries(specificPhenotypeOptions).map(([region, groups]) => {
-                          const uniqueGroups = Object.keys(groups).filter((g) => {
-                            if (seen.has(g)) return false;
-                            seen.add(g);
-                            return true;
-                          });
-                          if (uniqueGroups.length === 0) return null;
                           return (
                             <div key={region}>
-                              <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                              <div className="px-2 py-1.5 text-sm font-bold text-muted-foreground bg-muted/70">
                                 {region}
                               </div>
-                              {uniqueGroups.map((group) => (
-                                <SelectItem
-                                  key={group}
-                                  value={group}
-                                  className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
-                                >
-                                  {group}
-                                </SelectItem>
-                              ))}
+                              {Object.entries(groups).map(([group, subgroups]) => {
+                                const uniqueSubgroups = subgroups.filter((sg) => {
+                                  if (seen.has(sg)) return false;
+                                  seen.add(sg);
+                                  return true;
+                                });
+                                if (uniqueSubgroups.length === 0) return null;
+                                return (
+                                  <div key={`${region}-${group}`}>
+                                    <div className="px-4 py-1 text-xs font-semibold text-phindex-teal bg-muted/30">
+                                      {group}
+                                    </div>
+                                    {uniqueSubgroups.map((subgroup) => (
+                                      <SelectItem
+                                        key={subgroup}
+                                        value={subgroup}
+                                        className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-8"
+                                      >
+                                        {subgroup}
+                                      </SelectItem>
+                                    ))}
+                                  </div>
+                                );
+                              })}
                             </div>
                           );
                         });
@@ -487,31 +496,46 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
                         <SelectValue placeholder="Select Secondary Phenotype" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-border/50 z-50">
+                      <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
                          {(() => {
                             const allowed = getAvailablePhenotypeOptions('secondary');
                             const seen = new Set<string>();
                             return Object.entries(specificPhenotypeOptions).map(([region, groups]) => {
-                              const uniqueGroups = Object.keys(groups).filter((g) => {
-                                if (!allowed.includes(g) || seen.has(g)) return false;
-                                seen.add(g);
-                                return true;
-                              });
-                              if (uniqueGroups.length === 0) return null;
+                              // Check if this region has any allowed subgroups
+                              const hasAllowedSubgroups = Object.values(groups).some(subgroups => 
+                                subgroups.some(sg => allowed.includes(sg))
+                              );
+                              if (!hasAllowedSubgroups) return null;
+                              
                               return (
                                 <div key={region}>
-                                  <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                                  <div className="px-2 py-1.5 text-sm font-bold text-muted-foreground bg-muted/70">
                                     {region}
                                   </div>
-                                  {uniqueGroups.map((group) => (
-                                    <SelectItem
-                                      key={group}
-                                      value={group}
-                                      className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
-                                    >
-                                      {group}
-                                    </SelectItem>
-                                  ))}
+                                  {Object.entries(groups).map(([group, subgroups]) => {
+                                    const uniqueSubgroups = subgroups.filter((sg) => {
+                                      if (!allowed.includes(sg) || seen.has(sg)) return false;
+                                      seen.add(sg);
+                                      return true;
+                                    });
+                                    if (uniqueSubgroups.length === 0) return null;
+                                    return (
+                                      <div key={`${region}-${group}`}>
+                                        <div className="px-4 py-1 text-xs font-semibold text-phindex-teal bg-muted/30">
+                                          {group}
+                                        </div>
+                                        {uniqueSubgroups.map((subgroup) => (
+                                          <SelectItem
+                                            key={subgroup}
+                                            value={subgroup}
+                                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-8"
+                                          >
+                                            {subgroup}
+                                          </SelectItem>
+                                        ))}
+                                      </div>
+                                    );
+                                  })}
                                 </div>
                               );
                             });
@@ -535,31 +559,46 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                       <SelectTrigger className="w-full bg-background border-border/50 focus:ring-2 focus:ring-phindex-teal/20">
                         <SelectValue placeholder="Select Tertiary Phenotype" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-border/50 z-50">
+                      <SelectContent className="bg-background border-border/50 z-50 max-h-[400px]">
                          {(() => {
                             const allowed = getAvailablePhenotypeOptions('tertiary');
                             const seen = new Set<string>();
                             return Object.entries(specificPhenotypeOptions).map(([region, groups]) => {
-                              const uniqueGroups = Object.keys(groups).filter((g) => {
-                                if (!allowed.includes(g) || seen.has(g)) return false;
-                                seen.add(g);
-                                return true;
-                              });
-                              if (uniqueGroups.length === 0) return null;
+                              // Check if this region has any allowed subgroups
+                              const hasAllowedSubgroups = Object.values(groups).some(subgroups => 
+                                subgroups.some(sg => allowed.includes(sg))
+                              );
+                              if (!hasAllowedSubgroups) return null;
+                              
                               return (
                                 <div key={region}>
-                                  <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground bg-muted/50">
+                                  <div className="px-2 py-1.5 text-sm font-bold text-muted-foreground bg-muted/70">
                                     {region}
                                   </div>
-                                  {uniqueGroups.map((group) => (
-                                    <SelectItem
-                                      key={group}
-                                      value={group}
-                                      className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-6"
-                                    >
-                                      {group}
-                                    </SelectItem>
-                                  ))}
+                                  {Object.entries(groups).map(([group, subgroups]) => {
+                                    const uniqueSubgroups = subgroups.filter((sg) => {
+                                      if (!allowed.includes(sg) || seen.has(sg)) return false;
+                                      seen.add(sg);
+                                      return true;
+                                    });
+                                    if (uniqueSubgroups.length === 0) return null;
+                                    return (
+                                      <div key={`${region}-${group}`}>
+                                        <div className="px-4 py-1 text-xs font-semibold text-phindex-teal bg-muted/30">
+                                          {group}
+                                        </div>
+                                        {uniqueSubgroups.map((subgroup) => (
+                                          <SelectItem
+                                            key={subgroup}
+                                            value={subgroup}
+                                            className="hover:bg-muted focus:bg-muted text-black data-[highlighted]:text-black pl-8"
+                                          >
+                                            {subgroup}
+                                          </SelectItem>
+                                        ))}
+                                      </div>
+                                    );
+                                  })}
                                 </div>
                               );
                             });
