@@ -251,12 +251,12 @@ export const useUserProfiles = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['user-profiles'] });
       queryClient.invalidateQueries({ queryKey: ['my-profiles'] });
-      toast.success('Perfil criado com sucesso!');
+      toast.success('Profile created successfully!');
       return data;
     },
     onError: (error) => {
-      console.error('Erro ao criar perfil:', error);
-      toast.error('Erro ao criar perfil. Tente novamente.');
+      console.error('Error when creating profile:', error);
+      toast.error('Error when creating profile. Try again!.');
     },
   });
 
@@ -300,11 +300,11 @@ export const useUserProfiles = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-profiles'] });
       queryClient.invalidateQueries({ queryKey: ['my-profiles'] });
-      toast.success('Perfil atualizado com sucesso!');
+      toast.success('Profile updated with success!');
     },
     onError: (error) => {
-      console.error('Erro ao atualizar perfil:', error);
-      toast.error('Erro ao atualizar perfil. Tente novamente.');
+      console.error('W:', error);
+      toast.error('Error updating profile. Try again.');
     },
   });
 
@@ -326,11 +326,11 @@ export const useUserProfiles = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-profiles'] });
       queryClient.invalidateQueries({ queryKey: ['my-profiles'] });
-      toast.success('Perfil excluído com sucesso!');
+      toast.success('Profile successfully deleted!');
     },
     onError: (error) => {
-      console.error('Erro ao excluir perfil:', error);
-      toast.error('Erro ao excluir perfil. Tente novamente.');
+      console.error('Error deleting profile:', error);
+      toast.error('Error deleting profile. Try again.');
     },
   });
 

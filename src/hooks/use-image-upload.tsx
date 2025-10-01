@@ -51,7 +51,7 @@ export const useImageUpload = () => {
         .from('user-profiles')
         .getPublicUrl(data.path);
 
-      toast.success('Imagem enviada com sucesso!');
+      toast.success('Image uploaded successfully!');
       return urlData.publicUrl;
 
     } catch (error) {
