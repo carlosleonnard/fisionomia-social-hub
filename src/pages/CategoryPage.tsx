@@ -162,24 +162,24 @@ export default function CategoryPage() {
                 {filteredProfiles.map((profile) => (
                   <div
                     key={profile.id}
-                    className="cursor-pointer transition-transform hover:scale-105"
+                    className="cursor-pointer transition-transform hover:scale-105 h-full"
                     onClick={() => navigate(`/user-profile/${profile.slug}`)}
                   >
-                    <Card className="bg-gradient-card border-phindex-teal/20 overflow-hidden">
-                      <div className="relative">
+                    <Card className="bg-gradient-card border-phindex-teal/20 overflow-hidden h-full flex flex-col">
+                      <div className="relative h-64 flex-shrink-0">
                          <img 
                            src={profile.front_image_url} 
                            alt={profile.name}
-                           className="profile-image-thumbnail rounded-lg"
+                           className="w-full h-full object-cover rounded-t-lg"
                          />
                         <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1">
                           <span className="text-xs font-medium">{profile.country}</span>
                         </div>
                       </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-semibold text-foreground mb-1">{profile.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{profile.ancestry}</p>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <CardContent className="p-4 flex-grow flex flex-col">
+                        <h3 className="font-semibold text-foreground mb-1 truncate">{profile.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-2 line-clamp-2 flex-grow">{profile.ancestry}</p>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground mt-auto">
                           <span>Height: {profile.height}m</span>
                           <span>{profile.gender}</span>
                         </div>
