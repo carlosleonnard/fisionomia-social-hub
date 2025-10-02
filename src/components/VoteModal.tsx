@@ -394,18 +394,11 @@ const characteristics = [
 
 export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profileId }: VoteModalProps) => {
   const storageKey = `pendingVotes_${profileId}`;
-  const [votes, setVotes] = useState<Record<string, string>>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem(storageKey);
-        if (saved) return JSON.parse(saved);
-      } catch {}
-    }
-    return existingVotes;
-  });
+  const [votes, setVotes] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!isOpen) return;
+    
     let saved: Record<string, string> = {};
     if (typeof window !== 'undefined') {
       try {
@@ -413,9 +406,11 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
         if (raw) saved = JSON.parse(raw);
       } catch {}
     }
-    // Merge saved in-progress selections with any existingVotes from backend
+    
+    // ALWAYS start with existingVotes from backend (user's previous votes)
+    // Then merge with any in-progress edits from localStorage
     setVotes({ ...existingVotes, ...saved });
-  }, [existingVotes, isOpen]);
+  }, [existingVotes, isOpen, storageKey]);
 
   useEffect(() => {
     try {
