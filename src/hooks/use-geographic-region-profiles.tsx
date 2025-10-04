@@ -27,7 +27,8 @@ const geographicToRegionMapping: Record<string, string[]> = {
   ],
   "middle-east": [
     "Levant",
-    "Anatólia", 
+    "Anatólia",
+    "Anatolia", // Variação sem acento
     "Arabian Peninsula",
     "Persian Plateau"
   ],
