@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
       'Hair Color', 
       'Hair Texture', 
       'Head Breadth',
-      'Skull Type',
+      'Head Type',
       'Body Type',
       'Nasal Breadth',
       'Facial Breadth',
