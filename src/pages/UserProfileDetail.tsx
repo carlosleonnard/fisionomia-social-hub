@@ -24,11 +24,13 @@ import { useProfileCreator } from "@/hooks/use-profile-creator";
 import { useState } from "react";
 import { EditUserProfileModal } from "@/components/EditUserProfileModal";
 import { supabase } from "@/integrations/supabase/client";
+import { useAdmin } from "@/hooks/use-admin";
 
 export default function UserProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const { getProfileBySlug, deleteProfile } = useUserProfiles();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showVoteModal, setShowVoteModal] = useState(false);
@@ -86,6 +88,7 @@ export default function UserProfileDetail() {
   }
 
   const isOwner = user?.id === profile.user_id;
+  const canEdit = isOwner || isAdmin;
 
   // Check if user has voted on any characteristic (geographic, phenotype, or physical)
   const hasUserVotedAny = hasUserVoted || 
@@ -287,7 +290,7 @@ export default function UserProfileDetail() {
                        <MessageSquare className="h-4 w-4 text-blue-500" />
                        <span>{realComments.length} comments</span>
                      </div>
-                     {isOwner && (
+                     {canEdit && (
                        <>
                          <div 
                            className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal transition-colors"
