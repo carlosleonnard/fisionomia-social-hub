@@ -288,31 +288,40 @@ export default function UserProfileDetail() {
                        <span>{realComments.length} comments</span>
                      </div>
                      {isOwner && (
-                       <AlertDialog>
-                         <AlertDialogTrigger asChild>
-                           <div className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors">
-                             <Trash2 className="h-4 w-4 text-red-500" />
-                             <span className="text-red-500">Delete</span>
-                           </div>
-                         </AlertDialogTrigger>
-                         <AlertDialogContent>
-                           <AlertDialogHeader>
-                              <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete this profile? This action cannot be undone.
-                              </AlertDialogDescription>
-                           </AlertDialogHeader>
-                           <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction 
-                                onClick={handleDelete}
-                                className="bg-red-500 hover:bg-red-600"
-                              >
-                                Yes, delete
-                              </AlertDialogAction>
-                           </AlertDialogFooter>
-                         </AlertDialogContent>
-                       </AlertDialog>
+                       <>
+                         <div 
+                           className="flex items-center gap-2 cursor-pointer hover:text-phindex-teal transition-colors"
+                           onClick={() => setShowEditModal(true)}
+                         >
+                           <Edit className="h-4 w-4 text-phindex-teal" />
+                           <span>Edit</span>
+                         </div>
+                         <AlertDialog>
+                           <AlertDialogTrigger asChild>
+                             <div className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors">
+                               <Trash2 className="h-4 w-4 text-red-500" />
+                               <span className="text-red-500">Delete</span>
+                             </div>
+                           </AlertDialogTrigger>
+                           <AlertDialogContent>
+                             <AlertDialogHeader>
+                                <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete this profile? This action cannot be undone.
+                                </AlertDialogDescription>
+                             </AlertDialogHeader>
+                             <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction 
+                                  onClick={handleDelete}
+                                  className="bg-red-500 hover:bg-red-600"
+                                >
+                                  Yes, delete
+                                </AlertDialogAction>
+                             </AlertDialogFooter>
+                           </AlertDialogContent>
+                         </AlertDialog>
+                       </>
                      )}
                    </div>
 
