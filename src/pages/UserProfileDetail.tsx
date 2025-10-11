@@ -166,7 +166,7 @@ export default function UserProfileDetail() {
                     <Badge 
                       variant="secondary" 
                       className="bg-phindex-teal/10 text-phindex-teal hover:bg-phindex-teal/20 cursor-pointer transition-colors"
-                      onClick={() => navigate(`/category/${profile.category.toLowerCase().replace(' ', '-')}`)}
+                      onClick={() => navigate('/category/community')}
                     >
                       {profile.category}
                     </Badge>
