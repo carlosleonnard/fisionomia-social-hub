@@ -67,7 +67,7 @@ const Index = () => {
 
           {/* Welcome Banner */}
           <div className="mb-8">
-            <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-background border-primary/20">
+            <Card className="bg-primary/10 border-primary/20">
               <div className="p-6">
                 <h1 className="text-3xl font-bold text-foreground mb-4">
                   Welcome to Phenotype Index
