@@ -65,6 +65,33 @@ const Index = () => {
           {/* Sidebar */}
           <AppSidebar />
 
+          {/* Welcome Banner */}
+          <div className="mb-8">
+            <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-background border-primary/20">
+              <div className="p-6">
+                <h1 className="text-3xl font-bold text-foreground mb-4">
+                  Welcome to Phenotype Index
+                </h1>
+                <div className="space-y-3 text-muted-foreground">
+                  <p className="text-base leading-relaxed">
+                    Create new profiles for community voting and track voted results in real-time. 
+                    You can add photos of yourself and famous people.
+                  </p>
+                  <p className="text-sm">
+                    Contact{" "}
+                    <a 
+                      href="mailto:contact@phenotypeindex.com" 
+                      className="text-primary hover:underline font-medium"
+                    >
+                      contact@phenotypeindex.com
+                    </a>
+                    {" "}for corrections, bugs or improvement suggestions.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+
           {/* Main Content */}
           <div className="bg-slate-100">
             {/* Popular Celebrities Section */}
