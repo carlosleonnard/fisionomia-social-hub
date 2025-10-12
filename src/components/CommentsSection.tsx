@@ -58,6 +58,7 @@ export const CommentsSection = ({
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
   const [sortBy, setSortBy] = useState<"recent" | "top">("recent");
+  const [expandedThreads, setExpandedThreads] = useState<Set<string>>(new Set());
 
   const sortedComments = [...comments].sort((a, b) => {
     if (sortBy === "top") {
@@ -228,7 +229,17 @@ export const CommentsSection = ({
             {/* Replies */}
             {comment.replies && comment.replies.length > 0 && (
               <div className="ml-8 space-y-2">
-                {comment.replies.map((reply) => (
+                {(() => {
+                  const sortedReplies = [...comment.replies].sort((a, b) => 
+                    new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                  );
+                  const isExpanded = expandedThreads.has(comment.id);
+                  const visibleReplies = isExpanded ? sortedReplies : sortedReplies.slice(0, 3);
+                  const hasMoreReplies = sortedReplies.length > 3;
+                  
+                  return (
+                    <>
+                      {visibleReplies.map((reply) => (
                   <div key={reply.id} id={`comment-${reply.id}`} className="flex gap-3 p-2 rounded-lg bg-muted/10 hover:bg-muted/20 transition-colors">
                     <Avatar className="h-6 w-6">
                       <AvatarFallback className="text-xs">{reply.user.nickname.charAt(0)}</AvatarFallback>
@@ -294,7 +305,36 @@ export const CommentsSection = ({
                       </div>
                     </div>
                   </div>
-                ))}
+                      ))}
+                      
+                      {hasMoreReplies && !isExpanded && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs text-muted-foreground hover:text-foreground"
+                          onClick={() => setExpandedThreads(prev => new Set(prev).add(comment.id))}
+                        >
+                          Show {sortedReplies.length - 3} more {sortedReplies.length - 3 === 1 ? 'reply' : 'replies'}
+                        </Button>
+                      )}
+                      
+                      {hasMoreReplies && isExpanded && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs text-muted-foreground hover:text-foreground"
+                          onClick={() => setExpandedThreads(prev => {
+                            const newSet = new Set(prev);
+                            newSet.delete(comment.id);
+                            return newSet;
+                          })}
+                        >
+                          Show less
+                        </Button>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             )}
           </div>
