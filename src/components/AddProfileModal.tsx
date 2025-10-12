@@ -18,9 +18,11 @@ import { supabase } from "@/integrations/supabase/client";
 interface AddProfileModalProps {
   triggerExternal?: boolean;
   onTriggerExternalChange?: (value: boolean) => void;
+  initialIsAnonymous?: boolean | null;
+  lockIsAnonymous?: boolean;
 }
 
-export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChange }: AddProfileModalProps) => {
+export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChange, initialIsAnonymous = null, lockIsAnonymous = false }: AddProfileModalProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { createProfile } = useUserProfiles();
@@ -31,12 +33,12 @@ export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChan
     name: "",
     country: "",
     gender: "",
-    category: "",
+    category: initialIsAnonymous === true ? "User Profiles" : "",
     height: "",
     ancestry: [] as string[], // Changed to array of countries
     frontImageUrl: "",
     profileImageUrl: "",
-    isAnonymous: null as boolean | null
+    isAnonymous: initialIsAnonymous
   });
 
   const [dragActive, setDragActive] = useState(false);
@@ -400,6 +402,7 @@ export const AddProfileModal = ({ triggerExternal = false, onTriggerExternalChan
                 onChange={(e) => handleAnonymousChange(e.target.value)}
                 className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
+                disabled={lockIsAnonymous}
               >
                 <option value="" disabled>Select</option>
                 <option value="yes">Yes</option>

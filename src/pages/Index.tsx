@@ -11,7 +11,8 @@
  */
 
 // Ícone de voto da biblioteca Lucide React
-import { Vote } from "lucide-react";
+import { Vote, Plus } from "lucide-react";
+import { useState } from "react";
 // Componentes de layout da aplicação
 import { Header } from "@/components/Header";           // Cabeçalho fixo
 import { Footer } from "@/components/Footer";           // Rodapé
@@ -22,6 +23,7 @@ import { useUserProfiles } from "@/hooks/use-user-profiles";
 // Componentes de UI do sistema de design
 import { Card } from "@/components/ui/card";            // Cards para layout
 import { Badge } from "@/components/ui/badge";          // Badges para indicadores
+import { Button } from "@/components/ui/button";        // Botões
 // Componentes de carousel para navegação horizontal
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";  // Separadores visuais
@@ -31,6 +33,8 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const navigate = useNavigate();
   const { profiles: userProfiles, profilesByVotes } = useUserProfiles();
+  const [showCelebrityModal, setShowCelebrityModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
 
   // Mapeamento de códigos de países para códigos de 3 letras
   const countryCodes: Record<string, string> = {
@@ -98,11 +102,22 @@ const Index = () => {
             <div className="mb-12">
               <div className="relative p-6">
                 <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
-                      <Vote className="h-4 w-4 text-primary" />
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
+                        <Vote className="h-4 w-4 text-primary" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
                     </div>
-                    <h2 className="text-2xl font-bold text-foreground">Popular Celebrities</h2>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90"
+                      onClick={() => setShowCelebrityModal(true)}
+                    >
+                      <Plus className="mr-1 h-4 w-4" />
+                      Add New Celebrity
+                    </Button>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
                     Use Phindex to discover and classify the most voted public figures in our phenotype community
@@ -229,11 +244,22 @@ const Index = () => {
             <div className="mb-12">
               <div className="relative p-6">
                 <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
-                      <Vote className="h-4 w-4 text-primary" />
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
+                        <Vote className="h-4 w-4 text-primary" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
                     </div>
-                    <h2 className="text-2xl font-bold text-foreground">Top User Profiles</h2>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90"
+                      onClick={() => setShowUserModal(true)}
+                    >
+                      <Plus className="mr-1 h-4 w-4" />
+                      Add New User
+                    </Button>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
                     Most voted user-created profiles in our Phenotype Index
@@ -353,6 +379,20 @@ const Index = () => {
       </div>
       
       <Footer />
+
+      {/* Modals */}
+      <AddProfileModal 
+        triggerExternal={showCelebrityModal} 
+        onTriggerExternalChange={setShowCelebrityModal}
+        initialIsAnonymous={false}
+        lockIsAnonymous={true}
+      />
+      <AddProfileModal 
+        triggerExternal={showUserModal} 
+        onTriggerExternalChange={setShowUserModal}
+        initialIsAnonymous={true}
+        lockIsAnonymous={true}
+      />
     </div>
   );
 };
