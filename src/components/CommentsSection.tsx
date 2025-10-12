@@ -63,7 +63,7 @@ export const CommentsSection = ({
     if (sortBy === "top") {
       return b.likes_count - a.likes_count;
     }
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
 
   const handleSubmitReply = async (e: React.FormEvent, parentCommentId: string) => {
