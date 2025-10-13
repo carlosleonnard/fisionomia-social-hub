@@ -128,7 +128,7 @@ const Index = () => {
                       onClick={() => setShowCelebrityModal(true)}
                     >
                       <Plus className="mr-1 h-4 w-4" />
-                      Add New
+                      Add
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
@@ -286,7 +286,7 @@ const Index = () => {
                       onClick={() => setShowUserModal(true)}
                     >
                       <Plus className="mr-1 h-4 w-4" />
-                      Add New
+                      Add
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
