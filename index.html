@@ -37,21 +37,36 @@
       "@graph": [
         {
           "@type": "Organization",
-          "name": "Phindex - Phenotype Index",
-          "alternateName": "Phindex",
+          "@id": "https://www.phenotypeindex.com/#organization",
+          "name": "Phindex",
+          "alternateName": ["Phindex - Phenotype Index", "Phenotype Index"],
           "url": "https://www.phenotypeindex.com",
-          "logo": "https://storage.googleapis.com/gpt-engineer-file-uploads/nuABNMxhFAbdihazPnT8H0xbph03/uploads/1758677579315-pupila-removebg-preview.png",
-          "description": "The only phenotype database for classifying and indexing physical traits of famous people and individuals."
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://storage.googleapis.com/gpt-engineer-file-uploads/nuABNMxhFAbdihazPnT8H0xbph03/uploads/1758677579315-pupila-removebg-preview.png"
+          },
+          "description": "The only phenotype database for classifying and indexing physical traits of famous people and individuals.",
+          "sameAs": [
+            "https://www.phenotypeindex.com"
+          ]
         },
         {
           "@type": "WebSite",
-          "name": "Phindex - Phenotype Index",
-          "alternateName": "Phindex",
+          "@id": "https://www.phenotypeindex.com/#website",
+          "name": "Phindex",
+          "alternateName": "Phenotype Index",
           "url": "https://www.phenotypeindex.com",
           "description": "The only phenotype database. Discover, classify, and index famous people and your friends by their unique traits.",
           "publisher": {
-            "@type": "Organization",
-            "name": "Phindex - Phenotype Index"
+            "@id": "https://www.phenotypeindex.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.phenotypeindex.com/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
           }
         }
       ]
