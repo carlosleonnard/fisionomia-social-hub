@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 interface VoteModalProps {
   isOpen: boolean;
@@ -517,25 +518,39 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
             {/* Profile Images */}
             {profileImages && (
               <Card className="p-4 bg-card border-border shadow-card">
-                <div className="flex items-center justify-center gap-4">
-                  <div className="text-center">
-                    <img 
-                      src={profileImages.frontImage} 
-                      alt={`${profileImages.profileName} - front`}
-                      className="w-32 h-32 object-cover rounded-lg mx-auto"
-                    />
-                    <p className="text-xs text-muted-foreground mt-2">Front</p>
-                  </div>
-                  {profileImages.profileImage && (
-                    <div className="text-center">
-                      <img 
-                        src={profileImages.profileImage} 
-                        alt={`${profileImages.profileName} - profile`}
-                        className="w-32 h-32 object-cover rounded-lg mx-auto"
-                      />
-                      <p className="text-xs text-muted-foreground mt-2">Profile</p>
-                    </div>
-                  )}
+                <div className="max-w-md mx-auto">
+                  <Carousel className="w-full">
+                    <CarouselContent>
+                      <CarouselItem>
+                        <div className="text-center">
+                          <img 
+                            src={profileImages.frontImage} 
+                            alt={`${profileImages.profileName} - front`}
+                            className="w-full max-w-sm h-auto object-cover rounded-lg mx-auto"
+                          />
+                          <p className="text-xs text-muted-foreground mt-2">Front</p>
+                        </div>
+                      </CarouselItem>
+                      {profileImages.profileImage && (
+                        <CarouselItem>
+                          <div className="text-center">
+                            <img 
+                              src={profileImages.profileImage} 
+                              alt={`${profileImages.profileName} - profile`}
+                              className="w-full max-w-sm h-auto object-cover rounded-lg mx-auto"
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">Profile</p>
+                          </div>
+                        </CarouselItem>
+                      )}
+                    </CarouselContent>
+                    {profileImages.profileImage && (
+                      <>
+                        <CarouselPrevious className="left-2" />
+                        <CarouselNext className="right-2" />
+                      </>
+                    )}
+                  </Carousel>
                 </div>
               </Card>
             )}
