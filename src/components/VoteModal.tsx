@@ -526,7 +526,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                           <img 
                             src={profileImages.frontImage} 
                             alt={`${profileImages.profileName} - front`}
-                            className="w-full max-w-sm h-auto object-cover rounded-lg mx-auto"
+                            className="w-full h-80 object-cover rounded-lg mx-auto"
                           />
                           <p className="text-xs text-muted-foreground mt-2">Front</p>
                         </div>
@@ -537,7 +537,7 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                             <img 
                               src={profileImages.profileImage} 
                               alt={`${profileImages.profileName} - profile`}
-                              className="w-full max-w-sm h-auto object-cover rounded-lg mx-auto"
+                              className="w-full h-80 object-cover rounded-lg mx-auto"
                             />
                             <p className="text-xs text-muted-foreground mt-2">Profile</p>
                           </div>
