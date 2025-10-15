@@ -562,6 +562,11 @@ export default function UserProfileDetail() {
                   ...physicalUserVotes,
                   ...userGeographicVotes
                 }}
+                profileImages={{
+                  frontImage: profile.front_image_url,
+                  profileImage: profile.profile_image_url,
+                  profileName: profile.name
+                }}
                  onSubmit={async (votes) => {
                    // Cast geographic and phenotype classification votes
                    const geographicCharacteristics = [

@@ -11,6 +11,11 @@ interface VoteModalProps {
   onSubmit: (votes: Record<string, string>) => void;
   existingVotes?: Record<string, string>;
   profileId: string;
+  profileImages?: {
+    frontImage: string;
+    profileImage?: string;
+    profileName: string;
+  };
 }
 
 // Structure: { Division: { MainGroup: [subgroups] } }
@@ -392,7 +397,7 @@ const characteristics = [
   }
 ];
 
-export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profileId }: VoteModalProps) => {
+export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profileId, profileImages }: VoteModalProps) => {
   const storageKey = `pendingVotes_${profileId}`;
   const [votes, setVotes] = useState<Record<string, string>>({});
 
@@ -509,6 +514,32 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
         
         <div className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-1 gap-4 pr-2">
+            {/* Profile Images */}
+            {profileImages && (
+              <Card className="p-4 bg-card border-border shadow-card">
+                <div className="flex items-center justify-center gap-4">
+                  <div className="text-center">
+                    <img 
+                      src={profileImages.frontImage} 
+                      alt={`${profileImages.profileName} - front`}
+                      className="w-32 h-32 object-cover rounded-lg mx-auto"
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">Front</p>
+                  </div>
+                  {profileImages.profileImage && (
+                    <div className="text-center">
+                      <img 
+                        src={profileImages.profileImage} 
+                        alt={`${profileImages.profileName} - profile`}
+                        className="w-32 h-32 object-cover rounded-lg mx-auto"
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">Profile</p>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            )}
+            
             {/* General Phenotype Classification Card */}
             <Card className="p-4 bg-card border-border shadow-card">
               <div className="space-y-4">
