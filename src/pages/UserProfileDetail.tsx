@@ -565,8 +565,7 @@ export default function UserProfileDetail() {
                 profileImages={{
                   frontImage: profile.front_image_url,
                   profileImage: profile.profile_image_url,
-                  profileName: profile.name,
-                  ancestry: profile.ancestry
+                  profileName: profile.name
                 }}
                  onSubmit={async (votes) => {
                    // Cast geographic and phenotype classification votes
