@@ -16,6 +16,7 @@ interface VoteModalProps {
     frontImage: string;
     profileImage?: string;
     profileName: string;
+    ancestry?: string;
   };
 }
 
@@ -551,6 +552,16 @@ export const VoteModal = ({ isOpen, onClose, onSubmit, existingVotes = {}, profi
                       </>
                     )}
                   </Carousel>
+                  
+                  {/* Known Ancestry */}
+                  {profileImages.ancestry && (
+                    <div className="mt-4 p-3 bg-muted/30 rounded-lg text-left">
+                      <h4 className="text-sm font-semibold text-phindex-teal mb-2">Known Ancestry</h4>
+                      <p className="text-sm text-foreground leading-relaxed">
+                        {profileImages.ancestry}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
